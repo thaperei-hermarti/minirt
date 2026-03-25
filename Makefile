@@ -65,6 +65,8 @@ fclean: clean
 	$(RM) lib/minilibx-linux/libmlx.a
 	$(RM) $(NAME)
 
+test:
+	make -C tests run
 
 re: fclean all
 
