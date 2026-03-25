@@ -21,6 +21,7 @@ miniRT
 *.pch
 
 # Libraries
+lib/cmocka
 *.lib
 *.a
 *.la
