@@ -5,31 +5,47 @@ ifeq ($(DEBUG), 1)
     CFLAGS += -g2 -O0
 endif
 
-OBJ_DIR = obj
-SRC = $(SRC_FILES:%=$(SRC_DIR)/%)
-OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
-LIBS = -lft
+# Source files and Objects
+SRC := $(SRC:%=$(SRC_DIR)/%)
+SRC_BONUS := $(SRC_BONUS:%=$(SRC_BONUS_DIR)/%)
+OBJS := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+OBJ_BONUS := $(SRC_BONUS:$(SRC_BONUS_DIR)/%.c=$(OBJ_BONUS_DIR)/%.o)
+
+# Libs
+LIBS := ft mlx
+LIBS_TARGET := lib/libft/libft.a lib/minilibx-linux/libmlx.a
+
+# Flags
+CC := cc
+CFLAGS := -Wall -Wextra -Werror
+CPPFLAGS := $(addprefix -I, $(INC_DIR))
+LDFLAGS := $(addprefix -L, $(dir $(LIBS_TARGET)))
+LDLIBS := $(addprefix -l, $(LIBS))
+
+RM := rm -f
+RMDIR := rm -fr
+DUP_DIR = mkdir -p $(@D)
 
 all: $(NAME)
 
-$(LIBFT):
-	@make -C $(LIBFT_DIR)
-
-$(NAME): $(LIBFT) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
-	@echo "[OK] $(NAME) compiled successfully"
+$(NAME): $(OBJS) $(LIBS_TARGET)
+	$(CC) $(OBJS) $(LDFLAGS) $(LDLIBS) -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	$(DUP_DIR)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-bonus: $(LIBFT) $(BONUS_OBJ)
-	$(CC) $(CFLAGS) $(BONUS_OBJ) -L$(LIBFT_DIR) -o $(NAME)
-	@echo "[OK] $(NAME) bonus compiled successfully"
+$(LIBS_TARGET):
+	$(MAKE) -C $(@D)
 
-$(BONUS_OBJ_DIR)/%.o: $(BONUS_DIR)/%.c
-	@mkdir -p $(BONUS_OBJ_DIR)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+bonus: $(NAME_BONUS)
+
+$(NAME_BONUS): $(OBJS_BONUS) $(LIBS_TARGET)
+	$(CC) $(OBJS_BONUS) $(LDFLAGS) $(LDLIBS) -o $(NAME)
+
+$(OBJ_BONUS_DIR)/%.o: $(SRC_BONUS_DIR)/%.c
+	$(DUP_DIR)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 valgrind-run:
 	@valgrind -q\
@@ -39,19 +55,16 @@ valgrind-run:
 		--track-fds=yes \
 		--trace-children=yes \
 		--trace-children-skip='*/bin/*,*/sbin/*,/usr/bin/*' \
-		--suppressions=./valgrind.supp \
 		./$(NAME)
 
 clean:
-	@rm -rf $(OBJ_DIR)
-	@rm -rf $(BONUS_OBJ_DIR)
-	@make -C $(LIBFT_DIR) clean
-	@echo "[OK] Object files removed"
+	$(RMDIR) $(OBJ_DIR) $(OBJ_BONUS_DIR)
 
 fclean: clean
-	@rm -f $(NAME)
-	@make -C $(LIBFT_DIR) fclean
-	@echo "[OK] $(NAME) removed"
+	make -C lib/libft/ fclean
+	$(RM) lib/minilibx-linux/libmlx.a
+	$(RM) $(NAME)
+
 
 re: fclean all
 

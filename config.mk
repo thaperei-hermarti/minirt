@@ -1,13 +1,10 @@
 NAME = miniRT
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
+NAME_BONUS = miniRT_bonus
 
+INC_DIR = inc lib/libft/ lib/minilibx-linux/
 SRC_DIR = src
-INC_DIR = inc
+OBJ_DIR = obj
+SRC_BONUS_DIR = src_bonus
+OBJ_BONUS_DIR = obj_bonus
 
-INCLUDES = -I./$(INC_DIR) -I$(LIBFT_DIR)/inc
-
-SRC_FILES = main.c \
-
-BONUS_DIR = bonus
-BONUS_OBJ_DIR = obj_bonus
+SRC = main.c \
