@@ -6,7 +6,7 @@
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 09:16:25 by hermarti          #+#    #+#             */
-/*   Updated: 2026/04/15 17:16:57 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/05/05 12:08:49 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,14 @@ t_vec4	vec4_cross_prod(t_vec4 a, t_vec4 b);
 t_vec4	vec4_scale(t_vec4 v, double scalar);
 t_vec4	vec4_add(t_vec4 a, t_vec4 b);
 t_vec4	vec4_sub(t_vec4 a, t_vec4 b);
+t_vec4	vec4_mul(t_vec4 a, t_vec4 b);
 t_vec4	vec4_reflect(t_vec4 v, t_vec4 n);
+int		vec4_to_int(t_vec4 c);
+t_vec4	norm_color(t_color c);
 
 t_mat4	mat4_rotation_from_to(t_vec4 from, t_vec4 to);
+t_mat4	mat4_identity(void);
+t_mat4	mat4_translation(t_vec4 t);
 t_mat4	mat4_transpose(t_mat4 m);
 t_mat4	mat4_mat4_mult(t_mat4 m1, t_mat4 m2);
 

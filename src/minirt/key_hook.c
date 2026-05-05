@@ -12,8 +12,11 @@
 
 #include "minirt.h"
 
-int	key_hook(int keycode, t_env *env)
+int	key_hook(int keycode, void *param)
 {
+	t_env	*env;
+
+	env = (t_env *)param;
 	if (keycode == 65307)
 		close_window(env);
 	return (0);

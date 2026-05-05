@@ -6,7 +6,7 @@
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 09:18:26 by hermarti          #+#    #+#             */
-/*   Updated: 2026/04/26 10:40:12 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/29 21:14:01 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ typedef struct s_vec4
 	double			x;
 	double			y;
 	double			z;
-	double			k;
+	double			w;
 }					t_vec4;
 
 typedef struct s_mat4
@@ -33,12 +33,7 @@ typedef struct s_ray
 	double			t;
 }					t_ray;
 
-typedef struct s_color
-{
-	unsigned char	r;
-	unsigned char	g;
-	unsigned char	b;
-}					t_color;
+typedef t_vec4		t_color;
 
 typedef struct s_obj
 {
@@ -77,6 +72,11 @@ typedef struct s_surface_parameters
 	unsigned char	is_bounded : 1;
 }					t_surface_parameters;
 
+void				set_surface_sphere_quadric(t_surface_parameters *p);
+void				set_surface_plane_quadric(t_surface_parameters *p);
+void				set_surface_cylinder_quadric(t_surface_parameters *p);
+void				set_surface_matrix(t_surface_parameters p, t_mat4 *m);
+void				set_surface_type(t_surface_parameters *p);
 t_surface			create_surface(t_surface_parameters p);
 t_vec4				get_surface_normal(t_surface s, t_vec4 hit_point);
 #endif

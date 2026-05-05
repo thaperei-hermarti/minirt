@@ -1,39 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raytrace.c                                         :+:      :+:    :+:   */
+/*   raytrace_calc2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/27 14:58:31 by hermarti          #+#    #+#             */
-/*   Updated: 2026/05/05 11:02:09 by hermarti         ###   ########.fr       */
+/*   Created: 2026/05/05 11:15:01 by hermarti          #+#    #+#             */
+/*   Updated: 2026/05/05 12:02:27 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rt_math.h"
 #include "minirt.h"
-#include <math.h>
+#include "rt_math.h"
 
-int	cast_ray(t_ray *ray, t_env *env, double *out_t)
+int	calc_lighting(t_env *env, t_vec4 n, t_vec4 hit_p, t_surface *obj)
 {
-	double				t;
-	double				min_t;
-	int					hit_idx;
-	unsigned int		i;
+	double						shadow;
+	t_vec4						light_sum;
+	t_light_componets_params	p;
 
-	min_t = INFINITY;
-	hit_idx = -1;
-	i = 0;
-	while (i < env->scene.num_objs)
-	{
-		t = intersection(ray, &env->scene.surfaces[i]);
-		if (!isnan(t) && t > 0.0f && t < min_t)
-		{
-			min_t = t;
-			hit_idx = i;
-		}
-		i++;
-	}
-	*out_t = min_t;
-	return (hit_idx);
+	shadow = calc_shadow(env, hit_p, obj);
+	p = (t_light_componets_params){n, hit_p, shadow};
+	light_sum = calc_light_components(env, obj, &p);
+	return (vec4_to_int(light_sum));
 }

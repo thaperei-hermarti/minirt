@@ -12,11 +12,11 @@
 
 #include "minirt.h"
 
-int	mouse_hook(int mousecode, int x, int y, t_env *env)
+int	mouse_hook(int mousecode, int x, int y, void *param)
 {
 	(void) mousecode;
 	(void) x;
 	(void) y;
-	(void) env;
+	(void) param;
 	return (0);
 }

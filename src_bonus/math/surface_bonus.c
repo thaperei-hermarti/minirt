@@ -14,6 +14,66 @@
 #include "objects_bonus.h"
 #include "rt_math_bonus.h"
 
+static void	init_sphere_quadric(t_surface_parameters *p)
+{
+	p->w = (t_vec4){1.0, 1.0, 1.0, 0.0};
+	p->l = (t_vec4){0.0, 0.0, 0.0, 0.0};
+	if (p->diameter == 0.0)
+		p->diameter = -1.0;
+	else
+		p->diameter = -(p->diameter * p->diameter) / 4.0;
+}
+
+static void	init_plane_quadric(t_surface_parameters *p)
+{
+	t_vec4	normal;
+
+	p->w = (t_vec4){0.0, 0.0, 0.0, 0.0};
+	normal = vec4_normalize(p->orientation);
+	p->l = normal;
+	p->diameter = -vec4_dot_prod(normal, p->coordinate);
+}
+
+static void	init_cylinder_quadric(t_surface_parameters *p)
+{
+	p->w = (t_vec4){1.0, 0.0, 1.0, 0.0};
+	p->l = (t_vec4){0.0, 0.0, 0.0, 0.0};
+	if (p->diameter == 0.0)
+		p->diameter = -1.0;
+	else
+		p->diameter = -(p->diameter * p->diameter) / 4.0;
+}
+
+static void	init_cone_quadric(t_surface_parameters *p)
+{
+	p->w = (t_vec4){1.0, -1.0, 1.0, 0.0};
+	p->l = (t_vec4){0.0, 0.0, 0.0, 0.0};
+	if (p->diameter == 0.0)
+		p->diameter = 0.0;
+	else
+		p->diameter = -(p->diameter * p->diameter) / 4.0;
+}
+
+static void	init_hyperboloid_quadric(t_surface_parameters *p)
+{
+	p->w = (t_vec4){1.0, -1.0, 1.0, 0.0};
+	p->l = (t_vec4){0.0, 0.0, 0.0, 0.0};
+	if (p->diameter == 0.0)
+		p->diameter = -1.0;
+	else
+		p->diameter = -(p->diameter * p->diameter) / 4.0;
+}
+
+static void	init_paraboloid_quadric(t_surface_parameters *p)
+{
+	p->w = (t_vec4){1.0, 0.0, 1.0, 0.0};
+	p->l = (t_vec4){0.0, -1.0, 0.0, 0.0};
+	if (p->diameter == 0.0)
+		p->diameter = 0.0;
+	else
+		p->diameter = -(p->diameter * p->diameter) / 4.0;
+}
+
 t_surface_parameters	set_surface_parameters(t_vec4 coordinates, t_vec4 w,
 		t_vec4 l, double k)
 {
@@ -58,6 +118,23 @@ t_surface	create_surface(t_surface_parameters p)
 
 	ft_memset(&res, 0, sizeof(res));
 	ft_memset(&base_mat, 0, sizeof(t_mat4));
+	
+	if (vec4_mag(p.w) < 0.0001)
+	{
+		if (p.type == SPHERE)
+			init_sphere_quadric(&p);
+		else if (p.type == PLANE)
+			init_plane_quadric(&p);
+		else if (p.type == CYLINDER)
+			init_cylinder_quadric(&p);
+		else if (p.type == CONE)
+			init_cone_quadric(&p);
+		else if (p.type == HYPERBOLOID)
+			init_hyperboloid_quadric(&p);
+		else if (p.type == PARABOLOID)
+			init_paraboloid_quadric(&p);
+	}
+	
 	set_surface_matrix(p, &base_mat);
 	res.obj.coordinate = p.coordinate;
 	res.obj.min = -p.height / 2;
