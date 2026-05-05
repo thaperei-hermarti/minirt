@@ -67,34 +67,34 @@ void test_parse_elements_integration(void **state)
 
     /* Ambient */
     assert_true(fabs(scene->ambient.lightness - 0.2) < 0.0001);
-    assert_int_equal(scene->ambient.color.r, 100);
-    assert_int_equal(scene->ambient.color.g, 101);
-    assert_int_equal(scene->ambient.color.b, 102);
+    assert_int_equal(scene->ambient.color.x, 100);
+    assert_int_equal(scene->ambient.color.y, 101);
+    assert_int_equal(scene->ambient.color.z, 102);
 
     /* Camera */
-    assert_true(fabs(scene->camera.coordinate.x) < 0.0001);
-    assert_true(fabs(scene->camera.coordinate.y) < 0.0001);
-    assert_true(fabs(scene->camera.coordinate.z) < 0.0001);
-    assert_true(fabs(scene->camera.norm_vector.y - 1.0) < 0.0001);
-    assert_int_equal(scene->camera.fov, 90);
+    assert_true(fabs(scene->camera.origin.x) < 0.0001);
+    assert_true(fabs(scene->camera.origin.y) < 0.0001);
+    assert_true(fabs(scene->camera.origin.z) < 0.0001);
+    assert_true(fabs(scene->camera.dir.y - 1.0) < 0.0001);
+    assert_int_equal(scene->camera.fov_scale, 90);
 
     /* Light */
-    assert_true(fabs(scene->light->coordinate.x - 1.0) < 0.0001);
-    assert_true(fabs(scene->light->coordinate.y - 2.0) < 0.0001);
-    assert_true(fabs(scene->light->coordinate.z - 3.0) < 0.0001);
+    assert_true(fabs(scene->light->origin.x - 1.0) < 0.0001);
+    assert_true(fabs(scene->light->origin.y - 2.0) < 0.0001);
+    assert_true(fabs(scene->light->origin.z - 3.0) < 0.0001);
     assert_true(fabs(scene->light->brightness - 0.8) < 0.0001);
-    assert_int_equal(scene->light->color.r, 200);
-    assert_int_equal(scene->light->color.g, 201);
-    assert_int_equal(scene->light->color.b, 202);
+    assert_int_equal(scene->light->color.x, 200);
+    assert_int_equal(scene->light->color.y, 201);
+    assert_int_equal(scene->light->color.z, 202);
 
     /* Sphere */
     assert_int_equal(scene->surfaces[0].type, SPHERE);
     assert_true(fabs(scene->surfaces[0].obj.coordinate.x - 5.0) < 0.0001);
     assert_true(fabs(scene->surfaces[0].obj.coordinate.y - 5.0) < 0.0001);
     assert_true(fabs(scene->surfaces[0].obj.coordinate.z - 5.0) < 0.0001);
-    assert_int_equal(scene->surfaces[0].obj.color.r, 10);
-    assert_int_equal(scene->surfaces[0].obj.color.g, 20);
-    assert_int_equal(scene->surfaces[0].obj.color.b, 30);
+    assert_int_equal(scene->surfaces[0].obj.color.x, 10);
+    assert_int_equal(scene->surfaces[0].obj.color.y, 20);
+    assert_int_equal(scene->surfaces[0].obj.color.z, 30);
 
     free_scene(scene);
 }
@@ -120,15 +120,15 @@ void test_parse_elements_multiple_objects(void **state)
     /* Check surfaces populated in insertion order */
     assert_int_equal(scene->surfaces[0].type, SPHERE);
     assert_true(fabs(scene->surfaces[0].obj.coordinate.x - 1.0) < 0.0001);
-    assert_int_equal(scene->surfaces[0].obj.color.r, 5);
+    assert_int_equal(scene->surfaces[0].obj.color.x, 5);
 
     assert_int_equal(scene->surfaces[1].type, PLANE);
     assert_true(fabs(scene->surfaces[1].obj.orientation.y - 1.0) < 0.0001);
-    assert_int_equal(scene->surfaces[1].obj.color.g, 6);
+    assert_int_equal(scene->surfaces[1].obj.color.y, 6);
 
     assert_int_equal(scene->surfaces[2].type, CYLINDER);
     assert_true(fabs(scene->surfaces[2].obj.coordinate.z - 3.0) < 0.0001);
-    assert_int_equal(scene->surfaces[2].obj.color.b, 7);
+    assert_int_equal(scene->surfaces[2].obj.color.z, 7);
 
     free_scene(scene);
 }
