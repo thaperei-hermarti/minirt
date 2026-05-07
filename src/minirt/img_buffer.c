@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "mlx.h"
 #include "minirt.h"
+#include "mlx.h"
 #include <stdlib.h>
 
 void	*init_img_buffer(t_window *window)
@@ -22,10 +22,11 @@ void	*init_img_buffer(t_window *window)
 	if (!window->img.img)
 		return (NULL);
 	window->img.img_addr = mlx_get_data_addr(window->img.img,
-			&window->img.bits_per_pixel,
-			&window->img.size_line, &window->img.endian);
+			&window->img.bits_per_pixel, &window->img.size_line,
+			&window->img.endian);
 	if (!window->img.img_addr)
 		return (NULL);
+	window->img.pixel_size = window->img.bits_per_pixel / 8;
 	return (&window->img);
 }
 
@@ -37,6 +38,6 @@ void	*destroy_img_buffer(t_window *window)
 
 void	draw_img_buffer(t_window *window)
 {
-	mlx_put_image_to_window(window->mlx,
-		window->x_window, window->img.img, 0, 0);
+	mlx_put_image_to_window(window->mlx, window->x_window, window->img.img, 0,
+		0);
 }

@@ -18,6 +18,11 @@ CPPFLAGS_BONUS := $(addprefix -I, $(INC_BONUS_DIR))
 LDFLAGS := $(addprefix -L, $(dir $(LIBS_TARGET)))
 LDLIBS := $(addprefix -l, $(LIBS))
 
+OPT ?= 0
+ifeq ($(OPT), 1)
+    CFLAGS += -O3
+endif
+
 DEBUG ?= 0
 ifeq ($(DEBUG), 1)
     CFLAGS += -g2 -O0

@@ -26,8 +26,9 @@ void	*init_env(t_env *env, int argc, char **argv)
 		show_error("Usage: ./miniRT <file>");
 		return (NULL);
 	}
-	if (is_valid_input(argv[1], &env->scene))
-		parse_elements(&env->scene);
+	if (!is_valid_input(argv[1], &env->scene))
+		return (NULL);
+	parse_elements(&env->scene);
 	return (env);
 }
 

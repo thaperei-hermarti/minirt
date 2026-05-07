@@ -19,11 +19,21 @@ SRC = main.c \
 	  $(MATH_DIR)/rt_math2.c \
 	  $(MATH_DIR)/rt_math3.c \
 	  $(MATH_DIR)/rt_math4.c \
+	  $(MATH_DIR)/rt_math5.c \
 	  $(MATH_DIR)/rt_math_intersection.c \
+	  $(MATH_DIR)/set_surface_quadrics.c \
+	  $(MATH_DIR)/set_surface_params.c \
 	  $(MATH_DIR)/surface.c \
 	  $(MINIRT_DIR)/env.c \
+	  $(MINIRT_DIR)/draw.c \
 	  $(MINIRT_DIR)/window.c \
 	  $(MINIRT_DIR)/img_buffer.c \
+	  $(MINIRT_DIR)/key_hook.c \
+	  $(MINIRT_DIR)/mouse_hook.c \
+	  $(MINIRT_DIR)/raytrace.c \
+	  $(MINIRT_DIR)/raytrace_calc.c \
+	  $(MINIRT_DIR)/raytrace_calc2.c \
+	  $(MINIRT_DIR)/render.c \
 	  $(VALIDATION_DIR)/input.c \
 	  $(VALIDATION_DIR)/validate_objects.c \
 	  $(VALIDATION_DIR)/validate_scene.c \

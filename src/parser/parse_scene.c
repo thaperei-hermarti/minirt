@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 13:26:58 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/22 20:33:25 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/04/29 20:16:29 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ void	parse_ambient(char **arr, t_scene *scene)
 
 void	parse_camera(char **arr, t_scene *scene)
 {
-	save_vec4(arr[1], &scene->camera.coordinate);
-	save_vec4(arr[2], &scene->camera.norm_vector);
-	scene->camera.fov = (unsigned char)ft_atoi(arr[3]);
+	save_vec4(arr[1], &scene->camera.origin);
+	save_vec4(arr[2], &scene->camera.dir);
+	scene->camera.fov_scale = (unsigned char)ft_atoi(arr[3]);
 }
 
 void	parse_light(char **arr, t_scene *scene)
 {
-	save_vec4(arr[1], &scene->light->coordinate);
+	save_vec4(arr[1], &scene->light->origin);
 	scene->light->brightness = ft_atod(arr[2]);
 	save_color(arr[3], &scene->light->color);
 }

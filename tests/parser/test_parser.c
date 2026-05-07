@@ -106,9 +106,9 @@ void	test_save_color_basic(void **state)
 	t_color	color;
 
 	save_color("255,128,64", &color);
-	assert_int_equal(color.r, 255);
-	assert_int_equal(color.g, 128);
-	assert_int_equal(color.b, 64);
+	assert_int_equal(color.x, 255);
+	assert_int_equal(color.y, 128);
+	assert_int_equal(color.z, 64);
 }
 
 void	test_save_color_black(void **state)
@@ -117,9 +117,9 @@ void	test_save_color_black(void **state)
 	t_color	color;
 
 	save_color("0,0,0", &color);
-	assert_int_equal(color.r, 0);
-	assert_int_equal(color.g, 0);
-	assert_int_equal(color.b, 0);
+	assert_int_equal(color.x, 0);
+	assert_int_equal(color.y, 0);
+	assert_int_equal(color.z, 0);
 }
 
 void	test_save_color_white(void **state)
@@ -128,9 +128,9 @@ void	test_save_color_white(void **state)
 	t_color	color;
 
 	save_color("255,255,255", &color);
-	assert_int_equal(color.r, 255);
-	assert_int_equal(color.g, 255);
-	assert_int_equal(color.b, 255);
+	assert_int_equal(color.x, 255);
+	assert_int_equal(color.y, 255);
+	assert_int_equal(color.z, 255);
 }
 
 void	test_save_color_red(void **state)
@@ -139,9 +139,9 @@ void	test_save_color_red(void **state)
 	t_color	color;
 
 	save_color("255,0,0", &color);
-	assert_int_equal(color.r, 255);
-	assert_int_equal(color.g, 0);
-	assert_int_equal(color.b, 0);
+	assert_int_equal(color.x, 255);
+	assert_int_equal(color.y, 0);
+	assert_int_equal(color.z, 0);
 }
 
 void	test_save_color_green(void **state)
@@ -150,9 +150,9 @@ void	test_save_color_green(void **state)
 	t_color	color;
 
 	save_color("0,255,0", &color);
-	assert_int_equal(color.r, 0);
-	assert_int_equal(color.g, 255);
-	assert_int_equal(color.b, 0);
+	assert_int_equal(color.x, 0);
+	assert_int_equal(color.y, 255);
+	assert_int_equal(color.z, 0);
 }
 
 void	test_save_color_blue(void **state)
@@ -161,9 +161,9 @@ void	test_save_color_blue(void **state)
 	t_color	color;
 
 	save_color("0,0,255", &color);
-	assert_int_equal(color.r, 0);
-	assert_int_equal(color.g, 0);
-	assert_int_equal(color.b, 255);
+	assert_int_equal(color.x, 0);
+	assert_int_equal(color.y, 0);
+	assert_int_equal(color.z, 255);
 }
 
 void	test_save_color_mid_values(void **state)
@@ -172,9 +172,9 @@ void	test_save_color_mid_values(void **state)
 	t_color	color;
 
 	save_color("128,128,128", &color);
-	assert_int_equal(color.r, 128);
-	assert_int_equal(color.g, 128);
-	assert_int_equal(color.b, 128);
+	assert_int_equal(color.x, 128);
+	assert_int_equal(color.y, 128);
+	assert_int_equal(color.z, 128);
 }
 
 /* ========================================================= */
@@ -190,7 +190,7 @@ void	test_save_vec4_basic(void **state)
 	assert_true(fabs(vec.x - 1.5) < 0.0001);
 	assert_true(fabs(vec.y - 2.5) < 0.0001);
 	assert_true(fabs(vec.z - 3.5) < 0.0001);
-	assert_true(fabs(vec.k - 0.0) < 0.0001);
+	assert_true(fabs(vec.w - 0.0) < 0.0001);
 }
 
 void	test_save_vec4_integers(void **state)
@@ -202,7 +202,7 @@ void	test_save_vec4_integers(void **state)
 	assert_true(fabs(vec.x - 1.0) < 0.0001);
 	assert_true(fabs(vec.y - 2.0) < 0.0001);
 	assert_true(fabs(vec.z - 3.0) < 0.0001);
-	assert_true(fabs(vec.k - 0.0) < 0.0001);
+	assert_true(fabs(vec.w - 0.0) < 0.0001);
 }
 
 void	test_save_vec4_zeros(void **state)
@@ -214,7 +214,7 @@ void	test_save_vec4_zeros(void **state)
 	assert_true(fabs(vec.x) < 0.0001);
 	assert_true(fabs(vec.y) < 0.0001);
 	assert_true(fabs(vec.z) < 0.0001);
-	assert_true(fabs(vec.k) < 0.0001);
+	assert_true(fabs(vec.w) < 0.0001);
 }
 
 void	test_save_vec4_negative(void **state)
@@ -226,7 +226,7 @@ void	test_save_vec4_negative(void **state)
 	assert_true(fabs(vec.x + 1.0) < 0.0001);
 	assert_true(fabs(vec.y + 2.0) < 0.0001);
 	assert_true(fabs(vec.z + 3.0) < 0.0001);
-	assert_true(fabs(vec.k) < 0.0001);
+	assert_true(fabs(vec.w) < 0.0001);
 }
 
 void	test_save_vec4_unit_vector(void **state)
@@ -238,7 +238,7 @@ void	test_save_vec4_unit_vector(void **state)
 	assert_true(fabs(vec.x) < 0.0001);
 	assert_true(fabs(vec.y - 1.0) < 0.0001);
 	assert_true(fabs(vec.z) < 0.0001);
-	assert_true(fabs(vec.k) < 0.0001);
+	assert_true(fabs(vec.w) < 0.0001);
 }
 
 void	test_save_vec4_normalized_diagonal(void **state)
@@ -250,7 +250,7 @@ void	test_save_vec4_normalized_diagonal(void **state)
 	assert_true(fabs(vec.x - 0.57735) < 0.001);
 	assert_true(fabs(vec.y + 0.57735) < 0.001);
 	assert_true(fabs(vec.z - 0.57735) < 0.001);
-	assert_true(fabs(vec.k) < 0.0001);
+	assert_true(fabs(vec.w) < 0.0001);
 }
 
 void	test_save_vec4_large_values(void **state)
@@ -262,7 +262,7 @@ void	test_save_vec4_large_values(void **state)
 	assert_true(fabs(vec.x - 1000.5) < 0.0001);
 	assert_true(fabs(vec.y - 2000.25) < 0.0001);
 	assert_true(fabs(vec.z + 3000.75) < 0.0001);
-	assert_true(fabs(vec.k) < 0.0001);
+	assert_true(fabs(vec.w) < 0.0001);
 }
 
 /* ========================================================= */
@@ -277,9 +277,9 @@ void	test_parse_ambient_basic(void **state)
 
 	parse_ambient(arr, scene);
 	assert_true(fabs(scene->ambient.lightness - 0.5) < 0.0001);
-	assert_int_equal(scene->ambient.color.r, 255);
-	assert_int_equal(scene->ambient.color.g, 255);
-	assert_int_equal(scene->ambient.color.b, 255);
+	assert_int_equal(scene->ambient.color.x, 255);
+	assert_int_equal(scene->ambient.color.y, 255);
+	assert_int_equal(scene->ambient.color.z, 255);
 
 	free(arr);
 	free_scene(scene);
@@ -293,9 +293,9 @@ void	test_parse_ambient_zero_lightness(void **state)
 
 	parse_ambient(arr, scene);
 	assert_true(fabs(scene->ambient.lightness) < 0.0001);
-	assert_int_equal(scene->ambient.color.r, 0);
-	assert_int_equal(scene->ambient.color.g, 0);
-	assert_int_equal(scene->ambient.color.b, 0);
+	assert_int_equal(scene->ambient.color.x, 0);
+	assert_int_equal(scene->ambient.color.y, 0);
+	assert_int_equal(scene->ambient.color.z, 0);
 
 	free(arr);
 	free_scene(scene);
@@ -309,9 +309,9 @@ void	test_parse_ambient_full_lightness(void **state)
 
 	parse_ambient(arr, scene);
 	assert_true(fabs(scene->ambient.lightness - 1.0) < 0.0001);
-	assert_int_equal(scene->ambient.color.r, 128);
-	assert_int_equal(scene->ambient.color.g, 64);
-	assert_int_equal(scene->ambient.color.b, 32);
+	assert_int_equal(scene->ambient.color.x, 128);
+	assert_int_equal(scene->ambient.color.y, 64);
+	assert_int_equal(scene->ambient.color.z, 32);
 
 	free(arr);
 	free_scene(scene);
@@ -325,9 +325,9 @@ void	test_parse_ambient_mid_values(void **state)
 
 	parse_ambient(arr, scene);
 	assert_true(fabs(scene->ambient.lightness - 0.75) < 0.0001);
-	assert_int_equal(scene->ambient.color.r, 192);
-	assert_int_equal(scene->ambient.color.g, 192);
-	assert_int_equal(scene->ambient.color.b, 192);
+	assert_int_equal(scene->ambient.color.x, 192);
+	assert_int_equal(scene->ambient.color.y, 192);
+	assert_int_equal(scene->ambient.color.z, 192);
 
 	free(arr);
 	free_scene(scene);
@@ -341,9 +341,9 @@ void	test_parse_ambient_different_colors(void **state)
 
 	parse_ambient(arr, scene);
 	assert_true(fabs(scene->ambient.lightness - 0.3) < 0.0001);
-	assert_int_equal(scene->ambient.color.r, 50);
-	assert_int_equal(scene->ambient.color.g, 100);
-	assert_int_equal(scene->ambient.color.b, 150);
+	assert_int_equal(scene->ambient.color.x, 50);
+	assert_int_equal(scene->ambient.color.y, 100);
+	assert_int_equal(scene->ambient.color.z, 150);
 
 	free(arr);
 	free_scene(scene);
@@ -360,11 +360,11 @@ void	test_parse_camera_basic(void **state)
 	char	**arr = make_arr_5("C", "0,0,0", "0.0,1.0,0.0", "90", NULL);
 
 	parse_camera(arr, scene);
-	assert_true(fabs(scene->camera.coordinate.x) < 0.0001);
-	assert_true(fabs(scene->camera.coordinate.y) < 0.0001);
-	assert_true(fabs(scene->camera.coordinate.z) < 0.0001);
-	assert_true(fabs(scene->camera.norm_vector.y - 1.0) < 0.0001);
-	assert_int_equal(scene->camera.fov, 90);
+	assert_true(fabs(scene->camera.origin.x) < 0.0001);
+	assert_true(fabs(scene->camera.origin.y) < 0.0001);
+	assert_true(fabs(scene->camera.origin.z) < 0.0001);
+	assert_true(fabs(scene->camera.dir.y - 1.0) < 0.0001);
+	assert_int_equal(scene->camera.fov_scale, 90);
 
 	free(arr);
 	free_scene(scene);
@@ -378,11 +378,11 @@ void	test_parse_camera_different_position(void **state)
 		"45", NULL);
 
 	parse_camera(arr, scene);
-	assert_true(fabs(scene->camera.coordinate.x - 10.5) < 0.0001);
-	assert_true(fabs(scene->camera.coordinate.y - 20.3) < 0.0001);
-	assert_true(fabs(scene->camera.coordinate.z + 15.7) < 0.0001);
-	assert_true(fabs(scene->camera.norm_vector.y - 1.0) < 0.0001);
-	assert_int_equal(scene->camera.fov, 45);
+	assert_true(fabs(scene->camera.origin.x - 10.5) < 0.0001);
+	assert_true(fabs(scene->camera.origin.y - 20.3) < 0.0001);
+	assert_true(fabs(scene->camera.origin.z + 15.7) < 0.0001);
+	assert_true(fabs(scene->camera.dir.y - 1.0) < 0.0001);
+	assert_int_equal(scene->camera.fov_scale, 45);
 
 	free(arr);
 	free_scene(scene);
@@ -395,12 +395,12 @@ void	test_parse_camera_different_direction(void **state)
 	char	**arr = make_arr_5("C", "0,0,0", "-1.0,0.0,1.0", "60", NULL);
 
 	parse_camera(arr, scene);
-	assert_true(fabs(scene->camera.coordinate.x) < 0.0001);
-	assert_true(fabs(scene->camera.coordinate.y) < 0.0001);
-	assert_true(fabs(scene->camera.coordinate.z) < 0.0001);
-	assert_true(fabs(scene->camera.norm_vector.x + 1.0) < 0.0001);
-	assert_true(fabs(scene->camera.norm_vector.z - 1.0) < 0.0001);
-	assert_int_equal(scene->camera.fov, 60);
+	assert_true(fabs(scene->camera.origin.x) < 0.0001);
+	assert_true(fabs(scene->camera.origin.y) < 0.0001);
+	assert_true(fabs(scene->camera.origin.z) < 0.0001);
+	assert_true(fabs(scene->camera.dir.x + 1.0) < 0.0001);
+	assert_true(fabs(scene->camera.dir.z - 1.0) < 0.0001);
+	assert_int_equal(scene->camera.fov_scale, 60);
 
 	free(arr);
 	free_scene(scene);
@@ -413,7 +413,7 @@ void	test_parse_camera_min_fov(void **state)
 	char	**arr = make_arr_5("C", "0,0,0", "0.0,1.0,0.0", "0", NULL);
 
 	parse_camera(arr, scene);
-	assert_int_equal(scene->camera.fov, 0);
+	assert_int_equal(scene->camera.fov_scale, 0);
 
 	free(arr);
 	free_scene(scene);
@@ -426,7 +426,7 @@ void	test_parse_camera_max_fov(void **state)
 	char	**arr = make_arr_5("C", "0,0,0", "0.0,1.0,0.0", "180", NULL);
 
 	parse_camera(arr, scene);
-	assert_int_equal(scene->camera.fov, 180);
+	assert_int_equal(scene->camera.fov_scale, 180);
 
 	free(arr);
 	free_scene(scene);
@@ -440,9 +440,9 @@ void	test_parse_camera_negative_coordinates(void **state)
 		NULL);
 
 	parse_camera(arr, scene);
-	assert_true(fabs(scene->camera.coordinate.x + 100.0) < 0.0001);
-	assert_true(fabs(scene->camera.coordinate.y + 200.0) < 0.0001);
-	assert_true(fabs(scene->camera.coordinate.z + 300.0) < 0.0001);
+	assert_true(fabs(scene->camera.origin.x + 100.0) < 0.0001);
+	assert_true(fabs(scene->camera.origin.y + 200.0) < 0.0001);
+	assert_true(fabs(scene->camera.origin.z + 300.0) < 0.0001);
 
 	free(arr);
 	free_scene(scene);
@@ -459,13 +459,13 @@ void	test_parse_light_basic(void **state)
 	char	**arr = make_arr_5("L", "0,0,0", "0.5", "255,255,255", NULL);
 
 	parse_light(arr, scene);
-	assert_true(fabs(scene->light->coordinate.x) < 0.0001);
-	assert_true(fabs(scene->light->coordinate.y) < 0.0001);
-	assert_true(fabs(scene->light->coordinate.z) < 0.0001);
+	assert_true(fabs(scene->light->origin.x) < 0.0001);
+	assert_true(fabs(scene->light->origin.y) < 0.0001);
+	assert_true(fabs(scene->light->origin.z) < 0.0001);
 	assert_true(fabs(scene->light->brightness - 0.5) < 0.0001);
-	assert_int_equal(scene->light->color.r, 255);
-	assert_int_equal(scene->light->color.g, 255);
-	assert_int_equal(scene->light->color.b, 255);
+	assert_int_equal(scene->light->color.x, 255);
+	assert_int_equal(scene->light->color.y, 255);
+	assert_int_equal(scene->light->color.z, 255);
 
 	free(arr);
 	free_scene(scene);
@@ -479,9 +479,9 @@ void	test_parse_light_different_position(void **state)
 		NULL);
 
 	parse_light(arr, scene);
-	assert_true(fabs(scene->light->coordinate.x - 10.5) < 0.0001);
-	assert_true(fabs(scene->light->coordinate.y - 20.0) < 0.0001);
-	assert_true(fabs(scene->light->coordinate.z + 5.5) < 0.0001);
+	assert_true(fabs(scene->light->origin.x - 10.5) < 0.0001);
+	assert_true(fabs(scene->light->origin.y - 20.0) < 0.0001);
+	assert_true(fabs(scene->light->origin.z + 5.5) < 0.0001);
 	assert_true(fabs(scene->light->brightness - 0.8) < 0.0001);
 
 	free(arr);
@@ -521,13 +521,13 @@ void	test_parse_light_different_color(void **state)
 	char	**arr = make_arr_5("L", "5,10,15", "0.6", "100,150,200", NULL);
 
 	parse_light(arr, scene);
-	assert_true(fabs(scene->light->coordinate.x - 5.0) < 0.0001);
-	assert_true(fabs(scene->light->coordinate.y - 10.0) < 0.0001);
-	assert_true(fabs(scene->light->coordinate.z - 15.0) < 0.0001);
+	assert_true(fabs(scene->light->origin.x - 5.0) < 0.0001);
+	assert_true(fabs(scene->light->origin.y - 10.0) < 0.0001);
+	assert_true(fabs(scene->light->origin.z - 15.0) < 0.0001);
 	assert_true(fabs(scene->light->brightness - 0.6) < 0.0001);
-	assert_int_equal(scene->light->color.r, 100);
-	assert_int_equal(scene->light->color.g, 150);
-	assert_int_equal(scene->light->color.b, 200);
+	assert_int_equal(scene->light->color.x, 100);
+	assert_int_equal(scene->light->color.y, 150);
+	assert_int_equal(scene->light->color.z, 200);
 
 	free(arr);
 	free_scene(scene);
@@ -540,13 +540,13 @@ void	test_parse_light_negative_coordinates(void **state)
 	char	**arr = make_arr_5("L", "-50,-100,50", "0.9", "50,50,50", NULL);
 
 	parse_light(arr, scene);
-	assert_true(fabs(scene->light->coordinate.x + 50.0) < 0.0001);
-	assert_true(fabs(scene->light->coordinate.y + 100.0) < 0.0001);
-	assert_true(fabs(scene->light->coordinate.z - 50.0) < 0.0001);
+	assert_true(fabs(scene->light->origin.x + 50.0) < 0.0001);
+	assert_true(fabs(scene->light->origin.y + 100.0) < 0.0001);
+	assert_true(fabs(scene->light->origin.z - 50.0) < 0.0001);
 	assert_true(fabs(scene->light->brightness - 0.9) < 0.0001);
-	assert_int_equal(scene->light->color.r, 50);
-	assert_int_equal(scene->light->color.g, 50);
-	assert_int_equal(scene->light->color.b, 50);
+	assert_int_equal(scene->light->color.x, 50);
+	assert_int_equal(scene->light->color.y, 50);
+	assert_int_equal(scene->light->color.z, 50);
 
 	free(arr);
 	free_scene(scene);
@@ -949,9 +949,9 @@ void	test_parse_cylinder_red_color(void **state)
 	assert_true(fabs(scene->surfaces[scene->num_objs].obj.coordinate.z + 15.7)
 		< 0.0001);
 	assert_int_equal(scene->surfaces[scene->num_objs].is_bounded, 1);
-	assert_int_equal(scene->surfaces[scene->num_objs].obj.color.r, 255);
-	assert_int_equal(scene->surfaces[scene->num_objs].obj.color.g, 0);
-	assert_int_equal(scene->surfaces[scene->num_objs].obj.color.b, 0);
+	assert_int_equal(scene->surfaces[scene->num_objs].obj.color.x, 255);
+	assert_int_equal(scene->surfaces[scene->num_objs].obj.color.y, 0);
+	assert_int_equal(scene->surfaces[scene->num_objs].obj.color.z, 0);
 
 	free(arr);
 	free_scene(scene);
@@ -972,9 +972,9 @@ void	test_parse_cylinder_negative_coordinates(void **state)
 	assert_true(fabs(scene->surfaces[scene->num_objs].obj.coordinate.z + 150.0)
 		< 0.0001);
 	assert_int_equal(scene->surfaces[scene->num_objs].is_bounded, 1);
-	assert_int_equal(scene->surfaces[scene->num_objs].obj.color.r, 75);
-	assert_int_equal(scene->surfaces[scene->num_objs].obj.color.g, 75);
-	assert_int_equal(scene->surfaces[scene->num_objs].obj.color.b, 75);
+	assert_int_equal(scene->surfaces[scene->num_objs].obj.color.x, 75);
+	assert_int_equal(scene->surfaces[scene->num_objs].obj.color.y, 75);
+	assert_int_equal(scene->surfaces[scene->num_objs].obj.color.z, 75);
 
 	free(arr);
 	free_scene(scene);
