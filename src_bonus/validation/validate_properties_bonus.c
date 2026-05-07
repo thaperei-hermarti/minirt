@@ -6,13 +6,13 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 13:29:00 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/15 20:47:23 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/05/07 12:17:29 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "validation_bonus.h"
 #include "free_memory_bonus.h"
+#include "libft.h"
 
 int	is_valid_extension(char *file)
 {

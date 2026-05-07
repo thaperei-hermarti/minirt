@@ -6,13 +6,12 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/15 16:00:03 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/26 13:34:34 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/05/07 12:16:38 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VALIDATION_BONUS_H
-# define VALIDATION_BONUS_H
-# include "libft.h"
+#ifndef VALIDATION_H
+# define VALIDATION_H
 # include "scene_bonus.h"
 
 typedef struct s_obj_count
@@ -52,5 +51,5 @@ int		is_valid_light(char **arr);
 int		is_valid_sphere(char **arr);
 int		is_valid_plane(char **arr);
 int		is_valid_cylinder(char **arr);
-int		has_enough_elements(t_obj_count obj_count);
+int		has_enough_elements(t_obj_count count);
 #endif

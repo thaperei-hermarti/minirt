@@ -1,20 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_memory_bonus.h                                :+:      :+:    :+:   */
+/*   mouse_hook_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/07 12:15:04 by hermarti          #+#    #+#             */
-/*   Updated: 2026/05/07 12:15:05 by hermarti         ###   ########.fr       */
+/*   Created: 2026/04/27 14:54:02 by hermarti          #+#    #+#             */
+/*   Updated: 2026/04/27 15:18:21 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FREE_MEMORY_H
-# define FREE_MEMORY_H
-# include "scene_bonus.h"
+#include "minirt_bonus.h"
 
-void	free_arr(char **arr);
-void	free_content(void *content);
-void	free_scene(t_scene *scene);
-#endif
+int	mouse_hook(int mousecode, int x, int y, void *param)
+{
+	(void) mousecode;
+	(void) x;
+	(void) y;
+	(void) param;
+	return (0);
+}

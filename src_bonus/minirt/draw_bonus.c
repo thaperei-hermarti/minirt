@@ -1,20 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_memory_bonus.h                                :+:      :+:    :+:   */
+/*   draw_bonus.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/07 12:15:04 by hermarti          #+#    #+#             */
-/*   Updated: 2026/05/07 12:15:05 by hermarti         ###   ########.fr       */
+/*   Created: 2026/04/27 16:21:07 by hermarti          #+#    #+#             */
+/*   Updated: 2026/04/27 16:23:40 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FREE_MEMORY_H
-# define FREE_MEMORY_H
-# include "scene_bonus.h"
+#include "minirt_bonus.h"
 
-void	free_arr(char **arr);
-void	free_content(void *content);
-void	free_scene(t_scene *scene);
-#endif
+void	put_pixel_row(t_window *window, int y, unsigned int *colors)
+{
+	unsigned int	*row;
+
+	row = (unsigned int *)(window->img.img_addr + y * window->img.size_line);
+	ft_memcpy(row, colors, window->width * window->img.pixel_size);
+}

@@ -5,13 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/31 09:16:25 by hermarti          #+#    #+#             */
-/*   Updated: 2026/04/26 13:33:26 by thaperei         ###   ########.fr       */
+/*   Created: 2026/05/07 12:15:59 by hermarti          #+#    #+#             */
+/*   Updated: 2026/05/07 12:16:00 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RT_MATH_BONUS_H
-# define RT_MATH_BONUS_H
+#ifndef RT_MATH_H
+# define RT_MATH_H
 
 # include "objects_bonus.h"
 
@@ -24,9 +24,14 @@ t_vec4	vec4_cross_prod(t_vec4 a, t_vec4 b);
 t_vec4	vec4_scale(t_vec4 v, double scalar);
 t_vec4	vec4_add(t_vec4 a, t_vec4 b);
 t_vec4	vec4_sub(t_vec4 a, t_vec4 b);
+t_vec4	vec4_mul(t_vec4 a, t_vec4 b);
 t_vec4	vec4_reflect(t_vec4 v, t_vec4 n);
+int		vec4_to_int(t_vec4 c);
+t_vec4	norm_color(t_color c);
 
 t_mat4	mat4_rotation_from_to(t_vec4 from, t_vec4 to);
+t_mat4	mat4_identity(void);
+t_mat4	mat4_translation(t_vec4 t);
 t_mat4	mat4_transpose(t_mat4 m);
 t_mat4	mat4_mat4_mult(t_mat4 m1, t_mat4 m2);
 

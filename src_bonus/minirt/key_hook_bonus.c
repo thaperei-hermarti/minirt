@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_memory_bonus.h                                :+:      :+:    :+:   */
+/*   key_hook_bonus.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/07 12:15:04 by hermarti          #+#    #+#             */
-/*   Updated: 2026/05/07 12:15:05 by hermarti         ###   ########.fr       */
+/*   Created: 2026/04/27 14:54:09 by hermarti          #+#    #+#             */
+/*   Updated: 2026/04/27 14:57:15 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FREE_MEMORY_H
-# define FREE_MEMORY_H
-# include "scene_bonus.h"
+#include "minirt_bonus.h"
 
-void	free_arr(char **arr);
-void	free_content(void *content);
-void	free_scene(t_scene *scene);
-#endif
+int	key_hook(int keycode, void *param)
+{
+	t_env	*env;
+
+	env = (t_env *)param;
+	if (keycode == 65307)
+		close_window(env);
+	return (0);
+}

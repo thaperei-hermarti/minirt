@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 22:07:36 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/15 20:55:56 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/05/07 12:17:21 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,7 @@ int	is_valid_color(char *str)
 	{
 		value = ft_atoi(colors[i]);
 		if (!is_valid_int(colors[i]) || value < 0 || value > 255)
-		{
-			free_arr(colors);
-			return (0);
-		}
+			return (free_arr(colors), 0);
 	}
 	free_arr(colors);
 	if (i != 3)

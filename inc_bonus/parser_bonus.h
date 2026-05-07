@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parser_bonus.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/22 20:00:23 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/26 13:31:54 by thaperei         ###   ########.fr       */
+/*   Created: 2026/05/07 12:15:41 by hermarti          #+#    #+#             */
+/*   Updated: 2026/05/07 12:15:50 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_BONUS_H
-# define PARSER_BONUS_H
+#ifndef PARSER_H
+# define PARSER_H
 # include "scene_bonus.h"
 
 typedef struct s_hash_item_parser
