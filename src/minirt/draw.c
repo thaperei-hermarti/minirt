@@ -12,31 +12,10 @@
 
 #include "minirt.h"
 
-void	clamp_color(int *r, int *g, int *b)
+void	put_pixel_row(t_window *window, int y, unsigned int *colors)
 {
-	if (*r < 0)
-		*r = 0;
-	else if (*r > 255)
-		*r = 255;
-	if (*g < 0)
-		*g = 0;
-	else if (*g > 255)
-		*g = 255;
-	if (*b < 0)
-		*b = 0;
-	else if (*b > 255)
-		*b = 255;
-}
+	unsigned int	*row;
 
-void	put_pixel(t_window *window, int x, int y, int color)
-{
-	char	*pxl;
-
-	if (x >= 0 && x < window->width && y >= 0 && y < window->height)
-	{
-		pxl = window->img.img_addr
-			+ (y * window->img.size_line
-				+ x * (window->img.bits_per_pixel / 8));
-		*(unsigned int *)pxl = color;
-	}
+	row = (unsigned int *)(window->img.img_addr + y * window->img.size_line);
+	ft_memcpy(row, colors, window->width * window->img.pixel_size);
 }

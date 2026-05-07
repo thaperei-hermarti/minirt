@@ -26,6 +26,7 @@ typedef struct s_img_buffer
 	int				bits_per_pixel;
 	int				size_line;
 	int				endian;
+	int				pixel_size;
 }					t_img_buffer;
 
 typedef struct s_window
@@ -59,8 +60,8 @@ int					key_hook(int keycode, void *param);
 void				*init_img_buffer(t_window *window);
 void				*destroy_img_buffer(t_window *window);
 
-void				clamp_color(int *r, int *g, int *b);
-void				put_pixel(t_window *window, int x, int y, int color);
+void				put_pixel_row(t_window *window, int y,
+						unsigned int *colors);
 void				render_loop(t_env *env);
 
 double				calc_shadow(t_env *env, t_vec4 hit_p, t_surface *obj);

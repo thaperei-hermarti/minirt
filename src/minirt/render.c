@@ -30,7 +30,7 @@ static int	shade(t_env *env, t_ray *ray, double t, t_surface *obj)
 	return (calc_lighting(env, n, hit_p, obj));
 }
 
-static void	render_pixel(t_env *env, t_ray *ray, int x, int y)
+static int	render_pixel(t_env *env, t_ray *ray, int x, int y)
 {
 	double	vp_x;
 	double	vp_y;
@@ -48,10 +48,8 @@ static void	render_pixel(t_env *env, t_ray *ray, int x, int y)
 	ray->dir = vec4_normalize(ray->dir);
 	hit_idx = cast_ray(ray, env, &t);
 	if (hit_idx != -1)
-		put_pixel(&env->window, x, y, shade(env, ray, t,
-				&env->scene.surfaces[hit_idx]));
-	else
-		put_pixel(&env->window, x, y, 0x00000000);
+		return (shade(env, ray, t, &env->scene.surfaces[hit_idx]));
+	return (0x00000000);
 }
 
 static void	setup_camera_basis(t_env *env)
@@ -70,9 +68,10 @@ static void	setup_camera_basis(t_env *env)
 
 static void	render_scene(t_env *env)
 {
-	t_ray	ray;
-	int		x;
-	int		y;
+	t_ray			ray;
+	unsigned int	row_buf[WINDOW_WIDTH];
+	int				x;
+	int				y;
 
 	ray.orig = env->scene.camera.origin;
 	ray.orig.w = 1.0f;
@@ -83,9 +82,10 @@ static void	render_scene(t_env *env)
 		x = 0;
 		while (x < WINDOW_WIDTH)
 		{
-			render_pixel(env, &ray, x, y);
+			row_buf[x] = render_pixel(env, &ray, x, y);
 			x++;
 		}
+		put_pixel_row(&env->window, y, row_buf);
 		y++;
 	}
 }
