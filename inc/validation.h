@@ -6,13 +6,12 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/15 16:00:03 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/18 15:21:43 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/05/08 14:52:30 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VALIDATION_H
 # define VALIDATION_H
-# include "libft.h"
 # include "scene.h"
 
 typedef struct s_obj_count

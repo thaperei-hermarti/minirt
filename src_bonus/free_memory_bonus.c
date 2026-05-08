@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_memory_bonus.c                                      :+:      :+:    :+:   */
+/*   free_memory_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/08 18:14:25 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/22 20:33:35 by thaperei         ###   ########.fr       */
+/*   Created: 2026/05/08 14:47:38 by hermarti          #+#    #+#             */
+/*   Updated: 2026/05/08 14:47:39 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "scene_bonus.h"
+#include <stdlib.h>
 
 void	free_content(void *content)
 {

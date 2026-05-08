@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RT_MATH_H
-# define RT_MATH_H
+#ifndef RT_MATH_BONUS_H
+# define RT_MATH_BONUS_H
 
 # include "objects_bonus.h"
 

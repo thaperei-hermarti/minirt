@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   set_surface_params_bonus.c                               :+:      :+:    :+:   */
+/*   set_surface_params_bonus.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/29 19:36:53 by hermarti          #+#    #+#             */
-/*   Updated: 2026/04/29 19:37:36 by hermarti         ###   ########.fr       */
+/*   Created: 2026/05/08 14:49:00 by hermarti          #+#    #+#             */
+/*   Updated: 2026/05/08 14:49:01 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,10 @@ void	set_surface_type(t_surface_parameters *p)
 		set_surface_plane_quadric(p);
 	else if (p->type == CYLINDER)
 		set_surface_cylinder_quadric(p);
+	else if (p->type == CONE)
+		set_surface_cone_quadric(p);
+	else if (p->type == HYPERBOLOID)
+		set_surface_hyperboloid_quadric(p);
+	else if (p->type == PARABOLOID)
+		set_surface_paraboloid_quadric(p);
 }

@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FREE_MEMORY_H
-# define FREE_MEMORY_H
+#ifndef FREE_MEMORY_BONUS_H
+# define FREE_MEMORY_BONUS_H
 # include "scene_bonus.h"
 
 void	free_arr(char **arr);

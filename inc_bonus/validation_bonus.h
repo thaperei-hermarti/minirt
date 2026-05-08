@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VALIDATION_H
-# define VALIDATION_H
+#ifndef VALIDATION_BONUS_H
+# define VALIDATION_BONUS_H
 # include "scene_bonus.h"
 
 typedef struct s_obj_count

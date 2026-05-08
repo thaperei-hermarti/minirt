@@ -6,12 +6,12 @@
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/07 12:15:11 by hermarti          #+#    #+#             */
-/*   Updated: 2026/05/07 12:15:12 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/05/08 14:15:22 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef OBJECTS_H
-# define OBJECTS_H
+#ifndef OBJECTS_BONUS_H
+# define OBJECTS_BONUS_H
 
 typedef struct s_vec4
 {
@@ -49,7 +49,10 @@ typedef enum e_surface_type
 {
 	SPHERE,
 	PLANE,
-	CYLINDER
+	CYLINDER,
+	CONE,
+	HYPERBOLOID,
+	PARABOLOID
 }					t_surface_type;
 
 typedef struct s_surface
@@ -67,6 +70,11 @@ typedef struct s_surface_parameters
 	t_vec4			l;
 	double			diameter;
 	double			height;
+	double			angle;
+	double			a;
+	double			b;
+	double			c;
+	double			k;
 	t_surface_type	type;
 	t_color			color;
 	unsigned char	is_bounded : 1;
@@ -75,6 +83,10 @@ typedef struct s_surface_parameters
 void				set_surface_sphere_quadric(t_surface_parameters *p);
 void				set_surface_plane_quadric(t_surface_parameters *p);
 void				set_surface_cylinder_quadric(t_surface_parameters *p);
+
+void				set_surface_cone_quadric(t_surface_parameters *p);
+void				set_surface_hyperboloid_quadric(t_surface_parameters *p);
+void				set_surface_paraboloid_quadric(t_surface_parameters *p);
 void				set_surface_matrix(t_surface_parameters p, t_mat4 *m);
 void				set_surface_type(t_surface_parameters *p);
 t_surface			create_surface(t_surface_parameters p);

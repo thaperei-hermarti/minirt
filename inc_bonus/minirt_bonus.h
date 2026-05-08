@@ -6,12 +6,12 @@
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/07 12:15:21 by hermarti          #+#    #+#             */
-/*   Updated: 2026/05/07 12:15:30 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/05/08 14:50:47 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINIRT_H
-# define MINIRT_H
+#ifndef MINIRT_BONUS_H
+# define MINIRT_BONUS_H
 
 # include "objects_bonus.h"
 # include "scene_bonus.h"
@@ -54,7 +54,6 @@ int					close_window(t_env *env);
 
 void				set_window_hooks(t_env *env);
 
-int					mouse_hook(int mousecode, int x, int y, void *param);
 int					key_hook(int keycode, void *param);
 
 void				*init_img_buffer(t_window *window);

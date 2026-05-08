@@ -29,7 +29,6 @@ SRC = main.c \
 	  $(MINIRT_DIR)/window.c \
 	  $(MINIRT_DIR)/img_buffer.c \
 	  $(MINIRT_DIR)/key_hook.c \
-	  $(MINIRT_DIR)/mouse_hook.c \
 	  $(MINIRT_DIR)/raytrace.c \
 	  $(MINIRT_DIR)/raytrace_calc.c \
 	  $(MINIRT_DIR)/raytrace_calc2.c \
@@ -52,6 +51,7 @@ SRC_BONUS = main_bonus.c \
 	  $(MATH_DIR)/rt_math5_bonus.c \
 	  $(MATH_DIR)/rt_math_intersection_bonus.c \
 	  $(MATH_DIR)/set_surface_quadrics_bonus.c \
+	  $(MATH_DIR)/set_surface_quadrics2_bonus.c \
 	  $(MATH_DIR)/set_surface_params_bonus.c \
 	  $(MATH_DIR)/surface_bonus.c \
 	  $(MINIRT_DIR)/env_bonus.c \
@@ -59,7 +59,6 @@ SRC_BONUS = main_bonus.c \
 	  $(MINIRT_DIR)/window_bonus.c \
 	  $(MINIRT_DIR)/img_buffer_bonus.c \
 	  $(MINIRT_DIR)/key_hook_bonus.c \
-	  $(MINIRT_DIR)/mouse_hook_bonus.c \
 	  $(MINIRT_DIR)/raytrace_bonus.c \
 	  $(MINIRT_DIR)/raytrace_calc_bonus.c \
 	  $(MINIRT_DIR)/raytrace_calc2_bonus.c \
