@@ -42,6 +42,7 @@ typedef struct s_obj
 	t_vec4			orientation;
 	double			min;
 	double			max;
+	double			reflectivity;
 	t_color			color;
 }					t_obj;
 
@@ -75,9 +76,12 @@ typedef struct s_surface_parameters
 	double			b;
 	double			c;
 	double			k;
+	double			reflectivity;
 	t_surface_type	type;
 	t_color			color;
+	char			*texture_path;
 	unsigned char	is_bounded : 1;
+	unsigned char	is_checked : 1;
 }					t_surface_parameters;
 
 void				set_surface_sphere_quadric(t_surface_parameters *p);
