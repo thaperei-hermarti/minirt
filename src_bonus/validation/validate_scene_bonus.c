@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   validate_scene_bonus.c                                   :+:      :+:    :+:   */
+/*   validate_scene_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thaperei <thaperei@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/05 12:48:47 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/29 18:52:22 by thaperei         ###   ########.fr       */
+/*   Created: 2026/05/09 18:05:43 by thaperei          #+#    #+#             */
+/*   Updated: 2026/05/09 18:06:09 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	has_enough_elements(t_obj_count obj_count)
 		show_error("It should have one ambient");
 	else if (obj_count.camera != 1 && ++has_error)
 		show_error("It should have one camera");
-	else if (obj_count.light != 1 && ++has_error)
+	else if (obj_count.light == 0 && ++has_error)
 		show_error("It should have one light");
 	else if (obj_count.obj == 0 && ++has_error)
 		show_error("No objects in the scene");

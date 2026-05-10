@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/15 16:00:03 by thaperei          #+#    #+#             */
-/*   Updated: 2026/05/07 12:16:38 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/05/10 17:41:21 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ int		is_valid_coordinates(char *str);
 int		is_valid_float(const char *str);
 int		is_valid_int(const char *str);
 int		has_comment_or_spaces(char *line);
+int		is_valid_path(char *path);
+int		is_between_zero_and_one(char *number);
+int		has_valid_optional_properties(char **arr, int start_idx);
 // Validate objects
 int		is_valid_ambient(char **arr);
 int		is_valid_camera(char **arr);
@@ -51,5 +54,8 @@ int		is_valid_light(char **arr);
 int		is_valid_sphere(char **arr);
 int		is_valid_plane(char **arr);
 int		is_valid_cylinder(char **arr);
+int		is_valid_cone(char **arr);
+int		is_valid_hyperboloid(char **arr);
+int		is_valid_paraboloid(char **arr);
 int		has_enough_elements(t_obj_count count);
 #endif

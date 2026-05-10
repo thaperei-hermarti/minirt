@@ -65,8 +65,11 @@ SRC_BONUS = main_bonus.c \
 	  $(MINIRT_DIR)/render_bonus.c \
 	  $(VALIDATION_DIR)/input_bonus.c \
 	  $(VALIDATION_DIR)/validate_objects_bonus.c \
+	  $(VALIDATION_DIR)/validate_objects2_bonus.c \
 	  $(VALIDATION_DIR)/validate_scene_bonus.c \
 	  $(VALIDATION_DIR)/validate_properties_bonus.c \
+	  $(VALIDATION_DIR)/validate_properties2_bonus.c \
+	  $(VALIDATION_DIR)/validate_optional_bonus.c \
 	  $(VALIDATION_DIR)/validate_number_values_bonus.c \
 	  $(PARSER_DIR)/parse_scene_bonus.c \
 	  $(PARSER_DIR)/parse_objects_bonus.c \
