@@ -6,12 +6,14 @@
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/07 12:15:11 by hermarti          #+#    #+#             */
-/*   Updated: 2026/05/08 14:15:22 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/05/09 19:36:08 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef OBJECTS_BONUS_H
 # define OBJECTS_BONUS_H
+
+# include "img_bonus.h"
 
 typedef struct s_vec4
 {
@@ -43,6 +45,7 @@ typedef struct s_obj
 	double			min;
 	double			max;
 	double			reflectivity;
+	t_texture		texture;
 	t_color			color;
 }					t_obj;
 
@@ -60,7 +63,10 @@ typedef struct s_surface
 {
 	t_obj			obj;
 	t_surface_type	type;
-	unsigned char	is_bounded;
+	char			*texture_path;
+	unsigned char	is_bounded : 1;
+	unsigned char	is_checked : 1;
+	unsigned char	has_texture : 1;
 }					t_surface;
 
 typedef struct s_surface_parameters
@@ -82,6 +88,7 @@ typedef struct s_surface_parameters
 	char			*texture_path;
 	unsigned char	is_bounded : 1;
 	unsigned char	is_checked : 1;
+	unsigned char	has_texture : 1;
 }					t_surface_parameters;
 
 void				set_surface_sphere_quadric(t_surface_parameters *p);
