@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 10:00:00 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/25 10:00:00 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/05/10 11:26:57 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,9 +114,9 @@ void	test_parse_cone_basic(void **state)
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.x) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.y) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.z) < 0.0001);
-	assert_int_equal(scene->surfaces[0].obj.color.r, 255);
-	assert_int_equal(scene->surfaces[0].obj.color.g, 255);
-	assert_int_equal(scene->surfaces[0].obj.color.b, 255);
+	assert_int_equal(scene->surfaces[0].obj.color.x, 255);
+	assert_int_equal(scene->surfaces[0].obj.color.y, 255);
+	assert_int_equal(scene->surfaces[0].obj.color.z, 255);
 //	assert_int_equal(scene->idx_obj, 1);
 
 	free(arr);
@@ -134,9 +134,9 @@ void	test_parse_cone_offset_position(void **state)
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.x - 10.5) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.y - 20.3) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.z + 15.7) < 0.0001);
-	assert_int_equal(scene->surfaces[0].obj.color.r, 128);
-	assert_int_equal(scene->surfaces[0].obj.color.g, 64);
-	assert_int_equal(scene->surfaces[0].obj.color.b, 32);
+	assert_int_equal(scene->surfaces[0].obj.color.x, 128);
+	assert_int_equal(scene->surfaces[0].obj.color.y, 64);
+	assert_int_equal(scene->surfaces[0].obj.color.z, 32);
 
 	free(arr);
 	free_scene(scene);
@@ -162,9 +162,9 @@ void	test_parse_cone_red_color(void **state)
 	char	**arr = make_arr("co", "0,0,0", "2.0", "255,0,0");
 
 	parse_sphere(arr, scene);
-	assert_int_equal(scene->surfaces[0].obj.color.r, 255);
-	assert_int_equal(scene->surfaces[0].obj.color.g, 0);
-	assert_int_equal(scene->surfaces[0].obj.color.b, 0);
+	assert_int_equal(scene->surfaces[0].obj.color.x, 255);
+	assert_int_equal(scene->surfaces[0].obj.color.y, 0);
+	assert_int_equal(scene->surfaces[0].obj.color.z, 0);
 
 	free(arr);
 	free_scene(scene);
@@ -177,9 +177,9 @@ void	test_parse_cone_black_color(void **state)
 	char	**arr = make_arr("co", "0,0,0", "2.0", "0,0,0");
 
 	parse_sphere(arr, scene);
-	assert_int_equal(scene->surfaces[0].obj.color.r, 0);
-	assert_int_equal(scene->surfaces[0].obj.color.g, 0);
-	assert_int_equal(scene->surfaces[0].obj.color.b, 0);
+	assert_int_equal(scene->surfaces[0].obj.color.x, 0);
+	assert_int_equal(scene->surfaces[0].obj.color.y, 0);
+	assert_int_equal(scene->surfaces[0].obj.color.z, 0);
 
 	free(arr);
 	free_scene(scene);
@@ -243,8 +243,8 @@ void	test_parse_cone_multiple_cones(void **state)
 
 	assert_int_equal(scene->surfaces[0].type, CONE);
 	assert_int_equal(scene->surfaces[1].type, CONE);
-	assert_int_equal(scene->surfaces[0].obj.color.r, 255);
-	assert_int_equal(scene->surfaces[1].obj.color.g, 255);
+	assert_int_equal(scene->surfaces[0].obj.color.x, 255);
+	assert_int_equal(scene->surfaces[1].obj.color.y, 255);
 	assert_int_equal(scene->idx_obj, 2);
 
 	free(arr1);
@@ -268,9 +268,9 @@ void	test_parse_hyperboloid_basic(void **state)
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.y) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.z) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.orientation.y - 1.0) < 0.0001);
-	assert_int_equal(scene->surfaces[0].obj.color.r, 255);
-	assert_int_equal(scene->surfaces[0].obj.color.g, 255);
-	assert_int_equal(scene->surfaces[0].obj.color.b, 255);
+	assert_int_equal(scene->surfaces[0].obj.color.x, 255);
+	assert_int_equal(scene->surfaces[0].obj.color.y, 255);
+	assert_int_equal(scene->surfaces[0].obj.color.z, 255);
 	assert_int_equal(scene->idx_obj, 1);
 
 	free(arr);
@@ -289,9 +289,9 @@ void	test_parse_hyperboloid_offset_position(void **state)
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.y - 10.3) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.z + 8.7) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.orientation.x - 1.0) < 0.0001);
-	assert_int_equal(scene->surfaces[0].obj.color.r, 100);
-	assert_int_equal(scene->surfaces[0].obj.color.g, 150);
-	assert_int_equal(scene->surfaces[0].obj.color.b, 200);
+	assert_int_equal(scene->surfaces[0].obj.color.x, 100);
+	assert_int_equal(scene->surfaces[0].obj.color.y, 150);
+	assert_int_equal(scene->surfaces[0].obj.color.z, 200);
 
 	free(arr);
 	free_scene(scene);
@@ -317,9 +317,9 @@ void	test_parse_hyperboloid_red_color(void **state)
 	char	**arr = make_arr("hy", "0,0,0", "0.0,1.0,0.0", "255,0,0");
 
 	parse_plane(arr, scene);
-	assert_int_equal(scene->surfaces[0].obj.color.r, 255);
-	assert_int_equal(scene->surfaces[0].obj.color.g, 0);
-	assert_int_equal(scene->surfaces[0].obj.color.b, 0);
+	assert_int_equal(scene->surfaces[0].obj.color.x, 255);
+	assert_int_equal(scene->surfaces[0].obj.color.y, 0);
+	assert_int_equal(scene->surfaces[0].obj.color.z, 0);
 
 	free(arr);
 	free_scene(scene);
@@ -379,8 +379,8 @@ void	test_parse_hyperboloid_multiple_hyperboloids(void **state)
 
 	assert_int_equal(scene->surfaces[0].type, HYPERBOLOID);
 	assert_int_equal(scene->surfaces[1].type, HYPERBOLOID);
-	assert_int_equal(scene->surfaces[0].obj.color.r, 255);
-	assert_int_equal(scene->surfaces[1].obj.color.g, 255);
+	assert_int_equal(scene->surfaces[0].obj.color.x, 255);
+	assert_int_equal(scene->surfaces[1].obj.color.y, 255);
 	assert_int_equal(scene->idx_obj, 2);
 
 	free(arr1);
@@ -404,9 +404,9 @@ void	test_parse_paraboloid_basic(void **state)
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.y) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.z) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.orientation.y - 1.0) < 0.0001);
-	assert_int_equal(scene->surfaces[0].obj.color.r, 255);
-	assert_int_equal(scene->surfaces[0].obj.color.g, 255);
-	assert_int_equal(scene->surfaces[0].obj.color.b, 255);
+	assert_int_equal(scene->surfaces[0].obj.color.x, 255);
+	assert_int_equal(scene->surfaces[0].obj.color.y, 255);
+	assert_int_equal(scene->surfaces[0].obj.color.z, 255);
 	assert_int_equal(scene->idx_obj, 1);
 
 	free(arr);
@@ -424,9 +424,9 @@ void	test_parse_paraboloid_offset_position(void **state)
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.x - 3.2) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.y - 7.1) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.z + 9.4) < 0.0001);
-	assert_int_equal(scene->surfaces[0].obj.color.r, 50);
-	assert_int_equal(scene->surfaces[0].obj.color.g, 100);
-	assert_int_equal(scene->surfaces[0].obj.color.b, 200);
+	assert_int_equal(scene->surfaces[0].obj.color.x, 50);
+	assert_int_equal(scene->surfaces[0].obj.color.y, 100);
+	assert_int_equal(scene->surfaces[0].obj.color.z, 200);
 
 	free(arr);
 	free_scene(scene);
@@ -454,9 +454,9 @@ void	test_parse_paraboloid_green_color(void **state)
 	char	**arr = make_arr("pa", "0,0,0", "0.0,1.0,0.0", "0,255,0");
 
 	parse_plane(arr, scene);
-	assert_int_equal(scene->surfaces[0].obj.color.r, 0);
-	assert_int_equal(scene->surfaces[0].obj.color.g, 255);
-	assert_int_equal(scene->surfaces[0].obj.color.b, 0);
+	assert_int_equal(scene->surfaces[0].obj.color.x, 0);
+	assert_int_equal(scene->surfaces[0].obj.color.y, 255);
+	assert_int_equal(scene->surfaces[0].obj.color.z, 0);
 
 	free(arr);
 	free_scene(scene);
@@ -518,8 +518,8 @@ void	test_parse_paraboloid_multiple_paraboloids(void **state)
 
 	assert_int_equal(scene->surfaces[0].type, PARABOLOID);
 	assert_int_equal(scene->surfaces[1].type, PARABOLOID);
-	assert_int_equal(scene->surfaces[0].obj.color.r, 255);
-	assert_int_equal(scene->surfaces[1].obj.color.b, 255);
+	assert_int_equal(scene->surfaces[0].obj.color.x, 255);
+	assert_int_equal(scene->surfaces[1].obj.color.z, 255);
 	assert_int_equal(scene->idx_obj, 2);
 
 	free(arr1);
@@ -534,9 +534,9 @@ void	test_parse_paraboloid_blue_color(void **state)
 	char	**arr = make_arr("pa", "0,0,0", "0.0,1.0,0.0", "0,0,255");
 
 	parse_plane(arr, scene);
-	assert_int_equal(scene->surfaces[0].obj.color.r, 0);
-	assert_int_equal(scene->surfaces[0].obj.color.g, 0);
-	assert_int_equal(scene->surfaces[0].obj.color.b, 255);
+	assert_int_equal(scene->surfaces[0].obj.color.x, 0);
+	assert_int_equal(scene->surfaces[0].obj.color.y, 0);
+	assert_int_equal(scene->surfaces[0].obj.color.z, 255);
 
 	free(arr);
 	free_scene(scene);
@@ -562,9 +562,9 @@ void	test_parse_mixed_bonus_objects(void **state)
 	assert_int_equal(scene->surfaces[1].type, HYPERBOLOID);
 	assert_int_equal(scene->surfaces[2].type, PARABOLOID);
 	assert_int_equal(scene->idx_obj, 3);
-	assert_int_equal(scene->surfaces[0].obj.color.r, 255);
-	assert_int_equal(scene->surfaces[1].obj.color.g, 255);
-	assert_int_equal(scene->surfaces[2].obj.color.b, 255);
+	assert_int_equal(scene->surfaces[0].obj.color.x, 255);
+	assert_int_equal(scene->surfaces[1].obj.color.y, 255);
+	assert_int_equal(scene->surfaces[2].obj.color.z, 255);
 
 	free(arr_cone);
 	free(arr_hy);
@@ -584,9 +584,9 @@ void	test_parse_bonus_objects_color_variation(void **state)
 	parse_plane(arr2, scene);
 	parse_plane(arr3, scene);
 
-	assert_int_equal(scene->surfaces[0].obj.color.r, 100);
-	assert_int_equal(scene->surfaces[1].obj.color.g, 150);
-	assert_int_equal(scene->surfaces[2].obj.color.b, 200);
+	assert_int_equal(scene->surfaces[0].obj.color.x, 100);
+	assert_int_equal(scene->surfaces[1].obj.color.y, 150);
+	assert_int_equal(scene->surfaces[2].obj.color.z, 200);
 
 	free(arr1);
 	free(arr2);
