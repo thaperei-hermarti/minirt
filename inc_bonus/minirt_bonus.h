@@ -6,28 +6,19 @@
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/07 12:15:21 by hermarti          #+#    #+#             */
-/*   Updated: 2026/05/08 14:50:47 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/05/09 19:35:58 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_BONUS_H
 # define MINIRT_BONUS_H
 
+# include "img_bonus.h"
 # include "objects_bonus.h"
 # include "scene_bonus.h"
 
 # define WINDOW_WIDTH 1228
 # define WINDOW_HEIGHT 720
-
-typedef struct s_img_buffer
-{
-	void			*img;
-	char			*img_addr;
-	int				bits_per_pixel;
-	int				size_line;
-	int				endian;
-	int				pixel_size;
-}					t_img_buffer;
 
 typedef struct s_window
 {
@@ -63,15 +54,18 @@ void				put_pixel_row(t_window *window, int y,
 						unsigned int *colors);
 void				render_loop(t_env *env);
 
-double				calc_shadow(t_env *env, t_vec4 hit_p, t_surface *obj);
+double				calc_shadow(t_env *env, t_vec4 hit_p, t_surface *obj,
+						t_light *light);
 
 typedef struct s_light_componets_params
 {
 	t_vec4			n;
 	t_vec4			hit_p;
 	double			shadow;
+	t_light			*light;
 }					t_light_componets_params;
 
+t_vec4				calc_ambient(t_env *env, t_surface *obj);
 t_vec4				calc_light_components(t_env *env, t_surface *obj,
 						t_light_componets_params *p);
 int					calc_lighting(t_env *env, t_vec4 n, t_vec4 hit_p,

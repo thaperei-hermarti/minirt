@@ -27,6 +27,7 @@ t_vec4	vec4_sub(t_vec4 a, t_vec4 b);
 t_vec4	vec4_mul(t_vec4 a, t_vec4 b);
 t_vec4	vec4_reflect(t_vec4 v, t_vec4 n);
 int		vec4_to_int(t_vec4 c);
+t_vec4	int_to_vec4(int color);
 t_vec4	norm_color(t_color c);
 
 t_mat4	mat4_rotation_from_to(t_vec4 from, t_vec4 to);

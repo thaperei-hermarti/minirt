@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 10:11:05 by thaperei          #+#    #+#             */
-/*   Updated: 2026/05/07 12:16:51 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/05/10 17:11:34 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,12 @@ int	is_allowed_object(char **arr, int idx)
 	{"sp", &is_valid_sphere, "Invalid sphere"},
 	{"pl", &is_valid_plane, "Invalid plane"},
 	{"cy", &is_valid_cylinder, "Invalid cylinder"},
+	{"co", &is_valid_sphere, "Invalid cone"},
+	{"hy", &is_valid_plane, "Invalid hyperboloid"},
+	{"pa", &is_valid_plane, "Invalid paraboloid"},
 	{NULL, NULL, "Non-existent object"}};
 
-	while (func_objs[idx].key)
+	while (func_objs[++idx].key)
 	{
 		if (ft_strcmp(func_objs[idx].key, arr[0]) == 0)
 		{
@@ -67,7 +70,6 @@ int	is_allowed_object(char **arr, int idx)
 				return (show_error(func_objs[idx].error_msg), 0);
 			break ;
 		}
-		idx++;
 	}
 	if (func_objs[idx].key == NULL)
 		return (show_error(func_objs[idx].error_msg), 0);

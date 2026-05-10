@@ -6,7 +6,7 @@
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 09:18:18 by hermarti          #+#    #+#             */
-/*   Updated: 2026/05/07 12:16:08 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/05/10 17:06:11 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_scene
 	t_light			*light;
 	t_surface		*surfaces;
 	unsigned int	idx_obj;
+	unsigned int	idx_light;
 	unsigned int	num_objs;
 	unsigned int	num_lights;
 }				t_scene;
