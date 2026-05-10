@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/10 15:00:00 by thaperei          #+#    #+#             */
-/*   Updated: 2026/05/10 20:02:41 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/05/10 20:28:37 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static int	is_optional_property(char *str)
 		return (1);
 	if (is_key_value_pair(str, "texture"))
 		return (1);
-	if (is_check_flag(str))
+	if (ft_strcmp(str, "check") == 0)
 		return (1);
 	return (0);
 }
@@ -144,7 +144,7 @@ int	has_valid_optional_properties(char **arr, int start_idx)
 			return (0);
 		if (is_key_value_pair(arr[i], "texture"))
 			has_texture = 1;
-		if (ft_strcmp(str, "check") == 0)
+		if (ft_strcmp(arr[i], "check") == 0)
 			has_check = 1;
 		i++;
 	}

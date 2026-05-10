@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   raytrace_calc_bonus.c                                    :+:      :+:    :+:   */
+/*   raytrace_calc_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 10:59:09 by hermarti          #+#    #+#             */
-/*   Updated: 2026/05/05 12:06:17 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/05/10 20:32:09 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "rt_math_bonus.h"
 #include <math.h>
 
-double	calc_shadow(t_env *env, t_vec4 hit_p, t_surface *obj)
+double	calc_shadow(t_env *env, t_vec4 hit_p, t_surface *obj, t_light *light)
 {
 	t_ray			shadow_ray;
 	unsigned int	i;
@@ -40,7 +40,7 @@ double	calc_shadow(t_env *env, t_vec4 hit_p, t_surface *obj)
 	return (1.0);
 }
 
-static t_vec4	calc_ambient(t_env *env, t_surface *obj)
+t_vec4	calc_ambient(t_env *env, t_surface *obj)
 {
 	t_vec4	amb_color;
 
