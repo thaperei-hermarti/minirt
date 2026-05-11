@@ -161,7 +161,7 @@ void	test_parse_elements_single_sphere(void **state)
 	parse_elements(scene);
 
 	assert_int_equal(scene->surfaces[0].type, SPHERE);
-	assert_int_equal(scene->surfaces[0].obj.color.x, 255);
+	assert_int_equal(scene->surfaces[0].obj.material.color.x, 255);
 	assert_int_equal(scene->idx_obj, 1);
 
 	free_scene_complete(scene);
@@ -240,9 +240,9 @@ void	test_parse_elements_all_bonus_objects(void **state)
 
 	scene->num_objs = 3;
 	scene->num_lights = 0;
-	add_object_to_scene(scene, "co 0,0,0 2.0 255,0,0");
-	add_object_to_scene(scene, "hy 10,10,10 0,1,0 0,255,0");
-	add_object_to_scene(scene, "pa 20,20,20 0,1,0 0,0,255");
+	add_object_to_scene(scene, "co 0,0,0 0,1,0 30.0 4.0 255,0,0");
+	add_object_to_scene(scene, "hy 10,10,10 0,1,0 1.0 1.0 1.0 4.0 0,255,0");
+	add_object_to_scene(scene, "pa 20,20,20 0,1,0 0.5 4.0 0,0,255");
 
 	parse_elements(scene);
 
@@ -250,9 +250,9 @@ void	test_parse_elements_all_bonus_objects(void **state)
 	assert_int_equal(scene->surfaces[1].type, HYPERBOLOID);
 	assert_int_equal(scene->surfaces[2].type, PARABOLOID);
 	assert_int_equal(scene->idx_obj, 3);
-	assert_int_equal(scene->surfaces[0].obj.color.x, 255);
-	assert_int_equal(scene->surfaces[1].obj.color.y, 255);
-	assert_int_equal(scene->surfaces[2].obj.color.z, 255);
+	assert_int_equal(scene->surfaces[0].obj.material.color.x, 255);
+	assert_int_equal(scene->surfaces[1].obj.material.color.y, 255);
+	assert_int_equal(scene->surfaces[2].obj.material.color.z, 255);
 
 	free_scene_complete(scene);
 }
@@ -297,9 +297,9 @@ void	test_parse_elements_multiple_spheres(void **state)
 	assert_int_equal(scene->surfaces[1].type, SPHERE);
 	assert_int_equal(scene->surfaces[2].type, SPHERE);
 	assert_int_equal(scene->idx_obj, 3);
-	assert_int_equal(scene->surfaces[0].obj.color.x, 255);
-	assert_int_equal(scene->surfaces[1].obj.color.y, 255);
-	assert_int_equal(scene->surfaces[2].obj.color.z, 255);
+	assert_int_equal(scene->surfaces[0].obj.material.color.x, 255);
+	assert_int_equal(scene->surfaces[1].obj.material.color.y, 255);
+	assert_int_equal(scene->surfaces[2].obj.material.color.z, 255);
 
 	free_scene_complete(scene);
 }
@@ -314,9 +314,9 @@ void	test_parse_elements_mixed_objects(void **state)
 	add_object_to_scene(scene, "sp 0,0,0 1.0 255,0,0");
 	add_object_to_scene(scene, "pl 0,-1,0 0,1,0 128,128,128");
 	add_object_to_scene(scene, "cy 0,0,-5 0,1,0 0.5 5.0 64,64,64");
-	add_object_to_scene(scene, "co 5,5,5 1.5 200,100,50");
-	add_object_to_scene(scene, "hy 10,10,10 0,1,0 100,100,100");
-	add_object_to_scene(scene, "pa -5,-5,-5 0,1,0 150,150,150");
+	add_object_to_scene(scene, "co 5,5,5 0,1,0 25.0 6.0 200,100,50");
+	add_object_to_scene(scene, "hy 10,10,10 0,1,0 1.0 1.0 1.0 4.0 100,100,100");
+	add_object_to_scene(scene, "pa -5,-5,-5 0,1,0 0.5 4.0 150,150,150");
 
 	parse_elements(scene);
 
@@ -410,9 +410,9 @@ void	test_parse_elements_zero_values(void **state)
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.x) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.y) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.z) < 0.0001);
-	assert_int_equal(scene->surfaces[0].obj.color.x, 0);
-	assert_int_equal(scene->surfaces[0].obj.color.y, 0);
-	assert_int_equal(scene->surfaces[0].obj.color.z, 0);
+	assert_int_equal(scene->surfaces[0].obj.material.color.x, 0);
+	assert_int_equal(scene->surfaces[0].obj.material.color.y, 0);
+	assert_int_equal(scene->surfaces[0].obj.material.color.z, 0);
 
 	free_scene_complete(scene);
 }
@@ -430,9 +430,9 @@ void	test_parse_elements_scene_ordering(void **state)
 
 	parse_elements(scene);
 
-	assert_int_equal(scene->surfaces[0].obj.color.x, 255);
-	assert_int_equal(scene->surfaces[1].obj.color.y, 255);
-	assert_int_equal(scene->surfaces[2].obj.color.z, 255);
+	assert_int_equal(scene->surfaces[0].obj.material.color.x, 255);
+	assert_int_equal(scene->surfaces[1].obj.material.color.y, 255);
+	assert_int_equal(scene->surfaces[2].obj.material.color.z, 255);
 	assert_int_equal(scene->idx_obj, 3);
 
 	free_scene_complete(scene);
@@ -528,9 +528,9 @@ void	test_parse_elements_all_types_mixed(void **state)
 	add_object_to_scene(scene, "sp 0,0,0 1.0 255,0,0");
 	add_object_to_scene(scene, "pl 0,-10,0 0,1,0 128,128,128");
 	add_object_to_scene(scene, "cy 0,0,-5 0,1,0 0.5 5.0 64,64,64");
-	add_object_to_scene(scene, "co 5,5,5 1.0 200,100,50");
-	add_object_to_scene(scene, "hy 10,10,10 0,1,0 100,100,100");
-	add_object_to_scene(scene, "pa -5,-5,-5 0,1,0 150,150,150");
+	add_object_to_scene(scene, "co 5,5,5 0,1,0 20.0 4.0 200,100,50");
+	add_object_to_scene(scene, "hy 10,10,10 0,1,0 1.0 1.0 1.0 4.0 100,100,100");
+	add_object_to_scene(scene, "pa -5,-5,-5 0,1,0 0.5 4.0 150,150,150");
 
 	parse_elements(scene);
 
@@ -559,21 +559,21 @@ void	test_parse_elements_color_preservation(void **state)
 
 	parse_elements(scene);
 
-	assert_int_equal(scene->surfaces[0].obj.color.x, 255);
-	assert_int_equal(scene->surfaces[0].obj.color.y, 0);
-	assert_int_equal(scene->surfaces[0].obj.color.z, 0);
+	assert_int_equal(scene->surfaces[0].obj.material.color.x, 255);
+	assert_int_equal(scene->surfaces[0].obj.material.color.y, 0);
+	assert_int_equal(scene->surfaces[0].obj.material.color.z, 0);
 
-	assert_int_equal(scene->surfaces[1].obj.color.x, 0);
-	assert_int_equal(scene->surfaces[1].obj.color.y, 255);
-	assert_int_equal(scene->surfaces[1].obj.color.z, 0);
+	assert_int_equal(scene->surfaces[1].obj.material.color.x, 0);
+	assert_int_equal(scene->surfaces[1].obj.material.color.y, 255);
+	assert_int_equal(scene->surfaces[1].obj.material.color.z, 0);
 
-	assert_int_equal(scene->surfaces[2].obj.color.x, 0);
-	assert_int_equal(scene->surfaces[2].obj.color.y, 0);
-	assert_int_equal(scene->surfaces[2].obj.color.z, 255);
+	assert_int_equal(scene->surfaces[2].obj.material.color.x, 0);
+	assert_int_equal(scene->surfaces[2].obj.material.color.y, 0);
+	assert_int_equal(scene->surfaces[2].obj.material.color.z, 255);
 
-	assert_int_equal(scene->surfaces[3].obj.color.x, 128);
-	assert_int_equal(scene->surfaces[3].obj.color.y, 128);
-	assert_int_equal(scene->surfaces[3].obj.color.z, 128);
+	assert_int_equal(scene->surfaces[3].obj.material.color.x, 128);
+	assert_int_equal(scene->surfaces[3].obj.material.color.y, 128);
+	assert_int_equal(scene->surfaces[3].obj.material.color.z, 128);
 
 	free_scene_complete(scene);
 }

@@ -37,6 +37,26 @@ typedef struct s_ray
 
 typedef t_vec4		t_color;
 
+typedef struct s_uv
+{
+	float			u;
+	float			v;
+}					t_uv;
+
+typedef struct s_specular
+{
+	double			index;
+	double			strenght;
+	t_color			color;
+}				t_specular;
+
+typedef struct s_material
+{
+	t_color			color;
+	t_specular		specular;
+	double			reflect;
+}				t_material;
+
 typedef struct s_obj
 {
 	t_mat4			mat;
@@ -44,9 +64,10 @@ typedef struct s_obj
 	t_vec4			orientation;
 	double			min;
 	double			max;
+	t_color			color;
 	double			reflectivity;
 	t_texture		texture;
-	t_color			color;
+	t_material		material;
 }					t_obj;
 
 typedef enum e_surface_type
@@ -63,6 +84,7 @@ typedef struct s_surface
 {
 	t_obj			obj;
 	t_surface_type	type;
+	double			reflectivity;
 	char			*texture_path;
 	unsigned char	is_bounded : 1;
 	unsigned char	is_checked : 1;

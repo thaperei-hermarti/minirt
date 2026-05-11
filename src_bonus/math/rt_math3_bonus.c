@@ -37,6 +37,17 @@ int	vec4_to_int(t_vec4 c)
 	return ((r << 16) | (g << 8) | b);
 }
 
+t_vec4	int_to_vec4(int color)
+{
+	t_vec4	v;
+
+	v.x = ((color >> 16) & 0xFF) / 255.0;
+	v.y = ((color >> 8) & 0xFF) / 255.0;
+	v.z = (color & 0xFF) / 255.0;
+	v.w = ((color >> 24) & 0xFF) / 255.0;
+	return (v);
+}
+
 t_vec4	norm_color(t_color c)
 {
 	return ((t_vec4){.x = c.x / 255.0, .y = c.y / 255.0, .z = c.z / 255.0,

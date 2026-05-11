@@ -6,37 +6,21 @@
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 14:58:02 by hermarti          #+#    #+#             */
-/*   Updated: 2026/05/07 12:20:51 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/05/11 10:00:00 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt_bonus.h"
 #include "mlx.h"
-#include "objects_bonus.h"
 #include "rt_math_bonus.h"
-#include "scene_bonus.h"
 #include <math.h>
-
-static int	shade(t_env *env, t_ray *ray, double t, t_surface *obj)
-{
-	t_vec4	hit_p;
-	t_vec4	n;
-
-	hit_p = vec4_add(ray->orig, vec4_scale(ray->dir, t));
-	n = get_surface_normal(*obj, hit_p);
-	if (vec4_dot_prod(n, ray->dir) > 0)
-		n = vec4_scale(n, -1.0);
-	hit_p = vec4_add(hit_p, vec4_scale(n, 0.001));
-	return (calc_lighting(env, n, hit_p, obj));
-}
 
 static int	render_pixel(t_env *env, t_ray *ray, int x, int y)
 {
 	double	vp_x;
 	double	vp_y;
-	double	t;
-	int		hit_idx;
 	double	scale;
+	t_vec4	color;
 
 	scale = tan(env->scene.camera.fov_scale * 0.5 * M_PI / 180.0);
 	vp_x = ((2.0 * (x + 0.5) / WINDOW_WIDTH - 1.0) * (WINDOW_WIDTH
@@ -46,10 +30,8 @@ static int	render_pixel(t_env *env, t_ray *ray, int x, int y)
 				vec4_scale(env->scene.camera.up, vp_y)),
 			vec4_normalize(env->scene.camera.dir));
 	ray->dir = vec4_normalize(ray->dir);
-	hit_idx = cast_ray(ray, env, &t);
-	if (hit_idx != -1)
-		return (shade(env, ray, t, &env->scene.surfaces[hit_idx]));
-	return (0x00000000);
+	color = trace_ray(env, *ray, 3);
+	return (vec4_to_int(color));
 }
 
 static void	setup_camera_basis(t_env *env)
@@ -92,8 +74,6 @@ static void	render_scene(t_env *env)
 
 void	render_loop(t_env *env)
 {
-	env->scene.specular = (t_specular){.strenght = 0.6, .color = (t_color){255,
-		255, 255, 0}};
 	render_scene(env);
 	mlx_put_image_to_window(env->window.mlx, env->window.x_window,
 		env->window.img.img, 0, 0);

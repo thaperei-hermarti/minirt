@@ -35,6 +35,15 @@ void	free_arr(char **arr)
 
 void	free_scene(t_scene *scene)
 {
+	unsigned int	i;
+
+	i = 0;
+	while (scene->surfaces && i < scene->num_objs)
+	{
+		free(scene->surfaces[i].texture_path);
+		scene->surfaces[i].texture_path = NULL;
+		i++;
+	}
 	if (scene->light)
 		free(scene->light);
 	if (scene->surfaces)

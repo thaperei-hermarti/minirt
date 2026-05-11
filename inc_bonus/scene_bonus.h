@@ -38,25 +38,10 @@ typedef struct s_light
 	t_color			color;
 }					t_light;
 
-typedef struct s_specular
-{
-	double			index;
-	double			strenght;
-	t_color			color;
-}				t_specular;
-
-typedef struct s_material
-{
-	t_color			color;
-	t_specular		specular;
-	double			reflect;
-}				t_material;
-
 typedef struct s_scene
 {
 	t_camera		camera;
 	t_ambient		ambient;
-	t_specular		specular;
 	t_list			*objs;
 	t_light			*light;
 	t_surface		*surfaces;

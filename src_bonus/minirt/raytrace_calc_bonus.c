@@ -22,10 +22,9 @@ double	calc_shadow(t_env *env, t_vec4 hit_p, t_surface *obj, t_light *light)
 	double			light_dist;
 	double			shadow_t;
 
-	(void)light;
-	light_dist = vec4_mag(vec4_sub(env->scene.light->origin, hit_p));
-	shadow_ray = (t_ray){vec4_normalize(vec4_sub(env->scene.light->origin,
-				hit_p)), hit_p, 0};
+	light_dist = vec4_mag(vec4_sub(light->origin, hit_p));
+	shadow_ray = (t_ray){vec4_normalize(vec4_sub(light->origin, hit_p)), hit_p,
+		0};
 	i = 0;
 	while (i < env->scene.num_objs)
 	{
@@ -45,30 +44,32 @@ t_vec4	calc_ambient(t_env *env, t_surface *obj)
 {
 	t_vec4	amb_color;
 
-	amb_color = norm_color(obj->obj.color);
+	amb_color = norm_color(obj->obj.material.color);
 	amb_color = vec4_scale(amb_color, env->scene.ambient.lightness);
 	amb_color = vec4_mul(amb_color, norm_color(env->scene.ambient.color));
 	return (amb_color);
 }
 
-static t_vec4	calc_diffuse(t_env *env, t_surface *obj, double diff,
+static t_vec4	calc_diffuse(t_surface *obj, t_light *light, double diff,
 		double shadow)
 {
 	t_vec4	dir_color;
 
-	dir_color = norm_color(obj->obj.color);
-	dir_color = vec4_scale(dir_color, env->scene.light->brightness * diff
-			* shadow);
+	dir_color = vec4_mul(norm_color(obj->obj.material.color),
+			norm_color(light->color));
+	dir_color = vec4_scale(dir_color, light->brightness * diff * shadow);
 	return (dir_color);
 }
 
-static t_vec4	calc_specular(t_env *env, double spec, double shadow)
+static t_vec4	calc_specular(t_surface *obj, t_light *light, double spec,
+		double shadow)
 {
 	t_vec4	spec_color;
 
-	spec_color = norm_color(env->scene.specular.color);
-	spec_color = vec4_scale(spec_color, env->scene.specular.strenght * spec
-			* shadow);
+	spec_color = vec4_mul(norm_color(obj->obj.material.specular.color),
+			norm_color(light->color));
+	spec_color = vec4_scale(spec_color, obj->obj.material.specular.strenght
+			* spec * shadow * light->brightness);
 	return (spec_color);
 }
 
@@ -80,11 +81,11 @@ t_vec4	calc_light_components(t_env *env, t_surface *obj,
 	double	diff;
 	double	spec;
 
-	light_dir = vec4_normalize(vec4_sub(env->scene.light->origin, p->hit_p));
+	light_dir = vec4_normalize(vec4_sub(p->light->origin, p->hit_p));
 	view_dir = vec4_normalize(vec4_sub(env->scene.camera.origin, p->hit_p));
 	diff = fmax(vec4_dot_prod(p->n, light_dir), 0.0);
 	spec = pow(fmax(vec4_dot_prod(view_dir, vec4_reflect(vec4_scale(light_dir,
 							-1.0), p->n)), 0.0), 32.0);
-	return (vec4_add(calc_ambient(env, obj), vec4_add(calc_diffuse(env, obj,
-					diff, p->shadow), calc_specular(env, spec, p->shadow))));
+	return (vec4_add(calc_diffuse(obj, p->light, diff, p->shadow),
+			calc_specular(obj, p->light, spec, p->shadow)));
 }

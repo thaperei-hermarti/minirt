@@ -27,13 +27,50 @@ static t_mat4	compute_final_mat(t_surface_parameters p, t_mat4 base)
 	t_mat4	trans;
 	t_mat4	res;
 	t_vec4	orient;
+	t_vec4	trans_vec;
 
 	orient = get_orientation(p.orientation);
 	rot = mat4_rotation_from_to((t_vec4){0.0, 1.0, 0.0, 0.0}, orient);
 	res = mat4_mat4_mult(mat4_mat4_mult(rot, base), mat4_transpose(rot));
-	trans = mat4_translation((t_vec4){-p.coordinate.x, -p.coordinate.y,
-			-p.coordinate.z, 1.0});
+	trans_vec = (t_vec4){-p.coordinate.x, -p.coordinate.y, -p.coordinate.z,
+		1.0};
+	trans = mat4_translation(trans_vec);
 	return (mat4_mat4_mult(mat4_mat4_mult(mat4_transpose(trans), res), trans));
+}
+
+static void	init_surface_bounds(t_surface *res, t_surface_parameters p)
+{
+	if (!p.is_bounded)
+		return ;
+	if (p.type == CONE || p.type == PARABOLOID)
+	{
+		res->obj.min = 0.0;
+		res->obj.max = p.height;
+	}
+	else
+	{
+		res->obj.min = -p.height / 2;
+		res->obj.max = p.height / 2;
+	}
+}
+
+static void	set_surface_properties(t_surface *res, t_surface_parameters p)
+{
+	res->obj.mat = compute_final_mat(p, res->obj.mat);
+	res->obj.orientation = get_orientation(p.orientation);
+	res->obj.reflectivity = p.reflectivity;
+	res->obj.color = p.color;
+	res->reflectivity = p.reflectivity;
+	res->obj.material = (t_material){
+		.color = p.color,
+		.specular = (t_specular){0},
+		.reflect = p.reflectivity
+	};
+	res->type = p.type;
+	res->is_bounded = p.is_bounded;
+	res->is_checked = p.is_checked;
+	res->has_texture = p.has_texture;
+	res->texture_path = p.texture_path;
 }
 
 t_surface	create_surface(t_surface_parameters p)
@@ -50,21 +87,8 @@ t_surface	create_surface(t_surface_parameters p)
 	set_surface_type(&base_p);
 	set_surface_matrix(base_p, &base_mat);
 	res.obj.coordinate = p.coordinate;
-	res.obj.min = -p.height / 2;
-	res.obj.max = p.height / 2;
-	res.obj.mat = compute_final_mat(p, base_mat);
-	res.obj.orientation = get_orientation(p.orientation);
-	res.type = p.type;
-	res.is_bounded = p.is_bounded;
-	res.obj.color = p.color;
+	res.obj.mat = base_mat;
+	init_surface_bounds(&res, p);
+	set_surface_properties(&res, p);
 	return (res);
-}
-
-t_vec4	get_surface_normal(t_surface s, t_vec4 hit_point)
-{
-	t_vec4	n;
-
-	ft_memset(&n, 0, sizeof(t_vec4));
-	n = vec4_mat4_mul(hit_point, s.obj.mat);
-	return (vec4_normalize(n));
 }

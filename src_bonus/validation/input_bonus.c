@@ -62,7 +62,7 @@ int	is_allowed_object(char **arr, int idx)
 	{"pa", &is_valid_paraboloid, "Invalid paraboloid"},
 	{NULL, NULL, "Non-existent object"}};
 
-	while (func_objs[++idx].key)
+	while (func_objs[idx].key)
 	{
 		if (ft_strcmp(func_objs[idx].key, arr[0]) == 0)
 		{
@@ -70,6 +70,7 @@ int	is_allowed_object(char **arr, int idx)
 				return (show_error(func_objs[idx].error_msg), 0);
 			break ;
 		}
+		idx++;
 	}
 	if (func_objs[idx].key == NULL)
 		return (show_error(func_objs[idx].error_msg), 0);

@@ -21,6 +21,8 @@ typedef struct s_hash_item_parser
 }	t_hash_item_parser;
 
 void	parse_elements(t_scene *scene);
+void	parse_optional_properties(char **arr, int start_idx,
+			t_surface_parameters *s_params);
 
 // Object parsers
 void	parse_ambient(char **arr, t_scene *scene);

@@ -13,7 +13,7 @@
 #include "parser_bonus.h"
 #include "libft.h"
 
-static void	parse_optional_properties(char **arr, int start_idx,
+void	parse_optional_properties(char **arr, int start_idx,
 		t_surface_parameters *s_params)
 {
 	char	*equal_pos;

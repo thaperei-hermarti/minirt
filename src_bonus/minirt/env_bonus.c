@@ -6,7 +6,7 @@
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 09:16:45 by hermarti          #+#    #+#             */
-/*   Updated: 2026/05/07 12:20:16 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/05/10 14:49:36 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	*init_env(t_env *env, int argc, char **argv)
 	if (!is_valid_input(argv[1], &env->scene))
 		return (NULL);
 	parse_elements(&env->scene);
+	load_scene_textures(env);
 	return (env);
 }
 
