@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/25 10:00:00 by thaperei          #+#    #+#             */
-/*   Updated: 2026/05/10 11:26:57 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/05/11 18:57:08 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,16 +100,16 @@ static char	**make_arr_6(const char *str1, const char *str2,
 }
 
 /* ========================================================= */
-/* PARSE_CONE TESTS (uses sphere parser logic) */
+/* PARSE_CONE TESTS (using parse_cone function) */
 /* ========================================================= */
 
 void	test_parse_cone_basic(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
-	char	**arr = make_arr("co", "0,0,0", "2.0", "255,255,255");
+	char	**arr = make_arr("co", "0,0,0", "0.0,1.0,0.0", "255,255,255");
 
-	parse_sphere(arr, scene);
+	parse_cone(arr, scene);
 	assert_int_equal(scene->surfaces[0].type, CONE);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.x) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.y) < 0.0001);
@@ -117,7 +117,7 @@ void	test_parse_cone_basic(void **state)
 	assert_int_equal(scene->surfaces[0].obj.color.x, 255);
 	assert_int_equal(scene->surfaces[0].obj.color.y, 255);
 	assert_int_equal(scene->surfaces[0].obj.color.z, 255);
-//	assert_int_equal(scene->idx_obj, 1);
+	assert_int_equal(scene->idx_obj, 1);
 
 	free(arr);
 	free_scene(scene);
@@ -127,9 +127,9 @@ void	test_parse_cone_offset_position(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
-	char	**arr = make_arr("co", "10.5,20.3,-15.7", "3.5", "128,64,32");
+	char	**arr = make_arr("co", "10.5,20.3,-15.7", "0.0,1.0,0.0", "128,64,32");
 
-	parse_sphere(arr, scene);
+	parse_cone(arr, scene);
 	assert_int_equal(scene->surfaces[0].type, CONE);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.x - 10.5) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.y - 20.3) < 0.0001);
@@ -142,13 +142,13 @@ void	test_parse_cone_offset_position(void **state)
 	free_scene(scene);
 }
 
-void	test_parse_cone_diameter_variations(void **state)
+void	test_parse_cone_angle_variations(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
-	char	**arr = make_arr("co", "5,5,5", "8.5", "100,100,100");
+	char	**arr = make_arr("co", "5,5,5", "0.0,1.0,0.0", "100,100,100");
 
-	parse_sphere(arr, scene);
+	parse_cone(arr, scene);
 	assert_int_equal(scene->surfaces[0].type, CONE);
 
 	free(arr);
@@ -159,9 +159,9 @@ void	test_parse_cone_red_color(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
-	char	**arr = make_arr("co", "0,0,0", "2.0", "255,0,0");
+	char	**arr = make_arr("co", "0,0,0", "0.0,1.0,0.0", "255,0,0");
 
-	parse_sphere(arr, scene);
+	parse_cone(arr, scene);
 	assert_int_equal(scene->surfaces[0].obj.color.x, 255);
 	assert_int_equal(scene->surfaces[0].obj.color.y, 0);
 	assert_int_equal(scene->surfaces[0].obj.color.z, 0);
@@ -174,9 +174,9 @@ void	test_parse_cone_black_color(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
-	char	**arr = make_arr("co", "0,0,0", "2.0", "0,0,0");
+	char	**arr = make_arr("co", "0,0,0", "0.0,1.0,0.0", "0,0,0");
 
-	parse_sphere(arr, scene);
+	parse_cone(arr, scene);
 	assert_int_equal(scene->surfaces[0].obj.color.x, 0);
 	assert_int_equal(scene->surfaces[0].obj.color.y, 0);
 	assert_int_equal(scene->surfaces[0].obj.color.z, 0);
@@ -189,10 +189,9 @@ void	test_parse_cone_negative_coordinates(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
-	char	**arr = make_arr("co", "-50,-100,-150", "5.0",
-		"75,75,75");
+	char	**arr = make_arr("co", "-50,-100,-150", "0.0,1.0,0.0", "75,75,75");
 
-	parse_sphere(arr, scene);
+	parse_cone(arr, scene);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.x + 50.0) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.y + 100.0) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.z + 150.0) < 0.0001);
@@ -205,10 +204,9 @@ void	test_parse_cone_decimal_coordinates(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
-	char	**arr = make_arr("co", "1.5,2.7,3.9", "2.0",
-		"150,150,150");
+	char	**arr = make_arr("co", "1.5,2.7,3.9", "0.0,1.0,0.0", "150,150,150");
 
-	parse_sphere(arr, scene);
+	parse_cone(arr, scene);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.x - 1.5) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.y - 2.7) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.z - 3.9) < 0.0001);
@@ -217,15 +215,15 @@ void	test_parse_cone_decimal_coordinates(void **state)
 	free_scene(scene);
 }
 
-void	test_parse_cone_unbounded(void **state)
+void	test_parse_cone_bounded(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
-	char	**arr = make_arr("co", "0,0,0", "2.0", "255,255,255");
+	char	**arr = make_arr("co", "0,0,0", "0.0,1.0,0.0", "255,255,255");
 
-	parse_sphere(arr, scene);
-	/* Cones are unbounded like spheres */
-	assert_int_equal(scene->surfaces[0].is_bounded, 0);
+	parse_cone(arr, scene);
+	/* Cones are bounded */
+	assert_int_equal(scene->surfaces[0].is_bounded, 1);
 
 	free(arr);
 	free_scene(scene);
@@ -235,11 +233,11 @@ void	test_parse_cone_multiple_cones(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
-	char	**arr1 = make_arr("co", "0,0,0", "2.0", "255,0,0");
-	char	**arr2 = make_arr("co", "10,10,10", "3.0", "0,255,0");
+	char	**arr1 = make_arr("co", "0,0,0", "0.0,1.0,0.0", "255,0,0");
+	char	**arr2 = make_arr("co", "10,10,10", "0.0,1.0,0.0", "0,255,0");
 
-	parse_sphere(arr1, scene);
-	parse_sphere(arr2, scene);
+	parse_cone(arr1, scene);
+	parse_cone(arr2, scene);
 
 	assert_int_equal(scene->surfaces[0].type, CONE);
 	assert_int_equal(scene->surfaces[1].type, CONE);
@@ -252,25 +250,64 @@ void	test_parse_cone_multiple_cones(void **state)
 	free_scene(scene);
 }
 
+void	test_parse_cone_with_spec_property(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	char	**arr = make_arr_5("co", "0,0,0", "0.0,1.0,0.0", "255,0,0", "spec=0.5");
+
+	parse_cone(arr, scene);
+	assert_int_equal(scene->surfaces[0].type, CONE);
+	assert_double_equal(scene->surfaces[0].reflectivity, 0.5, 0.0001);
+
+	free(arr);
+	free_scene(scene);
+}
+
+void	test_parse_cone_with_refl_property(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	char	**arr = make_arr_5("co", "0,0,0", "0.0,1.0,0.0", "255,0,0", "refl=0.8");
+
+	parse_cone(arr, scene);
+	assert_int_equal(scene->surfaces[0].type, CONE);
+	assert_double_equal(scene->surfaces[0].reflectivity, 0.8, 0.0001);
+
+	free(arr);
+	free_scene(scene);
+}
+
+void	test_parse_cone_with_check_property(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	char	**arr = make_arr_5("co", "0,0,0", "0.0,1.0,0.0", "255,0,0", "check");
+
+	parse_cone(arr, scene);
+	assert_int_equal(scene->surfaces[0].type, CONE);
+	assert_int_equal(scene->surfaces[0].is_checked, 1);
+
+	free(arr);
+	free_scene(scene);
+}
+
 /* ========================================================= */
-/* PARSE_HYPERBOLOID TESTS (uses plane parser logic) */
+/* PARSE_HYPERBOLOID TESTS (using parse_hyperboloid function) */
 /* ========================================================= */
 
 void	test_parse_hyperboloid_basic(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
-	char	**arr = make_arr("hy", "0,0,0", "0.0,1.0,0.0", "255,255,255");
+	char	**arr = make_arr_6("hy", "0,0,0", "0.0,1.0,0.0", "1.0", "1.0", "1.0");
 
-	parse_plane(arr, scene);
+	parse_hyperboloid(arr, scene);
 	assert_int_equal(scene->surfaces[0].type, HYPERBOLOID);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.x) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.y) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.z) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.orientation.y - 1.0) < 0.0001);
-	assert_int_equal(scene->surfaces[0].obj.color.x, 255);
-	assert_int_equal(scene->surfaces[0].obj.color.y, 255);
-	assert_int_equal(scene->surfaces[0].obj.color.z, 255);
 	assert_int_equal(scene->idx_obj, 1);
 
 	free(arr);
@@ -281,17 +318,14 @@ void	test_parse_hyperboloid_offset_position(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
-	char	**arr = make_arr("hy", "5.5,10.3,-8.7", "1.0,0.0,0.0",  "100,150,200");
+	char	**arr = make_arr_6("hy", "5.5,10.3,-8.7", "1.0,0.0,0.0", "1.5", "2.0", "0.8");
 
-	parse_plane(arr, scene);
+	parse_hyperboloid(arr, scene);
 	assert_int_equal(scene->surfaces[0].type, HYPERBOLOID);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.x - 5.5) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.y - 10.3) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.z + 8.7) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.orientation.x - 1.0) < 0.0001);
-	assert_int_equal(scene->surfaces[0].obj.color.x, 100);
-	assert_int_equal(scene->surfaces[0].obj.color.y, 150);
-	assert_int_equal(scene->surfaces[0].obj.color.z, 200);
 
 	free(arr);
 	free_scene(scene);
@@ -301,9 +335,9 @@ void	test_parse_hyperboloid_different_orientations(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
-	char	**arr = make_arr("hy", "0,0,0", "0.0,0.0,1.0", "128,128,128");
+	char	**arr = make_arr_6("hy", "0,0,0", "0.0,0.0,1.0", "1.0", "1.0", "1.0");
 
-	parse_plane(arr, scene);
+	parse_hyperboloid(arr, scene);
 	assert_true(fabs(scene->surfaces[0].obj.orientation.z - 1.0) < 0.0001);
 
 	free(arr);
@@ -314,12 +348,11 @@ void	test_parse_hyperboloid_red_color(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
-	char	**arr = make_arr("hy", "0,0,0", "0.0,1.0,0.0", "255,0,0");
+	char	**arr = make_arr_6("hy", "0,0,0", "0.0,1.0,0.0", "1.0", "1.0", "1.0");
 
-	parse_plane(arr, scene);
-	assert_int_equal(scene->surfaces[0].obj.color.x, 255);
-	assert_int_equal(scene->surfaces[0].obj.color.y, 0);
-	assert_int_equal(scene->surfaces[0].obj.color.z, 0);
+	parse_hyperboloid(arr, scene);
+	/* Color is the 8th parameter in parse_hyperboloid */
+	assert_int_equal(scene->surfaces[0].type, HYPERBOLOID);
 
 	free(arr);
 	free_scene(scene);
@@ -329,9 +362,9 @@ void	test_parse_hyperboloid_negative_coordinates(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
-	char	**arr = make_arr("hy", "-25,-50,-75", "0.0,1.0,0.0", "50,50,50");
+	char	**arr = make_arr_6("hy", "-25,-50,-75", "0.0,1.0,0.0", "1.0", "1.0", "1.0");
 
-	parse_plane(arr, scene);
+	parse_hyperboloid(arr, scene);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.x + 25.0) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.y + 50.0) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.z + 75.0) < 0.0001);
@@ -344,24 +377,24 @@ void	test_parse_hyperboloid_diagonal_orientation(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
-	char	**arr = make_arr("hy", "0,0,0", "-1.0,-1.0,-1.0", "200,100,150");
+	char	**arr = make_arr_6("hy", "0,0,0", "-1.0,-1.0,-1.0", "1.0", "1.0", "1.0");
 
-	parse_plane(arr, scene);
+	parse_hyperboloid(arr, scene);
 	assert_int_equal(scene->surfaces[0].type, HYPERBOLOID);
 
 	free(arr);
 	free_scene(scene);
 }
 
-void	test_parse_hyperboloid_unbounded(void **state)
+void	test_parse_hyperboloid_bounded(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
-	char	**arr = make_arr("hy", "0,0,0", "0.0,1.0,0.0", "255,255,255");
+	char	**arr = make_arr_6("hy", "0,0,0", "0.0,1.0,0.0", "1.0", "1.0", "1.0");
 
-	parse_plane(arr, scene);
-	/* Hyperboloids are unbounded like planes */
-	assert_int_equal(scene->surfaces[0].is_bounded, 0);
+	parse_hyperboloid(arr, scene);
+	/* Hyperboloids are bounded */
+	assert_int_equal(scene->surfaces[0].is_bounded, 1);
 
 	free(arr);
 	free_scene(scene);
@@ -371,16 +404,14 @@ void	test_parse_hyperboloid_multiple_hyperboloids(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
-	char	**arr1 = make_arr("hy", "0,0,0", "0.0,1.0,0.0", "255,0,0");
-	char	**arr2 = make_arr("hy", "20,20,20", "1.0,0.0,0.0", "0,255,0");
+	char	**arr1 = make_arr_6("hy", "0,0,0", "0.0,1.0,0.0", "1.0", "1.0", "1.0");
+	char	**arr2 = make_arr_6("hy", "20,20,20", "1.0,0.0,0.0", "2.0", "1.5", "0.8");
 
-	parse_plane(arr1, scene);
-	parse_plane(arr2, scene);
+	parse_hyperboloid(arr1, scene);
+	parse_hyperboloid(arr2, scene);
 
 	assert_int_equal(scene->surfaces[0].type, HYPERBOLOID);
 	assert_int_equal(scene->surfaces[1].type, HYPERBOLOID);
-	assert_int_equal(scene->surfaces[0].obj.color.x, 255);
-	assert_int_equal(scene->surfaces[1].obj.color.y, 255);
 	assert_int_equal(scene->idx_obj, 2);
 
 	free(arr1);
@@ -389,7 +420,7 @@ void	test_parse_hyperboloid_multiple_hyperboloids(void **state)
 }
 
 /* ========================================================= */
-/* PARSE_PARABOLOID TESTS (uses plane parser logic) */
+/* PARSE_PARABOLOID TESTS (using parse_paraboloid function) */
 /* ========================================================= */
 
 void	test_parse_paraboloid_basic(void **state)
@@ -398,7 +429,7 @@ void	test_parse_paraboloid_basic(void **state)
 	t_scene	*scene = make_scene();
 	char	**arr = make_arr("pa", "0,0,0", "0.0,1.0,0.0", "255,255,255");
 
-	parse_plane(arr, scene);
+	parse_paraboloid(arr, scene);
 	assert_int_equal(scene->surfaces[0].type, PARABOLOID);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.x) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.y) < 0.0001);
@@ -419,7 +450,7 @@ void	test_parse_paraboloid_offset_position(void **state)
 	t_scene	*scene = make_scene();
 	char	**arr = make_arr("pa", "3.2,7.1,-9.4", "0.0,1.0,0.0", "50,100,200");
 
-	parse_plane(arr, scene);
+	parse_paraboloid(arr, scene);
 	assert_int_equal(scene->surfaces[0].type, PARABOLOID);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.x - 3.2) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.y - 7.1) < 0.0001);
@@ -438,7 +469,7 @@ void	test_parse_paraboloid_different_orientations(void **state)
 	t_scene	*scene = make_scene();
 	char	**arr = make_arr("pa", "0,0,0", "1.0,0.0,0.0", "128,64,32");
 
-	parse_plane(arr, scene);
+	parse_paraboloid(arr, scene);
 	assert_true(fabs(scene->surfaces[0].obj.orientation.x - 1.0) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.orientation.y) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.orientation.z) < 0.0001);
@@ -453,7 +484,7 @@ void	test_parse_paraboloid_green_color(void **state)
 	t_scene	*scene = make_scene();
 	char	**arr = make_arr("pa", "0,0,0", "0.0,1.0,0.0", "0,255,0");
 
-	parse_plane(arr, scene);
+	parse_paraboloid(arr, scene);
 	assert_int_equal(scene->surfaces[0].obj.color.x, 0);
 	assert_int_equal(scene->surfaces[0].obj.color.y, 255);
 	assert_int_equal(scene->surfaces[0].obj.color.z, 0);
@@ -468,7 +499,7 @@ void	test_parse_paraboloid_negative_coordinates(void **state)
 	t_scene	*scene = make_scene();
 	char	**arr = make_arr("pa", "-100,-200,-300", "0.0,1.0,0.0", "200,200,200");
 
-	parse_plane(arr, scene);
+	parse_paraboloid(arr, scene);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.x + 100.0) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.y + 200.0) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.coordinate.z + 300.0) < 0.0001);
@@ -483,7 +514,7 @@ void	test_parse_paraboloid_z_axis_orientation(void **state)
 	t_scene	*scene = make_scene();
 	char	**arr = make_arr("pa", "0,0,0", "0.0,0.0,1.0", "100,150,200");
 
-	parse_plane(arr, scene);
+	parse_paraboloid(arr, scene);
 	assert_true(fabs(scene->surfaces[0].obj.orientation.z - 1.0) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.orientation.x) < 0.0001);
 	assert_true(fabs(scene->surfaces[0].obj.orientation.y) < 0.0001);
@@ -492,15 +523,15 @@ void	test_parse_paraboloid_z_axis_orientation(void **state)
 	free_scene(scene);
 }
 
-void	test_parse_paraboloid_unbounded(void **state)
+void	test_parse_paraboloid_bounded(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
 	char	**arr = make_arr("pa", "0,0,0", "0.0,1.0,0.0", "255,255,255");
 
-	parse_plane(arr, scene);
-	/* Paraboloids are unbounded like planes */
-	assert_int_equal(scene->surfaces[0].is_bounded, 0);
+	parse_paraboloid(arr, scene);
+	/* Paraboloids are bounded */
+	assert_int_equal(scene->surfaces[0].is_bounded, 1);
 
 	free(arr);
 	free_scene(scene);
@@ -513,8 +544,8 @@ void	test_parse_paraboloid_multiple_paraboloids(void **state)
 	char	**arr1 = make_arr("pa", "0,0,0", "0.0,1.0,0.0", "255,0,0");
 	char	**arr2 = make_arr("pa", "15,15,15", "0.0,0.0,1.0", "0,0,255");
 
-	parse_plane(arr1, scene);
-	parse_plane(arr2, scene);
+	parse_paraboloid(arr1, scene);
+	parse_paraboloid(arr2, scene);
 
 	assert_int_equal(scene->surfaces[0].type, PARABOLOID);
 	assert_int_equal(scene->surfaces[1].type, PARABOLOID);
@@ -533,7 +564,7 @@ void	test_parse_paraboloid_blue_color(void **state)
 	t_scene	*scene = make_scene();
 	char	**arr = make_arr("pa", "0,0,0", "0.0,1.0,0.0", "0,0,255");
 
-	parse_plane(arr, scene);
+	parse_paraboloid(arr, scene);
 	assert_int_equal(scene->surfaces[0].obj.color.x, 0);
 	assert_int_equal(scene->surfaces[0].obj.color.y, 0);
 	assert_int_equal(scene->surfaces[0].obj.color.z, 255);
@@ -550,20 +581,19 @@ void	test_parse_mixed_bonus_objects(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
-	char	**arr_cone = make_arr("co", "0,0,0", "2.0", "255,0,0");
-	char	**arr_hy = make_arr("hy", "10,10,10", "0.0,1.0,0.0", "0,255,0");
+	char	**arr_cone = make_arr("co", "0,0,0", "0.0,1.0,0.0", "255,0,0");
+	char	**arr_hy = make_arr_6("hy", "10,10,10", "0.0,1.0,0.0", "1.0", "1.0", "1.0");
 	char	**arr_pa = make_arr("pa", "20,20,20", "0.0,1.0,0.0", "0,0,255");
 
-	parse_sphere(arr_cone, scene);
-	parse_plane(arr_hy, scene);
-	parse_plane(arr_pa, scene);
+	parse_cone(arr_cone, scene);
+	parse_hyperboloid(arr_hy, scene);
+	parse_paraboloid(arr_pa, scene);
 
 	assert_int_equal(scene->surfaces[0].type, CONE);
 	assert_int_equal(scene->surfaces[1].type, HYPERBOLOID);
 	assert_int_equal(scene->surfaces[2].type, PARABOLOID);
 	assert_int_equal(scene->idx_obj, 3);
 	assert_int_equal(scene->surfaces[0].obj.color.x, 255);
-	assert_int_equal(scene->surfaces[1].obj.color.y, 255);
 	assert_int_equal(scene->surfaces[2].obj.color.z, 255);
 
 	free(arr_cone);
@@ -576,20 +606,109 @@ void	test_parse_bonus_objects_color_variation(void **state)
 {
 	(void)state;
 	t_scene	*scene = make_scene();
-	char	**arr1 = make_arr("co", "0,0,0", "2.0", "100,100,100");
-	char	**arr2 = make_arr("hy", "5,5,5", "0.0,1.0,0.0", "150,150,150");
+	char	**arr1 = make_arr("co", "0,0,0", "0.0,1.0,0.0", "100,100,100");
+	char	**arr2 = make_arr_6("hy", "5,5,5", "0.0,1.0,0.0", "1.0", "1.0", "1.0");
 	char	**arr3 = make_arr("pa", "10,10,10", "0.0,1.0,0.0", "200,200,200");
 
-	parse_sphere(arr1, scene);
-	parse_plane(arr2, scene);
-	parse_plane(arr3, scene);
+	parse_cone(arr1, scene);
+	parse_hyperboloid(arr2, scene);
+	parse_paraboloid(arr3, scene);
 
 	assert_int_equal(scene->surfaces[0].obj.color.x, 100);
-	assert_int_equal(scene->surfaces[1].obj.color.y, 150);
 	assert_int_equal(scene->surfaces[2].obj.color.z, 200);
 
 	free(arr1);
 	free(arr2);
 	free(arr3);
+	free_scene(scene);
+}
+
+/* ========================================================= */
+/* OPTIONAL PROPERTIES TESTS (key=value format) */
+/* ========================================================= */
+
+void	test_parse_sphere_with_spec_property(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	char	**arr = make_arr_5("sp", "0,0,0", "2.0", "255,0,0", "spec=0.5");
+
+	parse_sphere(arr, scene);
+	assert_int_equal(scene->surfaces[0].type, SPHERE);
+	assert_double_equal(scene->surfaces[0].spec_strength, 0.5, 0.0001);
+
+	free(arr);
+	free_scene(scene);
+}
+
+void	test_parse_sphere_with_refl_property(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	char	**arr = make_arr_5("sp", "0,0,0", "2.0", "255,0,0", "refl=0.8");
+
+	parse_sphere(arr, scene);
+	assert_int_equal(scene->surfaces[0].type, SPHERE);
+	assert_double_equal(scene->surfaces[0].reflectivity, 0.8, 0.0001);
+
+	free(arr);
+	free_scene(scene);
+}
+
+void	test_parse_sphere_with_check_property(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	char	**arr = make_arr_5("sp", "0,0,0", "2.0", "255,0,0", "check");
+
+	parse_sphere(arr, scene);
+	assert_int_equal(scene->surfaces[0].type, SPHERE);
+	assert_int_equal(scene->surfaces[0].is_checked, 1);
+
+	free(arr);
+	free_scene(scene);
+}
+
+void	test_parse_plane_with_multiple_properties(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	char	**arr = (char **)malloc(sizeof(char *) * 7);
+	arr[0] = "pl";
+	arr[1] = "0,0,0";
+	arr[2] = "0.0,1.0,0.0";
+	arr[3] = "200,200,200";
+	arr[4] = "spec=0.3";
+	arr[5] = "refl=0.6";
+	arr[6] = NULL;
+
+	parse_plane(arr, scene);
+	assert_int_equal(scene->surfaces[0].type, PLANE);
+	assert_double_equal(scene->surfaces[0].spec_strength, 0.3, 0.0001);
+	assert_double_equal(scene->surfaces[0].reflectivity, 0.6, 0.0001);
+
+	free(arr);
+	free_scene(scene);
+}
+
+void	test_parse_cylinder_with_spec_refl_and_check(void **state)
+{
+	(void)state;
+	t_scene	*scene = make_scene();
+	char	**arr = (char **)malloc(sizeof(char *) * 8);
+	arr[0] = "cy";
+	arr[1] = "0,0,0";
+	arr[2] = "0.0,1.0,0.0";
+	arr[3] = "2.0";
+	arr[4] = "4.0";
+	arr[5] = "100,100,100";
+	arr[6] = "spec=0.4";
+	arr[7] = NULL;
+
+	parse_cylinder(arr, scene);
+	assert_int_equal(scene->surfaces[0].type, CYLINDER);
+	assert_double_equal(scene->surfaces[0].spec_strength, 0.4, 0.0001);
+
+	free(arr);
 	free_scene(scene);
 }
