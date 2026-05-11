@@ -1,43 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   validate_properties2_bonus.c                       :+:      :+:    :+:   */
+/*   validate_key_value_bonus.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/09 17:47:16 by thaperei          #+#    #+#             */
-/*   Updated: 2026/05/11 18:11:28 by thaperei         ###   ########.fr       */
+/*   Created: 2026/05/11 18:11:58 by thaperei          #+#    #+#             */
+/*   Updated: 2026/05/11 18:14:33 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "validation_bonus.h"
-#include <fcntl.h>
-#include <unistd.h>
 
-int	is_valid_path(char *path)
+int	is_key_value_pair(char *str, char *key)
 {
-	int	fd;
-	int	str_len;
+	int	key_len;
 
-	if (!path)
+	if (!str || !key)
 		return (0);
-	str_len = ft_strlen(path);
-	if (str_len == 4 || ft_strcmp(path + str_len - 4, ".xpm") == 0)
+	key_len = ft_strlen(key);
+	if (ft_strncmp(str, key, key_len) != 0)
 		return (0);
-	fd = open(path, O_RDONLY);
-	if (fd < 0)
-	{
-		close(fd);
+	if (str[key_len] != '=')
 		return (0);
-	}
-	close(fd);
 	return (1);
 }
 
-int	is_between_zero_and_one(char *number)
+char	*get_key_value(char *str)
 {
-	double	num;
+	char	*equal_pos;
 
-	num = ft_atod(number);
-	return (num > 0.0 && num <= 1.0);
+	equal_pos = ft_strchr(str, '=');
+	if (!equal_pos)
+		return (NULL);
+	return (equal_pos + 1);
 }

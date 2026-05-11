@@ -6,7 +6,7 @@
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 10:59:09 by hermarti          #+#    #+#             */
-/*   Updated: 2026/05/10 20:32:09 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/05/11 17:54:01 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ double	calc_shadow(t_env *env, t_vec4 hit_p, t_surface *obj, t_light *light)
 	double			light_dist;
 	double			shadow_t;
 
+	(void)light;
 	light_dist = vec4_mag(vec4_sub(env->scene.light->origin, hit_p));
 	shadow_ray = (t_ray){vec4_normalize(vec4_sub(env->scene.light->origin,
 				hit_p)), hit_p, 0};

@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 13:26:58 by thaperei          #+#    #+#             */
-/*   Updated: 2026/05/10 20:41:09 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/05/11 18:01:24 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,23 +51,22 @@ void	parse_elements(t_scene *scene)
 	char						**arr;
 	const t_hash_item_parser	parse_objs[] = {{"A", &parse_ambient},
 	{"C", &parse_camera}, {"L", &parse_light}, {"sp", &parse_sphere},
-	{"pl", &parse_plane}, {"cy", &parse_cylinder}, {"co", &parse_cone}, 
+	{"pl", &parse_plane}, {"cy", &parse_cylinder}, {"co", &parse_cone},
 	{"hy", &parse_hyperboloid}, {"pa", &parse_paraboloid}, {NULL, NULL}};
 
 	aux = scene->objs;
 	init_elements_of_scene(scene);
 	while (aux)
 	{
-		i = 0;
+		i = -1;
 		arr = ft_split_charset(aux->content, " 	\n\r\f\v");
-		while (parse_objs[i].key)
+		while (parse_objs[++i].key)
 		{
 			if (ft_strcmp(parse_objs[i].key, arr[0]) == 0)
 			{
 				parse_objs[i].parse(arr, scene);
 				break ;
 			}
-			i++;
 		}
 		free_arr(arr);
 		aux = aux->next;

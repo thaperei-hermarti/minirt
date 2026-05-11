@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/15 16:00:03 by thaperei          #+#    #+#             */
-/*   Updated: 2026/05/10 17:41:21 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/05/11 18:13:42 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,7 @@ int		is_valid_cone(char **arr);
 int		is_valid_hyperboloid(char **arr);
 int		is_valid_paraboloid(char **arr);
 int		has_enough_elements(t_obj_count count);
+// Key Value functions
+int		is_key_value_pair(char *str, char *key);
+char	*get_key_value(char *str);
 #endif
