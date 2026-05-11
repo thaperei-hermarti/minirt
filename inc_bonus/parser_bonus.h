@@ -29,6 +29,9 @@ void	parse_light(char **arr, t_scene *scene);
 void	parse_sphere(char **arr, t_scene *scene);
 void	parse_plane(char **arr, t_scene *scene);
 void	parse_cylinder(char **arr, t_scene *scene);
+void	parse_cone(char **arr, t_scene *scene);
+void	parse_hyperboloid(char **arr, t_scene *scene);
+void	parse_paraboloid(char **arr, t_scene *scene);
 
 // Low-level savers
 void	save_double(const char *token, double *dst);

@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/18 13:26:58 by thaperei          #+#    #+#             */
-/*   Updated: 2026/05/10 17:10:35 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/05/10 20:41:09 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ void	parse_elements(t_scene *scene)
 	char						**arr;
 	const t_hash_item_parser	parse_objs[] = {{"A", &parse_ambient},
 	{"C", &parse_camera}, {"L", &parse_light}, {"sp", &parse_sphere},
-	{"pl", &parse_plane}, {"cy", &parse_cylinder}, {NULL, NULL}};
+	{"pl", &parse_plane}, {"cy", &parse_cylinder}, {"co", &parse_cone}, 
+	{"hy", &parse_hyperboloid}, {"pa", &parse_paraboloid}, {NULL, NULL}};
 
 	aux = scene->objs;
 	init_elements_of_scene(scene);
