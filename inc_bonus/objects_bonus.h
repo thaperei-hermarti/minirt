@@ -6,7 +6,7 @@
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/07 12:15:11 by hermarti          #+#    #+#             */
-/*   Updated: 2026/05/09 19:36:08 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/05/11 18:58:37 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct s_surface_parameters
 	double			c;
 	double			k;
 	double			reflectivity;
+	double			spec_strength;
 	t_surface_type	type;
 	t_color			color;
 	char			*texture_path;

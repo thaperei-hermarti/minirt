@@ -6,7 +6,7 @@
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/07 12:15:21 by hermarti          #+#    #+#             */
-/*   Updated: 2026/05/09 19:35:58 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/05/10 20:30:59 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,6 @@ void				put_pixel_row(t_window *window, int y,
 						unsigned int *colors);
 void				render_loop(t_env *env);
 
-double				calc_shadow(t_env *env, t_vec4 hit_p, t_surface *obj,
-						t_light *light);
-
 typedef struct s_light_componets_params
 {
 	t_vec4			n;
@@ -65,6 +62,8 @@ typedef struct s_light_componets_params
 	t_light			*light;
 }					t_light_componets_params;
 
+double				calc_shadow(t_env *env, t_vec4 hit_p, t_surface *obj,
+						t_light *light);
 t_vec4				calc_ambient(t_env *env, t_surface *obj);
 t_vec4				calc_light_components(t_env *env, t_surface *obj,
 						t_light_componets_params *p);

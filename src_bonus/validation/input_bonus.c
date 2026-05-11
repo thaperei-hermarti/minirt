@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 10:11:05 by thaperei          #+#    #+#             */
-/*   Updated: 2026/05/10 17:11:34 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/05/10 20:16:51 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ int	is_allowed_object(char **arr, int idx)
 	{"sp", &is_valid_sphere, "Invalid sphere"},
 	{"pl", &is_valid_plane, "Invalid plane"},
 	{"cy", &is_valid_cylinder, "Invalid cylinder"},
-	{"co", &is_valid_sphere, "Invalid cone"},
-	{"hy", &is_valid_plane, "Invalid hyperboloid"},
-	{"pa", &is_valid_plane, "Invalid paraboloid"},
+	{"co", &is_valid_cone, "Invalid cone"},
+	{"hy", &is_valid_hyperboloid, "Invalid hyperboloid"},
+	{"pa", &is_valid_paraboloid, "Invalid paraboloid"},
 	{NULL, NULL, "Non-existent object"}};
 
 	while (func_objs[++idx].key)
@@ -81,10 +81,10 @@ int	is_valid_object(t_list *objs, t_obj_count *obj_count)
 	char	**arr;
 	int		i;
 
-	arr = ft_split_charset(objs->content, " 	\r\n\f\v");
+	arr = ft_split_charset(objs->content, " 	\v\f\r");
 	if (!arr)
 		return (0);
-	i = 0;
+	i = -1;
 	if (!is_allowed_object(arr, i))
 	{
 		free_arr(arr);
@@ -110,7 +110,7 @@ int	is_valid_input(char *file, t_scene *scene)
 	if (!is_valid_extension(file) || read_file(file, scene) == 0
 		|| !scene->objs)
 		return (0);
-	obj_count = (t_obj_count){.ambient = 0, .camera = 0, .light = 0, .obj = 0};
+	obj_count = (t_obj_count){};
 	aux = scene->objs;
 	while (aux)
 	{
