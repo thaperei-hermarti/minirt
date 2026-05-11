@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/09 17:47:16 by thaperei          #+#    #+#             */
-/*   Updated: 2026/05/11 18:11:28 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/05/11 20:14:29 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	is_valid_path(char *path)
 	if (!path)
 		return (0);
 	str_len = ft_strlen(path);
-	if (str_len == 4 || ft_strcmp(path + str_len - 4, ".xpm") == 0)
+	if (str_len == 4 || ft_strcmp(path + str_len - 4, ".xpm") != 0)
 		return (0);
 	fd = open(path, O_RDONLY);
 	if (fd < 0)

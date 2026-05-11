@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 10:11:05 by thaperei          #+#    #+#             */
-/*   Updated: 2026/05/10 20:16:51 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/05/11 19:48:03 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	is_valid_object(t_list *objs, t_obj_count *obj_count)
 	char	**arr;
 	int		i;
 
-	arr = ft_split_charset(objs->content, " 	\v\f\r");
+	arr = ft_split_charset(objs->content, " 	\v\f\r\n");
 	if (!arr)
 		return (0);
 	i = -1;
