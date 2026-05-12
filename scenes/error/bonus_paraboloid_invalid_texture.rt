@@ -1,0 +1,5 @@
+# Error: paraboloid texture path invalid
+A 0.2 255,255,255
+C 0,0,5 0,0,-1 60
+L 10,10,10 0.8 255,255,255
+pa 0,0,0 0,1,0 1 1 200,200,200 texture=./texture/missing.xpm
