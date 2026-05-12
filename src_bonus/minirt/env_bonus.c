@@ -29,12 +29,12 @@ void	*init_env(t_env *env, int argc, char **argv)
 	if (!is_valid_input(argv[1], &env->scene))
 		return (NULL);
 	parse_elements(&env->scene);
-	load_scene_textures(env);
 	return (env);
 }
 
 void	*destroy_env(t_env *env)
 {
+	destroy_scene_textures(env);
 	destroy_window(&env->window);
 	free_scene(&env->scene);
 	env = NULL;

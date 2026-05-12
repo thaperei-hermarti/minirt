@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "free_memory_bonus.h"
 #include "minirt_bonus.h"
+#include "validation_bonus.h"
 #include <stdlib.h>
 
 int	main(int argc, char *argv[])
@@ -19,7 +21,17 @@ int	main(int argc, char *argv[])
 
 	if (!init_env(&env, argc, argv))
 		return (EXIT_FAILURE);
-	init_window(&env.window, WINDOW_WIDTH, WINDOW_HEIGHT, "MINIRT");
+	if (!init_window(&env.window, WINDOW_WIDTH, WINDOW_HEIGHT, "MINIRT"))
+	{
+		free_scene(&env.scene);
+		return (EXIT_FAILURE);
+	}
+	if (!load_scene_textures(&env))
+	{
+		show_error("Failed to load scene textures");
+		destroy_env(&env);
+		return (EXIT_FAILURE);
+	}
 	set_window_hooks(&env);
 	render_loop(&env);
 	destroy_env(&env);

@@ -59,11 +59,13 @@ static void	set_surface_properties(t_surface *res, t_surface_parameters p)
 	res->obj.mat = compute_final_mat(p, res->obj.mat);
 	res->obj.orientation = get_orientation(p.orientation);
 	res->obj.reflectivity = p.reflectivity;
-	res->obj.color = p.color;
-	res->reflectivity = p.reflectivity;
 	res->obj.material = (t_material){
 		.color = p.color,
-		.specular = (t_specular){0},
+		.specular = (t_specular){
+		.index = 16.0,
+		.strenght = p.spec_strength,
+		.color = (t_color){255, 255, 255, 0}
+	},
 		.reflect = p.reflectivity
 	};
 	res->type = p.type;

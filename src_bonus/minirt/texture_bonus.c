@@ -28,11 +28,13 @@ int	load_texture(t_env *env, t_texture *tex, const char *path)
 	return (tex->img.img_addr != NULL);
 }
 
-void	load_scene_textures(t_env *env)
+int	load_scene_textures(t_env *env)
 {
 	unsigned int	i;
 	t_surface		*s;
+	int				ok;
 
+	ok = 1;
 	i = 0;
 	while (i < env->scene.num_objs)
 	{
@@ -40,7 +42,32 @@ void	load_scene_textures(t_env *env)
 		if (s->has_texture && s->texture_path)
 		{
 			if (!load_texture(env, &s->obj.texture, s->texture_path))
+			{
 				s->has_texture = 0;
+				ok = 0;
+			}
+		}
+		i++;
+	}
+	return (ok);
+}
+
+void	destroy_scene_textures(t_env *env)
+{
+	unsigned int	i;
+	t_surface		*s;
+
+	if (!env->window.mlx)
+		return ;
+	i = 0;
+	while (env->scene.surfaces && i < env->scene.num_objs)
+	{
+		s = &env->scene.surfaces[i];
+		if (s->obj.texture.img.img)
+		{
+			mlx_destroy_image(env->window.mlx, s->obj.texture.img.img);
+			s->obj.texture.img.img = NULL;
+			s->obj.texture.img.img_addr = NULL;
 		}
 		i++;
 	}

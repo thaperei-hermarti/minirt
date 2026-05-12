@@ -86,13 +86,7 @@ void	apply_checkerboard(t_surface *s, t_uv uv)
 	color[0] = (t_color){255, 255, 255, 0};
 	color[1] = (t_color){0, 0, 0, 0};
 	if ((u_check + v_check) % 2 == 0)
-	{
 		s->obj.material.color = color[0];
-		s->obj.color = color[0];
-	}
 	else
-	{
 		s->obj.material.color = color[1];
-		s->obj.color = color[1];
-	}
 }

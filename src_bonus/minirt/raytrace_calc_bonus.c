@@ -85,7 +85,8 @@ t_vec4	calc_light_components(t_env *env, t_surface *obj,
 	view_dir = vec4_normalize(vec4_sub(env->scene.camera.origin, p->hit_p));
 	diff = fmax(vec4_dot_prod(p->n, light_dir), 0.0);
 	spec = pow(fmax(vec4_dot_prod(view_dir, vec4_reflect(vec4_scale(light_dir,
-							-1.0), p->n)), 0.0), 32.0);
+							-1.0), p->n)), 0.0),
+			obj->obj.material.specular.index);
 	return (vec4_add(calc_diffuse(obj, p->light, diff, p->shadow),
 			calc_specular(obj, p->light, spec, p->shadow)));
 }

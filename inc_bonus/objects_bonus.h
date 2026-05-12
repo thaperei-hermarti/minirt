@@ -64,7 +64,6 @@ typedef struct s_obj
 	t_vec4			orientation;
 	double			min;
 	double			max;
-	t_color			color;
 	double			reflectivity;
 	t_texture		texture;
 	t_material		material;
@@ -84,7 +83,6 @@ typedef struct s_surface
 {
 	t_obj			obj;
 	t_surface_type	type;
-	double			reflectivity;
 	char			*texture_path;
 	unsigned char	is_bounded : 1;
 	unsigned char	is_checked : 1;

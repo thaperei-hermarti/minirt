@@ -69,7 +69,8 @@ void				put_pixel_row(t_window *window, int y,
 						unsigned int *colors);
 void				render_loop(t_env *env);
 
-void				load_scene_textures(t_env *env);
+int					load_scene_textures(t_env *env);
+void				destroy_scene_textures(t_env *env);
 
 t_uv				get_generic_uv(t_surface *s, t_vec4 n, t_vec4 hit_p);
 void				apply_checkerboard(t_surface *s, t_uv uv);

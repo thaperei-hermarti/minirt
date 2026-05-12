@@ -19,7 +19,6 @@ static t_shade_hit	shade_color(t_env *env, t_ray *ray, double t,
 	t_shade_hit	hit;
 	t_uv		uv;
 	t_color		base_color;
-	t_color		base_obj_color;
 	int			color;
 
 	hit.hit_p = vec4_add(ray->orig, vec4_scale(ray->dir, t));
@@ -28,7 +27,6 @@ static t_shade_hit	shade_color(t_env *env, t_ray *ray, double t,
 		hit.n = vec4_scale(hit.n, -1.0);
 	uv = get_generic_uv(surface, hit.n, hit.hit_p);
 	base_color = surface->obj.material.color;
-	base_obj_color = surface->obj.color;
 	if (surface->is_checked)
 		apply_checkerboard(surface, uv);
 	if (surface->has_texture)
@@ -36,7 +34,6 @@ static t_shade_hit	shade_color(t_env *env, t_ray *ray, double t,
 	hit.hit_p = vec4_add(hit.hit_p, vec4_scale(hit.n, 0.001));
 	color = calc_lighting(env, hit.n, hit.hit_p, surface);
 	surface->obj.material.color = base_color;
-	surface->obj.color = base_obj_color;
 	hit.color = int_to_vec4(color);
 	return (hit);
 }
