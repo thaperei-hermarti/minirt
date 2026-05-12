@@ -1,0 +1,27 @@
+# Ambient & Camera
+A  0.05  255,255,255
+C  0,5,-20  0,-0.2,1  70
+
+# Multi-Light
+L  -6,8,-8  0.8  255,255,255
+L  6,8,-8   0.8  255,255,255
+
+# ID | POS | DIR | PARAMS | RGB | SPEC | REFL | TEXTURE or check
+
+# Sphere: diameter
+sp  -8,0,0   4.0   255,0,0  spec=0.1 refl=0.1 texture=./texture/bump_map.xpm
+
+# Plane: (no extra params)
+pl   0,-2,0  0,1,0   200,200,200  refl=0.3 check
+
+# Cylinder: diameter height
+cy  -4,0,0   0,1,0   2.0 4.0   0,255,0   spec=0.5 check
+
+# Cone: angle height
+co   0,0,0   0,1,0   30.0 4.0   0,0,255  spec=0.5 refl=0.9
+
+# Hyperboloid: a b c height
+hy   4,0,0   0,1,0   1.0 1.0 1.0 4.0   255,255,0  spec=0.6
+
+# Paraboloid: k height
+pa   8,-2,0  0,1,0   0.5 4.0   0,255,255  spec=0.6
