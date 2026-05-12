@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/26 13:40:48 by thaperei          #+#    #+#             */
-/*   Updated: 2026/05/10 19:50:00 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/05/11 21:06:03 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -387,16 +387,16 @@ void	test_sphere_check_invalid_with_value(void **state)
 void	test_sphere_texture_valid(void **state)
 {
 	(void)state;
-	write_rt("/tmp/test_texture.ppm", "P3\n1 1\n255\n255 0 0\n");
-	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "texture=/tmp/test_texture.ppm", NULL};
+	write_rt("/tmp/test_texture.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "texture=/tmp/test_texture.xpm", NULL};
 	assert_int_equal(is_valid_sphere(arr), 1);
-	unlink("/tmp/test_texture.ppm");
+	unlink("/tmp/test_texture.xpm");
 }
 
 void	test_sphere_texture_invalid_path(void **state)
 {
 	(void)state;
-	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "texture=/nonexistent/path.ppm", NULL};
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "texture=/nonexistent/path.xpm", NULL};
 	assert_int_equal(is_valid_sphere(arr), 0);
 }
 
@@ -435,10 +435,10 @@ void	test_sphere_all_properties_valid(void **state)
 void	test_sphere_check_and_texture_exclusive_both_present(void **state)
 {
 	(void)state;
-	write_rt("/tmp/test_texture2.ppm", "P3\n1 1\n255\n255 0 0\n");
-	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "spec=0.5", "check", "texture=/tmp/test_texture2.ppm", NULL};
+	write_rt("/tmp/test_texture2.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "spec=0.5", "check", "texture=/tmp/test_texture2.xpm", NULL};
 	assert_int_equal(is_valid_sphere(arr), 0);
-	unlink("/tmp/test_texture2.ppm");
+	unlink("/tmp/test_texture2.xpm");
 }
 
 /* =========================================================
@@ -497,10 +497,10 @@ void	test_plane_check_valid_zero(void **state)
 void	test_plane_texture_valid(void **state)
 {
 	(void)state;
-	write_rt("/tmp/test_texture3.ppm", "P3\n1 1\n255\n255 0 0\n");
-	char *arr[] = {"pl", "0,0,0", "0,1,0", "255,255,255", "texture=/tmp/test_texture3.ppm", NULL};
+	write_rt("/tmp/test_texture3.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"pl", "0,0,0", "0,1,0", "255,255,255", "texture=/tmp/test_texture3.xpm", NULL};
 	assert_int_equal(is_valid_plane(arr), 1);
-	unlink("/tmp/test_texture3.ppm");
+	unlink("/tmp/test_texture3.xpm");
 }
 
 void	test_plane_spec_refl_and_check(void **state)
@@ -513,10 +513,10 @@ void	test_plane_spec_refl_and_check(void **state)
 void	test_plane_check_and_texture_exclusive_both_present(void **state)
 {
 	(void)state;
-	write_rt("/tmp/test_texture4.ppm", "P3\n1 1\n255\n255 0 0\n");
-	char *arr[] = {"pl", "0,0,0", "0,1,0", "255,255,255", "check", "texture=/tmp/test_texture4.ppm", NULL};
+	write_rt("/tmp/test_texture4.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"pl", "0,0,0", "0,1,0", "255,255,255", "check", "texture=/tmp/test_texture4.xpm", NULL};
 	assert_int_equal(is_valid_plane(arr), 0);
-	unlink("/tmp/test_texture4.ppm");
+	unlink("/tmp/test_texture4.xpm");
 }
 
 /* =========================================================
@@ -575,10 +575,10 @@ void	test_cylinder_check_valid_zero(void **state)
 void	test_cylinder_texture_valid(void **state)
 {
 	(void)state;
-	write_rt("/tmp/test_texture5.ppm", "P3\n1 1\n255\n255 0 0\n");
-	char *arr[] = {"cy", "0,0,0", "0,1,0", "2.0", "4.0", "255,255,255", "texture=/tmp/test_texture5.ppm", NULL};
+	write_rt("/tmp/test_texture5.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"cy", "0,0,0", "0,1,0", "2.0", "4.0", "255,255,255", "texture=/tmp/test_texture5.xpm", NULL};
 	assert_int_equal(is_valid_cylinder(arr), 1);
-	unlink("/tmp/test_texture5.ppm");
+	unlink("/tmp/test_texture5.xpm");
 }
 
 void	test_cylinder_all_properties(void **state)
@@ -591,10 +591,10 @@ void	test_cylinder_all_properties(void **state)
 void	test_cylinder_check_and_texture_exclusive_both_present(void **state)
 {
 	(void)state;
-	write_rt("/tmp/test_texture6.ppm", "P3\n1 1\n255\n255 0 0\n");
-	char *arr[] = {"cy", "0,0,0", "0,1,0", "2.0", "4.0", "255,255,255", "check", "texture=/tmp/test_texture6.ppm", NULL};
+	write_rt("/tmp/test_texture6.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"cy", "0,0,0", "0,1,0", "2.0", "4.0", "255,255,255", "check", "texture=/tmp/test_texture6.xpm", NULL};
 	assert_int_equal(is_valid_cylinder(arr), 0);
-	unlink("/tmp/test_texture6.ppm");
+	unlink("/tmp/test_texture6.xpm");
 }
 
 /* =========================================================
@@ -660,10 +660,10 @@ void	test_cone_check_valid_zero(void **state)
 void	test_cone_texture_valid(void **state)
 {
 	(void)state;
-	write_rt("/tmp/test_texture7.ppm", "P3\n1 1\n255\n255 0 0\n");
-	char *arr[] = {"co", "0,0,0", "0,1,0", "30.0", "4.0", "255,0,0", "texture=/tmp/test_texture7.ppm", NULL};
+	write_rt("/tmp/test_texture7.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"co", "0,0,0", "0,1,0", "30.0", "4.0", "255,0,0", "texture=/tmp/test_texture7.xpm", NULL};
 	assert_int_equal(is_valid_cone(arr), 1);
-	unlink("/tmp/test_texture7.ppm");
+	unlink("/tmp/test_texture7.xpm");
 }
 
 void	test_cone_all_properties(void **state)
@@ -676,10 +676,10 @@ void	test_cone_all_properties(void **state)
 void	test_cone_check_and_texture_exclusive_both_present(void **state)
 {
 	(void)state;
-	write_rt("/tmp/test_texture8.ppm", "P3\n1 1\n255\n255 0 0\n");
-	char *arr[] = {"co", "0,0,0", "0,1,0", "30.0", "4.0", "255,0,0", "check", "texture=/tmp/test_texture8.ppm", NULL};
+	write_rt("/tmp/test_texture8.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"co", "0,0,0", "0,1,0", "30.0", "4.0", "255,0,0", "check", "texture=/tmp/test_texture8.xpm", NULL};
 	assert_int_equal(is_valid_cone(arr), 0);
-	unlink("/tmp/test_texture8.ppm");
+	unlink("/tmp/test_texture8.xpm");
 }
 
 /* =========================================================
@@ -738,10 +738,10 @@ void	test_hyperboloid_check_valid_zero(void **state)
 void	test_hyperboloid_texture_valid(void **state)
 {
 	(void)state;
-	write_rt("/tmp/test_texture9.ppm", "P3\n1 1\n255\n255 0 0\n");
-	char *arr[] = {"hy", "0,0,0", "0,1,0", "1.0", "1.0", "1.0", "4.0", "255,255,255", "texture=/tmp/test_texture9.ppm", NULL};
+	write_rt("/tmp/test_texture9.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"hy", "0,0,0", "0,1,0", "1.0", "1.0", "1.0", "4.0", "255,255,255", "texture=/tmp/test_texture9.xpm", NULL};
 	assert_int_equal(is_valid_hyperboloid(arr), 1);
-	unlink("/tmp/test_texture9.ppm");
+	unlink("/tmp/test_texture9.xpm");
 }
 
 void	test_hyperboloid_all_properties(void **state)
@@ -754,10 +754,10 @@ void	test_hyperboloid_all_properties(void **state)
 void	test_hyperboloid_check_and_texture_exclusive_both_present(void **state)
 {
 	(void)state;
-	write_rt("/tmp/test_texture10.ppm", "P3\n1 1\n255\n255 0 0\n");
-	char *arr[] = {"hy", "0,0,0", "0,1,0", "1.0", "1.0", "1.0", "4.0", "255,255,255", "check", "texture=/tmp/test_texture10.ppm", NULL};
+	write_rt("/tmp/test_texture10.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"hy", "0,0,0", "0,1,0", "1.0", "1.0", "1.0", "4.0", "255,255,255", "check", "texture=/tmp/test_texture10.xpm", NULL};
 	assert_int_equal(is_valid_hyperboloid(arr), 0);
-	unlink("/tmp/test_texture10.ppm");
+	unlink("/tmp/test_texture10.xpm");
 }
 
 /* =========================================================
@@ -823,10 +823,10 @@ void	test_paraboloid_check_valid_zero(void **state)
 void	test_paraboloid_texture_valid(void **state)
 {
 	(void)state;
-	write_rt("/tmp/test_texture11.ppm", "P3\n1 1\n255\n255 0 0\n");
-	char *arr[] = {"pa", "0,0,0", "0,1,0", "0.5", "4.0", "255,255,255", "texture=/tmp/test_texture11.ppm", NULL};
+	write_rt("/tmp/test_texture11.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"pa", "0,0,0", "0,1,0", "0.5", "4.0", "255,255,255", "texture=/tmp/test_texture11.xpm", NULL};
 	assert_int_equal(is_valid_paraboloid(arr), 1);
-	unlink("/tmp/test_texture11.ppm");
+	unlink("/tmp/test_texture11.xpm");
 }
 
 void	test_paraboloid_all_properties(void **state)
@@ -839,10 +839,10 @@ void	test_paraboloid_all_properties(void **state)
 void	test_paraboloid_check_and_texture_exclusive_both_present(void **state)
 {
 	(void)state;
-	write_rt("/tmp/test_texture12.ppm", "P3\n1 1\n255\n255 0 0\n");
-	char *arr[] = {"pa", "0,0,0", "0,1,0", "0.5", "4.0", "255,255,255", "check", "texture=/tmp/test_texture12.ppm", NULL};
+	write_rt("/tmp/test_texture12.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"pa", "0,0,0", "0,1,0", "0.5", "4.0", "255,255,255", "check", "texture=/tmp/test_texture12.xpm", NULL};
 	assert_int_equal(is_valid_paraboloid(arr), 0);
-	unlink("/tmp/test_texture12.ppm");
+	unlink("/tmp/test_texture12.xpm");
 }
 
 /* =========================================================
@@ -873,10 +873,10 @@ void	test_plane_only_check_no_spec_refl(void **state)
 void	test_cylinder_only_texture_no_check_spec_refl(void **state)
 {
 	(void)state;
-	write_rt("/tmp/test_texture13.ppm", "P3\n1 1\n255\n255 0 0\n");
-	char *arr[] = {"cy", "0,0,0", "0,1,0", "2.0", "4.0", "255,255,255", "texture=/tmp/test_texture13.ppm", NULL};
+	write_rt("/tmp/test_texture13.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"cy", "0,0,0", "0,1,0", "2.0", "4.0", "255,255,255", "texture=/tmp/test_texture13.xpm", NULL};
 	assert_int_equal(is_valid_cylinder(arr), 1);
-	unlink("/tmp/test_texture13.ppm");
+	unlink("/tmp/test_texture13.xpm");
 }
 
 void	test_cone_no_optional_properties(void **state)
