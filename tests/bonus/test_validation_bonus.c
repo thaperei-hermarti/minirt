@@ -6,14 +6,13 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/26 13:40:48 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/26 13:58:38 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/05/11 21:06:03 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "test_validation_bonus.h"
 #include "validation_bonus.h"
-#include "libft.h"
 #include "parser_bonus.h"
 #include "scene_bonus.h"
 #include <stdarg.h>
@@ -25,714 +24,970 @@
 #include <unistd.h>
 
 /* =========================================================
-   HELPERS — reuse the same pattern as test_valid_input.c
+   HELPERS
    ========================================================= */
 
 static t_scene  *make_scene(void)
 {
-    return (calloc(1, sizeof(t_scene)));
+	return (calloc(1, sizeof(t_scene)));
 }
 
 static void free_scene(t_scene *scene)
 {
-    t_list  *node;
-    t_list  *next;
+	t_list  *node;
+	t_list  *next;
 
-    node = scene->objs;
-    while (node)
-    {
-        next = node->next;
-        free(node->content);
-        free(node);
-        node = next;
-    }
-    free(scene);
+	node = scene->objs;
+	while (node)
+	{
+		next = node->next;
+		free(node->content);
+		free(node);
+		node = next;
+	}
+	free(scene);
 }
 
 static void write_rt(const char *path, const char *content)
 {
-    FILE    *f;
+	FILE    *f;
 
-    f = fopen(path, "w");
-    fputs(content, f);
-    fclose(f);
+	f = fopen(path, "w");
+	fputs(content, f);
+	fclose(f);
 }
 
 #define MANDATORY \
-    "A 0.5 255,255,255\n" \
-    "C 0,0,0 0.0,0.0,1.0 90\n" \
-    "L 0,5,0 0.8 255,255,255\n"
+	"A 0.5 255,255,255\n" \
+	"C 0,0,0 0.0,0.0,1.0 90\n" \
+	"L 0,5,0 0.8 255,255,255\n"
 
 /* =========================================================
-   CONE unit tests (uses is_valid_sphere: coords, float, color)
-   arr[0] = identifier "co"
-   arr[1] = coordinates
-   arr[2] = diameter (float)
-   arr[3] = color
+   CONE unit tests (mandatory: coords, dir, angle, height, color)
    ========================================================= */
 
-void    test_valid_cone_valid(void **state)
+void	test_valid_cone_valid(void **state)
 {
-    (void)state;
-    char *arr[] = {"co", "0,0,0", "2.0", "255,0,0", NULL};
-    assert_int_equal(is_valid_sphere(arr), 1);
+	(void)state;
+	char *arr[] = {"co", "0,0,0", "0,1,0", "30.0", "4.0", "255,0,0", NULL};
+	assert_int_equal(is_valid_cone(arr), 1);
 }
 
-void    test_valid_cone_invalid_coordinates(void **state)
+void	test_valid_cone_invalid_coordinates(void **state)
 {
-    (void)state;
-    char *arr[] = {"co", "abc,def,ghi", "2.0", "255,0,0", NULL};
-    assert_int_equal(is_valid_sphere(arr), 0);
+	(void)state;
+	char *arr[] = {"co", "abc,def,ghi", "0,1,0", "30.0", "4.0", "255,0,0", NULL};
+	assert_int_equal(is_valid_cone(arr), 0);
 }
 
-void    test_valid_cone_invalid_diameter(void **state)
+void	test_valid_cone_invalid_angle(void **state)
 {
-    (void)state;
-    char *arr[] = {"co", "0,0,0", "abc", "255,0,0", NULL};
-    assert_int_equal(is_valid_sphere(arr), 0);
+	(void)state;
+	char *arr[] = {"co", "0,0,0", "0,1,0", "abc", "4.0", "255,0,0", NULL};
+	assert_int_equal(is_valid_cone(arr), 0);
 }
 
-void    test_valid_cone_invalid_color(void **state)
+void	test_valid_cone_invalid_color(void **state)
 {
-    (void)state;
-    char *arr[] = {"co", "0,0,0", "2.0", "256,0,0", NULL};
-    assert_int_equal(is_valid_sphere(arr), 0);
+	(void)state;
+	char *arr[] = {"co", "0,0,0", "0,1,0", "30.0", "4.0", "256,0,0", NULL};
+	assert_int_equal(is_valid_cone(arr), 0);
 }
 
-void    test_valid_cone_negative_diameter(void **state)
+void	test_valid_cone_negative_angle(void **state)
 {
-    (void)state;
-    char *arr[] = {"co", "0,0,0", "-2.0", "255,0,0", NULL};
-    assert_int_equal(is_valid_sphere(arr), 0);
+	(void)state;
+	char *arr[] = {"co", "0,0,0", "0,1,0", "-30.0", "4.0", "255,0,0", NULL};
+	assert_int_equal(is_valid_cone(arr), 0);
 }
 
-void    test_valid_cone_zero_diameter(void **state)
+void	test_valid_cone_zero_angle(void **state)
 {
-    (void)state;
-    char *arr[] = {"co", "0,0,0", "0.0", "255,0,0", NULL};
-    assert_int_equal(is_valid_sphere(arr), 1);
+	(void)state;
+	char *arr[] = {"co", "0,0,0", "0,1,0", "0.0", "4.0", "255,0,0", NULL};
+	assert_int_equal(is_valid_cone(arr), 0);
 }
 
-void    test_valid_cone_null_coordinates(void **state)
+void	test_valid_cone_null_coordinates(void **state)
 {
-    (void)state;
-    char *arr[] = {"co", NULL, "2.0", "255,0,0", NULL};
-    assert_int_equal(is_valid_sphere(arr), 0);
+	(void)state;
+	char *arr[] = {"co", NULL, "0,1,0", "30.0", "4.0", "255,0,0", NULL};
+	assert_int_equal(is_valid_cone(arr), 0);
 }
 
-void    test_valid_cone_null_diameter(void **state)
+void	test_valid_cone_null_angle(void **state)
 {
-    (void)state;
-    char *arr[] = {"co", "0,0,0", NULL, "255,0,0", NULL};
-    assert_int_equal(is_valid_sphere(arr), 0);
+	(void)state;
+	char *arr[] = {"co", "0,0,0", "0,1,0", NULL, "4.0", "255,0,0", NULL};
+	assert_int_equal(is_valid_cone(arr), 0);
 }
 
-void    test_valid_cone_null_color(void **state)
+void	test_valid_cone_null_color(void **state)
 {
-    (void)state;
-    char *arr[] = {"co", "0,0,0", "2.0", NULL, NULL};
-    assert_int_equal(is_valid_sphere(arr), 0);
+	(void)state;
+	char *arr[] = {"co", "0,0,0", "0,1,0", "30.0", "4.0", NULL, NULL};
+	assert_int_equal(is_valid_cone(arr), 0);
 }
 
 /* =========================================================
-   HYPERBOLOID unit tests (uses is_valid_plane: coords, vector, color)
-   arr[0] = "hy"
-   arr[1] = coordinates
-   arr[2] = normalized vector
-   arr[3] = color
+   HYPERBOLOID unit tests (mandatory: coords, dir, a, b, c, height, color)
    ========================================================= */
 
-void    test_valid_hyperboloid_valid(void **state)
+void	test_valid_hyperboloid_valid(void **state)
 {
-    (void)state;
-    char *arr[] = {"hy", "0,0,0", "0.0,1.0,0.0", "255,255,255", NULL};
-    assert_int_equal(is_valid_plane(arr), 1);
+	(void)state;
+	char *arr[] = {"hy", "0,0,0", "0,1,0", "1.0", "1.0", "1.0", "4.0", "255,255,255", NULL};
+	assert_int_equal(is_valid_hyperboloid(arr), 1);
 }
 
-void    test_valid_hyperboloid_invalid_coordinates(void **state)
+void	test_valid_hyperboloid_invalid_coordinates(void **state)
 {
-    (void)state;
-    char *arr[] = {"hy", "abc,def,ghi", "0.0,1.0,0.0", "255,255,255", NULL};
-    assert_int_equal(is_valid_plane(arr), 0);
+	(void)state;
+	char *arr[] = {"hy", "abc,def,ghi", "0,1,0", "1.0", "1.0", "1.0", "4.0", "255,255,255", NULL};
+	assert_int_equal(is_valid_hyperboloid(arr), 0);
 }
 
-void    test_valid_hyperboloid_invalid_vector(void **state)
+void	test_valid_hyperboloid_invalid_vector(void **state)
 {
-    (void)state;
-    char *arr[] = {"hy", "0,0,0", "abc,def,ghi", "255,255,255", NULL};
-    assert_int_equal(is_valid_plane(arr), 0);
+	(void)state;
+	char *arr[] = {"hy", "0,0,0", "abc,def,ghi", "1.0", "1.0", "1.0", "4.0", "255,255,255", NULL};
+	assert_int_equal(is_valid_hyperboloid(arr), 0);
 }
 
-void    test_valid_hyperboloid_invalid_color(void **state)
+void	test_valid_hyperboloid_invalid_color(void **state)
 {
-    (void)state;
-    char *arr[] = {"hy", "0,0,0", "0.0,1.0,0.0", "256,0,0", NULL};
-    assert_int_equal(is_valid_plane(arr), 0);
+	(void)state;
+	char *arr[] = {"hy", "0,0,0", "0,1,0", "1.0", "1.0", "1.0", "4.0", "256,255,255", NULL};
+	assert_int_equal(is_valid_hyperboloid(arr), 0);
 }
 
-void    test_valid_hyperboloid_null_coordinates(void **state)
+void	test_valid_hyperboloid_null_coordinates(void **state)
 {
-    (void)state;
-    char *arr[] = {"hy", NULL, "0.0,1.0,0.0", "255,255,255", NULL};
-    assert_int_equal(is_valid_plane(arr), 0);
+	(void)state;
+	char *arr[] = {"hy", NULL, "0,1,0", "1.0", "1.0", "1.0", "4.0", "255,255,255", NULL};
+	assert_int_equal(is_valid_hyperboloid(arr), 0);
 }
 
-void    test_valid_hyperboloid_null_vector(void **state)
+void	test_valid_hyperboloid_null_vector(void **state)
 {
-    (void)state;
-    char *arr[] = {"hy", "0,0,0", NULL, "255,255,255", NULL};
-    assert_int_equal(is_valid_plane(arr), 0);
+	(void)state;
+	char *arr[] = {"hy", "0,0,0", NULL, "1.0", "1.0", "1.0", "4.0", "255,255,255", NULL};
+	assert_int_equal(is_valid_hyperboloid(arr), 0);
 }
 
-void    test_valid_hyperboloid_null_color(void **state)
+void	test_valid_hyperboloid_null_color(void **state)
 {
-    (void)state;
-    char *arr[] = {"hy", "0,0,0", "0.0,1.0,0.0", NULL, NULL};
-    assert_int_equal(is_valid_plane(arr), 0);
+	(void)state;
+	char *arr[] = {"hy", "0,0,0", "0,1,0", "1.0", "1.0", "1.0", "4.0", NULL, NULL};
+	assert_int_equal(is_valid_hyperboloid(arr), 0);
 }
 
-void    test_valid_hyperboloid_vector_out_of_range(void **state)
+void	test_valid_hyperboloid_vector_out_of_range(void **state)
 {
-    (void)state;
-    char *arr[] = {"hy", "0,0,0", "0.0,1.5,0.0", "255,255,255", NULL};
-    assert_int_equal(is_valid_plane(arr), 0);
+	(void)state;
+	char *arr[] = {"hy", "0,0,0", "2,1,0", "1.0", "1.0", "1.0", "4.0", "255,255,255", NULL};
+	assert_int_equal(is_valid_hyperboloid(arr), 0);
 }
 
-void    test_valid_hyperboloid_vector_wrong_count(void **state)
+void	test_valid_hyperboloid_vector_wrong_count(void **state)
 {
-    (void)state;
-    char *arr[] = {"hy", "0,0,0", "0.0,1.0", "255,255,255", NULL};
-    assert_int_equal(is_valid_plane(arr), 0);
+	(void)state;
+	char *arr[] = {"hy", "0,0,0", "0,1", "1.0", "1.0", "1.0", "4.0", "255,255,255", NULL};
+	assert_int_equal(is_valid_hyperboloid(arr), 0);
 }
 
 /* =========================================================
-   PARABOLOID unit tests (uses is_valid_plane: coords, vector, color)
-   Identical structure to hyperboloid — validates the same wiring.
+   PARABOLOID unit tests (mandatory: coords, dir, k, height, color)
    ========================================================= */
 
-void    test_valid_paraboloid_valid(void **state)
+void	test_valid_paraboloid_valid(void **state)
 {
-    (void)state;
-    char *arr[] = {"pa", "0,0,0", "0.0,1.0,0.0", "255,255,255", NULL};
-    assert_int_equal(is_valid_plane(arr), 1);
+	(void)state;
+	char *arr[] = {"pa", "0,0,0", "0,1,0", "0.5", "4.0", "255,255,255", NULL};
+	assert_int_equal(is_valid_paraboloid(arr), 1);
 }
 
-void    test_valid_paraboloid_invalid_coordinates(void **state)
+void	test_valid_paraboloid_invalid_coordinates(void **state)
 {
-    (void)state;
-    char *arr[] = {"pa", "abc,def,ghi", "0.0,1.0,0.0", "255,255,255", NULL};
-    assert_int_equal(is_valid_plane(arr), 0);
+	(void)state;
+	char *arr[] = {"pa", "abc,def,ghi", "0,1,0", "0.5", "4.0", "255,255,255", NULL};
+	assert_int_equal(is_valid_paraboloid(arr), 0);
 }
 
-void    test_valid_paraboloid_invalid_vector(void **state)
+void	test_valid_paraboloid_invalid_vector(void **state)
 {
-    (void)state;
-    char *arr[] = {"pa", "0,0,0", "abc,def,ghi", "255,255,255", NULL};
-    assert_int_equal(is_valid_plane(arr), 0);
+	(void)state;
+	char *arr[] = {"pa", "0,0,0", "abc,def,ghi", "0.5", "4.0", "255,255,255", NULL};
+	assert_int_equal(is_valid_paraboloid(arr), 0);
 }
 
-void    test_valid_paraboloid_invalid_color(void **state)
+void	test_valid_paraboloid_invalid_color(void **state)
 {
-    (void)state;
-    char *arr[] = {"pa", "0,0,0", "0.0,1.0,0.0", "256,0,0", NULL};
-    assert_int_equal(is_valid_plane(arr), 0);
+	(void)state;
+	char *arr[] = {"pa", "0,0,0", "0,1,0", "0.5", "4.0", "256,255,255", NULL};
+	assert_int_equal(is_valid_paraboloid(arr), 0);
 }
 
-void    test_valid_paraboloid_null_coordinates(void **state)
+void	test_valid_paraboloid_null_coordinates(void **state)
 {
-    (void)state;
-    char *arr[] = {"pa", NULL, "0.0,1.0,0.0", "255,255,255", NULL};
-    assert_int_equal(is_valid_plane(arr), 0);
+	(void)state;
+	char *arr[] = {"pa", NULL, "0,1,0", "0.5", "4.0", "255,255,255", NULL};
+	assert_int_equal(is_valid_paraboloid(arr), 0);
 }
 
-void    test_valid_paraboloid_null_vector(void **state)
+void	test_valid_paraboloid_null_vector(void **state)
 {
-    (void)state;
-    char *arr[] = {"pa", "0,0,0", NULL, "255,255,255", NULL};
-    assert_int_equal(is_valid_plane(arr), 0);
+	(void)state;
+	char *arr[] = {"pa", "0,0,0", NULL, "0.5", "4.0", "255,255,255", NULL};
+	assert_int_equal(is_valid_paraboloid(arr), 0);
 }
 
-void    test_valid_paraboloid_null_color(void **state)
+void	test_valid_paraboloid_null_color(void **state)
 {
-    (void)state;
-    char *arr[] = {"pa", "0,0,0", "0.0,1.0,0.0", NULL, NULL};
-    assert_int_equal(is_valid_plane(arr), 0);
+	(void)state;
+	char *arr[] = {"pa", "0,0,0", "0,1,0", "0.5", "4.0", NULL, NULL};
+	assert_int_equal(is_valid_paraboloid(arr), 0);
 }
 
-void    test_valid_paraboloid_vector_out_of_range(void **state)
+void	test_valid_paraboloid_vector_out_of_range(void **state)
 {
-    (void)state;
-    char *arr[] = {"pa", "0,0,0", "0.0,1.5,0.0", "255,255,255", NULL};
-    assert_int_equal(is_valid_plane(arr), 0);
+	(void)state;
+	char *arr[] = {"pa", "0,0,0", "2,1,0", "0.5", "4.0", "255,255,255", NULL};
+	assert_int_equal(is_valid_paraboloid(arr), 0);
 }
 
-void    test_valid_paraboloid_vector_wrong_count(void **state)
+void	test_valid_paraboloid_vector_wrong_count(void **state)
 {
-    (void)state;
-    char *arr[] = {"pa", "0,0,0", "0.0,1.0", "255,255,255", NULL};
-    assert_int_equal(is_valid_plane(arr), 0);
+	(void)state;
+	char *arr[] = {"pa", "0,0,0", "0,1", "0.5", "4.0", "255,255,255", NULL};
+	assert_int_equal(is_valid_paraboloid(arr), 0);
 }
 
 /* =========================================================
-   is_valid_input BONUS integration tests
-   These verify that "co", "hy", "pa" are correctly wired
-   in func_objs and that the full pipeline accepts/rejects them.
+   SPHERE - SPEC property tests (spec=0.0 < x <= 1.0)
    ========================================================= */
 
-void    test_valid_input_bonus_valid_full_scene(void **state)
+void	test_sphere_spec_valid_min(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/bonus_full.rt",
-        MANDATORY
-        "sp 0,0,5 2.0 255,0,0\n"
-        "pl 0,0,0 0.0,1.0,0.0 128,128,128\n"
-        "cy 0,0,0 0.0,1.0,0.0 1.0 3.0 0,255,0\n"
-        "co 1,0,0 1.5 255,128,0\n"
-        "hy 2,0,0 0.0,1.0,0.0 0,128,255\n"
-        "pa 3,0,0 1.0,0.0,0.0 128,0,255\n");
-    assert_int_equal(is_valid_input("/tmp/bonus_full.rt", scene), 1);
-    free_scene(scene);
-    unlink("/tmp/bonus_full.rt");
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "spec=0.001", NULL};
+	assert_int_equal(is_valid_sphere(arr), 1);
 }
 
-void    test_valid_input_bonus_valid_cone(void **state)
+void	test_sphere_spec_valid_max(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/bonus_co.rt",
-        MANDATORY
-        "co 0,0,0 2.0 255,0,0\n");
-    assert_int_equal(is_valid_input("/tmp/bonus_co.rt", scene), 1);
-    free_scene(scene);
-    unlink("/tmp/bonus_co.rt");
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "spec=1.0", NULL};
+	assert_int_equal(is_valid_sphere(arr), 1);
 }
 
-void    test_valid_input_bonus_valid_hyperboloid(void **state)
+void	test_sphere_spec_valid_mid(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/bonus_hy.rt",
-        MANDATORY
-        "hy 0,0,0 0.0,1.0,0.0 255,255,0\n");
-    assert_int_equal(is_valid_input("/tmp/bonus_hy.rt", scene), 1);
-    free_scene(scene);
-    unlink("/tmp/bonus_hy.rt");
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "spec=0.5", NULL};
+	assert_int_equal(is_valid_sphere(arr), 1);
 }
 
-void    test_valid_input_bonus_valid_paraboloid(void **state)
+void	test_sphere_spec_invalid_zero(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/bonus_pa.rt",
-        MANDATORY
-        "pa 0,0,0 0.0,1.0,0.0 0,255,255\n");
-    assert_int_equal(is_valid_input("/tmp/bonus_pa.rt", scene), 1);
-    free_scene(scene);
-    unlink("/tmp/bonus_pa.rt");
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "spec=0.0", NULL};
+	assert_int_equal(is_valid_sphere(arr), 0);
 }
 
-void    test_valid_input_bonus_invalid_cone(void **state)
+void	test_sphere_spec_invalid_negative(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/bonus_inv_co.rt",
-        MANDATORY
-        "co 0,0,0 abc 255,0,0\n");
-    assert_int_equal(is_valid_input("/tmp/bonus_inv_co.rt", scene), 0);
-    free_scene(scene);
-    unlink("/tmp/bonus_inv_co.rt");
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "spec=-0.5", NULL};
+	assert_int_equal(is_valid_sphere(arr), 0);
 }
 
-void    test_valid_input_bonus_invalid_hyperboloid(void **state)
+void	test_sphere_spec_invalid_over_one(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/bonus_inv_hy.rt",
-        MANDATORY
-        "hy 0,0,0 0.0,5.0,0.0 255,255,0\n");
-    assert_int_equal(is_valid_input("/tmp/bonus_inv_hy.rt", scene), 0);
-    free_scene(scene);
-    unlink("/tmp/bonus_inv_hy.rt");
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "spec=1.5", NULL};
+	assert_int_equal(is_valid_sphere(arr), 0);
 }
 
-void    test_valid_input_bonus_invalid_paraboloid(void **state)
+void	test_sphere_spec_invalid_not_float(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/bonus_inv_pa.rt",
-        MANDATORY
-        "pa 0,0,0 0.0,1.0,0.0 256,0,0\n");
-    assert_int_equal(is_valid_input("/tmp/bonus_inv_pa.rt", scene), 0);
-    free_scene(scene);
-    unlink("/tmp/bonus_inv_pa.rt");
-}
-
-void    test_valid_input_bonus_multiple_cones(void **state)
-{
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/bonus_multi_co.rt",
-        MANDATORY
-        "co 0,0,0 2.0 255,0,0\n"
-        "co 3,0,0 1.0 0,255,0\n"
-        "co -3,0,0 3.0 0,0,255\n");
-    assert_int_equal(is_valid_input("/tmp/bonus_multi_co.rt", scene), 1);
-    free_scene(scene);
-    unlink("/tmp/bonus_multi_co.rt");
-}
-
-void    test_valid_input_bonus_multiple_hyperboloids(void **state)
-{
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/bonus_multi_hy.rt",
-        MANDATORY
-        "hy 0,0,0 0.0,1.0,0.0 255,255,0\n"
-        "hy 0,5,0 1.0,0.0,0.0 0,255,255\n");
-    assert_int_equal(is_valid_input("/tmp/bonus_multi_hy.rt", scene), 1);
-    free_scene(scene);
-    unlink("/tmp/bonus_multi_hy.rt");
-}
-
-void    test_valid_input_bonus_multiple_paraboloids(void **state)
-{
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/bonus_multi_pa.rt",
-        MANDATORY
-        "pa 0,0,0 0.0,1.0,0.0 128,0,255\n"
-        "pa 5,0,0 1.0,0.0,0.0 255,128,0\n");
-    assert_int_equal(is_valid_input("/tmp/bonus_multi_pa.rt", scene), 1);
-    free_scene(scene);
-    unlink("/tmp/bonus_multi_pa.rt");
-}
-
-void    test_valid_input_bonus_any_order(void **state)
-{
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/bonus_any_order.rt",
-        "co 1,0,0 1.5 255,128,0\n"
-        "A 0.5 255,255,255\n"
-        "hy 2,0,0 0.0,1.0,0.0 0,128,255\n"
-        "L 0,5,0 0.8 255,255,255\n"
-        "pa 3,0,0 1.0,0.0,0.0 128,0,255\n"
-        "C 0,0,0 0.0,0.0,1.0 90\n");
-    assert_int_equal(is_valid_input("/tmp/bonus_any_order.rt", scene), 1);
-    free_scene(scene);
-    unlink("/tmp/bonus_any_order.rt");
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "spec=abc", NULL};
+	assert_int_equal(is_valid_sphere(arr), 0);
 }
 
 /* =========================================================
-   LIGHT VALIDATION TESTS
-   Tests for: minimum 1 light required, multiple lights allowed,
-   absence of light is invalid
+   SPHERE - REFL property tests (refl=0.0 < x <= 1.0)
    ========================================================= */
 
-void    test_valid_input_light_exactly_one(void **state)
+void	test_sphere_refl_valid_min(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/light_exactly_one.rt",
-        "A 0.5 255,255,255\n"
-        "C 0,0,0 0.0,0.0,1.0 90\n"
-        "L 0,5,0 0.8 255,255,255\n"
-        "sp 0,0,5 2.0 128,128,128\n");
-    assert_int_equal(is_valid_input("/tmp/light_exactly_one.rt", scene), 1);
-    free_scene(scene);
-    unlink("/tmp/light_exactly_one.rt");
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "refl=0.001", NULL};
+	assert_int_equal(is_valid_sphere(arr), 1);
 }
 
-void    test_valid_input_light_multiple_lights(void **state)
+void	test_sphere_refl_valid_max(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/light_multiple.rt",
-        "A 0.5 255,255,255\n"
-        "C 0,0,0 0.0,0.0,1.0 90\n"
-        "L 0,5,0 0.8 255,255,255\n"
-        "L 10,10,10 0.5 200,200,200\n"
-        "L -5,3,8 0.6 100,150,200\n"
-        "sp 0,0,5 2.0 128,128,128\n");
-    assert_int_equal(is_valid_input("/tmp/light_multiple.rt", scene), 1);
-    free_scene(scene);
-    unlink("/tmp/light_multiple.rt");
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "refl=1.0", NULL};
+	assert_int_equal(is_valid_sphere(arr), 1);
 }
 
-void    test_valid_input_light_many_lights(void **state)
+void	test_sphere_refl_invalid_zero(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/light_many.rt",
-        "A 0.5 255,255,255\n"
-        "C 0,0,0 0.0,0.0,1.0 90\n"
-        "L 0,5,0 0.8 255,0,0\n"
-        "L 5,5,5 0.6 0,255,0\n"
-        "L 10,0,0 0.7 0,0,255\n"
-        "L -5,-5,-5 0.5 255,255,0\n"
-        "sp 0,0,5 2.0 128,128,128\n");
-    assert_int_equal(is_valid_input("/tmp/light_many.rt", scene), 1);
-    free_scene(scene);
-    unlink("/tmp/light_many.rt");
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "refl=0.0", NULL};
+	assert_int_equal(is_valid_sphere(arr), 0);
 }
 
-void    test_invalid_input_light_missing(void **state)
+void	test_sphere_refl_invalid_negative(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/light_missing.rt",
-        "A 0.5 255,255,255\n"
-        "C 0,0,0 0.0,0.0,1.0 90\n"
-        "sp 0,0,5 2.0 255,0,0\n"
-        "pl 0,0,0 0.0,1.0,0.0 0,255,0\n");
-    assert_int_equal(is_valid_input("/tmp/light_missing.rt", scene), 0);
-    free_scene(scene);
-    unlink("/tmp/light_missing.rt");
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "refl=-0.5", NULL};
+	assert_int_equal(is_valid_sphere(arr), 0);
 }
 
-void    test_invalid_input_light_completely_absent(void **state)
+void	test_sphere_refl_invalid_over_one(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/light_absent.rt",
-        "A 0.5 255,255,255\n"
-        "sp 0,0,5 2.0 255,0,0\n"
-        "C 0,0,0 0.0,0.0,1.0 90\n");
-    assert_int_equal(is_valid_input("/tmp/light_absent.rt", scene), 0);
-    free_scene(scene);
-    unlink("/tmp/light_absent.rt");
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "refl=1.5", NULL};
+	assert_int_equal(is_valid_sphere(arr), 0);
 }
 
-void    test_valid_input_light_with_all_objects(void **state)
+void	test_sphere_refl_invalid_not_float(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/light_all_objects.rt",
-        "A 0.5 255,255,255\n"
-        "C 0,0,0 0.0,0.0,1.0 90\n"
-        "L 0,5,0 0.8 255,255,255\n"
-        "sp 0,0,5 2.0 255,0,0\n"
-        "pl 0,0,0 0.0,1.0,0.0 0,255,0\n"
-        "cy 5,0,0 0.0,1.0,0.0 1.0 3.0 0,0,255\n"
-        "co 10,0,0 1.5 255,128,0\n"
-        "hy 15,0,0 1.0,0.0,0.0 128,255,0\n"
-        "pa 20,0,0 0.0,1.0,0.0 0,128,255\n");
-    assert_int_equal(is_valid_input("/tmp/light_all_objects.rt", scene), 1);
-    free_scene(scene);
-    unlink("/tmp/light_all_objects.rt");
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "refl=abc", NULL};
+	assert_int_equal(is_valid_sphere(arr), 0);
 }
 
-void    test_valid_input_light_multiple_with_all_objects(void **state)
+/* =========================================================
+   SPHERE - CHECK property tests (check flag, no value)
+   ========================================================= */
+
+void	test_sphere_check_valid_zero(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/light_multi_all_objects.rt",
-        "A 0.5 255,255,255\n"
-        "C 0,0,0 0.0,0.0,1.0 90\n"
-        "L 0,5,0 0.8 255,255,255\n"
-        "L 10,10,10 0.5 200,200,200\n"
-        "L -5,-5,-5 0.6 100,100,100\n"
-        "sp 0,0,5 2.0 255,0,0\n"
-        "pl 0,0,0 0.0,1.0,0.0 0,255,0\n"
-        "cy 5,0,0 0.0,1.0,0.0 1.0 3.0 0,0,255\n"
-        "co 10,0,0 1.5 255,128,0\n"
-        "hy 15,0,0 1.0,0.0,0.0 128,255,0\n"
-        "pa 20,0,0 0.0,1.0,0.0 0,128,255\n");
-    assert_int_equal(is_valid_input("/tmp/light_multi_all_objects.rt", scene), 1);
-    free_scene(scene);
-    unlink("/tmp/light_multi_all_objects.rt");
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "check", NULL};
+	assert_int_equal(is_valid_sphere(arr), 1);
 }
 
-void    test_valid_input_light_different_positions(void **state)
+void	test_sphere_check_invalid_with_value(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/light_diff_pos.rt",
-        "A 0.5 255,255,255\n"
-        "C 0,0,0 0.0,0.0,1.0 90\n"
-        "L 0,0,0 0.8 255,255,255\n"
-        "L 100,100,100 0.5 200,200,200\n"
-        "L -100,-100,-100 0.6 100,100,100\n"
-        "L 0.5,0.5,0.5 0.7 50,50,50\n"
-        "sp 0,0,5 2.0 255,0,0\n");
-    assert_int_equal(is_valid_input("/tmp/light_diff_pos.rt", scene), 1);
-    free_scene(scene);
-    unlink("/tmp/light_diff_pos.rt");
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "check=0", NULL};
+	assert_int_equal(is_valid_sphere(arr), 0);
 }
 
-void    test_valid_input_light_different_brightnesses(void **state)
+/* =========================================================
+   SPHERE - TEXTURE property tests (texture=/path/to/file)
+   ========================================================= */
+
+void	test_sphere_texture_valid(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/light_diff_bright.rt",
-        "A 0.5 255,255,255\n"
-        "C 0,0,0 0.0,0.0,1.0 90\n"
-        "L 0,5,0 0.0 255,255,255\n"
-        "L 0,6,0 0.5 255,255,255\n"
-        "L 0,7,0 1.0 255,255,255\n"
-        "sp 0,0,5 2.0 255,0,0\n");
-    assert_int_equal(is_valid_input("/tmp/light_diff_bright.rt", scene), 1);
-    free_scene(scene);
-    unlink("/tmp/light_diff_bright.rt");
+	(void)state;
+	write_rt("/tmp/test_texture.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "texture=/tmp/test_texture.xpm", NULL};
+	assert_int_equal(is_valid_sphere(arr), 1);
+	unlink("/tmp/test_texture.xpm");
 }
 
-void    test_valid_input_light_different_colors(void **state)
+void	test_sphere_texture_invalid_path(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/light_diff_color.rt",
-        "A 0.5 255,255,255\n"
-        "C 0,0,0 0.0,0.0,1.0 90\n"
-        "L 0,5,0 0.8 255,0,0\n"
-        "L 0,6,0 0.8 0,255,0\n"
-        "L 0,7,0 0.8 0,0,255\n"
-        "L 0,8,0 0.8 255,255,0\n"
-        "L 0,9,0 0.8 0,255,255\n"
-        "sp 0,0,5 2.0 255,0,0\n");
-    assert_int_equal(is_valid_input("/tmp/light_diff_color.rt", scene), 1);
-    free_scene(scene);
-    unlink("/tmp/light_diff_color.rt");
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "texture=/nonexistent/path.xpm", NULL};
+	assert_int_equal(is_valid_sphere(arr), 0);
 }
 
-void    test_valid_input_light_minimum_brightness(void **state)
+/* =========================================================
+   SPHERE - Combined properties tests
+   ========================================================= */
+
+void	test_sphere_spec_and_refl_valid(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/light_min_bright.rt",
-        "A 0.5 255,255,255\n"
-        "C 0,0,0 0.0,0.0,1.0 90\n"
-        "L 0,5,0 0.0 128,128,128\n"
-        "sp 0,0,5 2.0 255,0,0\n");
-    assert_int_equal(is_valid_input("/tmp/light_min_bright.rt", scene), 1);
-    free_scene(scene);
-    unlink("/tmp/light_min_bright.rt");
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "spec=0.5", "refl=0.3", NULL};
+	assert_int_equal(is_valid_sphere(arr), 1);
 }
 
-void    test_valid_input_light_maximum_brightness(void **state)
+void	test_sphere_check_and_spec_valid(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/light_max_bright.rt",
-        "A 0.5 255,255,255\n"
-        "C 0,0,0 0.0,0.0,1.0 90\n"
-        "L 0,5,0 1.0 255,255,255\n"
-        "sp 0,0,5 2.0 255,0,0\n");
-    assert_int_equal(is_valid_input("/tmp/light_max_bright.rt", scene), 1);
-    free_scene(scene);
-    unlink("/tmp/light_max_bright.rt");
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "check", "spec=0.5", NULL};
+	assert_int_equal(is_valid_sphere(arr), 1);
 }
 
-void    test_valid_input_light_light_first(void **state)
+void	test_sphere_check_and_refl_valid(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/light_first.rt",
-        "L 0,5,0 0.8 255,255,255\n"
-        "A 0.5 255,255,255\n"
-        "C 0,0,0 0.0,0.0,1.0 90\n"
-        "sp 0,0,5 2.0 255,0,0\n"
-        "sp 0,0,5 2.0 255,0,0\n");
-    assert_int_equal(is_valid_input("/tmp/light_first.rt", scene), 1);
-    free_scene(scene);
-    unlink("/tmp/light_first.rt");
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "check", "refl=0.5", NULL};
+	assert_int_equal(is_valid_sphere(arr), 1);
 }
 
-void    test_valid_input_light_light_middle(void **state)
+void	test_sphere_all_properties_valid(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/light_middle.rt",
-        "A 0.5 255,255,255\n"
-        "L 0,5,0 0.8 255,255,255\n"
-        "C 0,0,0 0.0,0.0,1.0 90\n"
-        "sp 0,0,5 2.0 255,0,0\n");
-    assert_int_equal(is_valid_input("/tmp/light_middle.rt", scene), 1);
-    free_scene(scene);
-    unlink("/tmp/light_middle.rt");
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "spec=0.5", "refl=0.3", "check", NULL};
+	assert_int_equal(is_valid_sphere(arr), 1);
 }
 
-void    test_valid_input_light_light_last(void **state)
+void	test_sphere_check_and_texture_exclusive_both_present(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/light_last.rt",
-        "A 0.5 255,255,255\n"
-        "C 0,0,0 0.0,0.0,1.0 90\n"
-        "sp 0,0,5 2.0 255,0,0\n"
-        "L 0,5,0 0.8 255,255,255\n");
-    assert_int_equal(is_valid_input("/tmp/light_last.rt", scene), 1);
-    free_scene(scene);
-    unlink("/tmp/light_last.rt");
+	(void)state;
+	write_rt("/tmp/test_texture2.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "spec=0.5", "check", "texture=/tmp/test_texture2.xpm", NULL};
+	assert_int_equal(is_valid_sphere(arr), 0);
+	unlink("/tmp/test_texture2.xpm");
 }
 
-void    test_invalid_input_light_negative_brightness(void **state)
+/* =========================================================
+   PLANE - SPEC and REFL property tests
+   ========================================================= */
+
+void	test_plane_spec_valid(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/light_neg_bright.rt",
-        "A 0.5 255,255,255\n"
-        "C 0,0,0 0.0,0.0,1.0 90\n"
-        "L 0,5,0 -0.5 255,255,255\n"
-        "sp 0,0,5 2.0 255,0,0\n");
-    assert_int_equal(is_valid_input("/tmp/light_neg_bright.rt", scene), 0);
-    free_scene(scene);
-    unlink("/tmp/light_neg_bright.rt");
+	(void)state;
+	char *arr[] = {"pl", "0,0,0", "0,1,0", "255,255,255", "spec=0.5", NULL};
+	assert_int_equal(is_valid_plane(arr), 1);
 }
 
-void    test_invalid_input_light_over_max_brightness(void **state)
+void	test_plane_spec_invalid_zero(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/light_over_bright.rt",
-        "A 0.5 255,255,255\n"
-        "C 0,0,0 0.0,0.0,1.0 90\n"
-        "L 0,5,0 1.5 255,255,255\n"
-        "sp 0,0,5 2.0 255,0,0\n");
-    assert_int_equal(is_valid_input("/tmp/light_over_bright.rt", scene), 0);
-    free_scene(scene);
-    unlink("/tmp/light_over_bright.rt");
+	(void)state;
+	char *arr[] = {"pl", "0,0,0", "0,1,0", "255,255,255", "spec=0.0", NULL};
+	assert_int_equal(is_valid_plane(arr), 0);
 }
 
-void    test_invalid_input_light_invalid_coordinates(void **state)
+void	test_plane_spec_invalid_over_one(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/light_inv_coord.rt",
-        "A 0.5 255,255,255\n"
-        "C 0,0,0 0.0,0.0,1.0 90\n"
-        "L abc,def,ghi 0.8 255,255,255\n"
-        "sp 0,0,5 2.0 255,0,0\n");
-    assert_int_equal(is_valid_input("/tmp/light_inv_coord.rt", scene), 0);
-    free_scene(scene);
-    unlink("/tmp/light_inv_coord.rt");
+	(void)state;
+	char *arr[] = {"pl", "0,0,0", "0,1,0", "255,255,255", "spec=1.5", NULL};
+	assert_int_equal(is_valid_plane(arr), 0);
 }
 
-void    test_invalid_input_light_invalid_color(void **state)
+void	test_plane_refl_valid(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/light_inv_color.rt",
-        "A 0.5 255,255,255\n"
-        "C 0,0,0 0.0,0.0,1.0 90\n"
-        "L 0,5,0 0.8 256,0,0\n"
-        "sp 0,0,5 2.0 255,0,0\n");
-    assert_int_equal(is_valid_input("/tmp/light_inv_color.rt", scene), 0);
-    free_scene(scene);
-    unlink("/tmp/light_inv_color.rt");
+	(void)state;
+	char *arr[] = {"pl", "0,0,0", "0,1,0", "255,255,255", "refl=0.3", NULL};
+	assert_int_equal(is_valid_plane(arr), 1);
 }
 
-void    test_invalid_input_light_missing_among_objects(void **state)
+void	test_plane_refl_invalid_zero(void **state)
 {
-    (void)state;
-    t_scene *scene = make_scene();
-    write_rt("/tmp/light_missing_objects.rt",
-        "A 0.5 255,255,255\n"
-        "C 0,0,0 0.0,0.0,1.0 90\n"
-        "sp 0,0,5 2.0 255,0,0\n"
-        "pl 0,0,0 0.0,1.0,0.0 0,255,0\n"
-        "cy 5,0,0 0.0,1.0,0.0 1.0 3.0 0,0,255\n");
-    assert_int_equal(is_valid_input("/tmp/light_missing_objects.rt", scene), 0);
-    free_scene(scene);
-    unlink("/tmp/light_missing_objects.rt");
+	(void)state;
+	char *arr[] = {"pl", "0,0,0", "0,1,0", "255,255,255", "refl=0.0", NULL};
+	assert_int_equal(is_valid_plane(arr), 0);
+}
+
+void	test_plane_refl_invalid_over_one(void **state)
+{
+	(void)state;
+	char *arr[] = {"pl", "0,0,0", "0,1,0", "255,255,255", "refl=1.5", NULL};
+	assert_int_equal(is_valid_plane(arr), 0);
+}
+
+void	test_plane_check_valid_zero(void **state)
+{
+	(void)state;
+	char *arr[] = {"pl", "0,0,0", "0,1,0", "255,255,255", "check", NULL};
+	assert_int_equal(is_valid_plane(arr), 1);
+}
+
+void	test_plane_texture_valid(void **state)
+{
+	(void)state;
+	write_rt("/tmp/test_texture3.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"pl", "0,0,0", "0,1,0", "255,255,255", "texture=/tmp/test_texture3.xpm", NULL};
+	assert_int_equal(is_valid_plane(arr), 1);
+	unlink("/tmp/test_texture3.xpm");
+}
+
+void	test_plane_spec_refl_and_check(void **state)
+{
+	(void)state;
+	char *arr[] = {"pl", "0,0,0", "0,1,0", "255,255,255", "spec=0.5", "refl=0.3", "check", NULL};
+	assert_int_equal(is_valid_plane(arr), 1);
+}
+
+void	test_plane_check_and_texture_exclusive_both_present(void **state)
+{
+	(void)state;
+	write_rt("/tmp/test_texture4.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"pl", "0,0,0", "0,1,0", "255,255,255", "check", "texture=/tmp/test_texture4.xpm", NULL};
+	assert_int_equal(is_valid_plane(arr), 0);
+	unlink("/tmp/test_texture4.xpm");
+}
+
+/* =========================================================
+   CYLINDER - SPEC and REFL property tests
+   ========================================================= */
+
+void	test_cylinder_spec_valid(void **state)
+{
+	(void)state;
+	char *arr[] = {"cy", "0,0,0", "0,1,0", "2.0", "4.0", "255,255,255", "spec=0.5", NULL};
+	assert_int_equal(is_valid_cylinder(arr), 1);
+}
+
+void	test_cylinder_spec_invalid_zero(void **state)
+{
+	(void)state;
+	char *arr[] = {"cy", "0,0,0", "0,1,0", "2.0", "4.0", "255,255,255", "spec=0.0", NULL};
+	assert_int_equal(is_valid_cylinder(arr), 0);
+}
+
+void	test_cylinder_spec_invalid_over_one(void **state)
+{
+	(void)state;
+	char *arr[] = {"cy", "0,0,0", "0,1,0", "2.0", "4.0", "255,255,255", "spec=1.5", NULL};
+	assert_int_equal(is_valid_cylinder(arr), 0);
+}
+
+void	test_cylinder_refl_valid(void **state)
+{
+	(void)state;
+	char *arr[] = {"cy", "0,0,0", "0,1,0", "2.0", "4.0", "255,255,255", "refl=0.3", NULL};
+	assert_int_equal(is_valid_cylinder(arr), 1);
+}
+
+void	test_cylinder_refl_invalid_zero(void **state)
+{
+	(void)state;
+	char *arr[] = {"cy", "0,0,0", "0,1,0", "2.0", "4.0", "255,255,255", "refl=0.0", NULL};
+	assert_int_equal(is_valid_cylinder(arr), 0);
+}
+
+void	test_cylinder_refl_invalid_over_one(void **state)
+{
+	(void)state;
+	char *arr[] = {"cy", "0,0,0", "0,1,0", "2.0", "4.0", "255,255,255", "refl=1.5", NULL};
+	assert_int_equal(is_valid_cylinder(arr), 0);
+}
+
+void	test_cylinder_check_valid_zero(void **state)
+{
+	(void)state;
+	char *arr[] = {"cy", "0,0,0", "0,1,0", "2.0", "4.0", "255,255,255", "check", NULL};
+	assert_int_equal(is_valid_cylinder(arr), 1);
+}
+
+void	test_cylinder_texture_valid(void **state)
+{
+	(void)state;
+	write_rt("/tmp/test_texture5.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"cy", "0,0,0", "0,1,0", "2.0", "4.0", "255,255,255", "texture=/tmp/test_texture5.xpm", NULL};
+	assert_int_equal(is_valid_cylinder(arr), 1);
+	unlink("/tmp/test_texture5.xpm");
+}
+
+void	test_cylinder_all_properties(void **state)
+{
+	(void)state;
+	char *arr[] = {"cy", "0,0,0", "0,1,0", "2.0", "4.0", "255,255,255", "spec=0.5", "refl=0.3", "check", NULL};
+	assert_int_equal(is_valid_cylinder(arr), 1);
+}
+
+void	test_cylinder_check_and_texture_exclusive_both_present(void **state)
+{
+	(void)state;
+	write_rt("/tmp/test_texture6.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"cy", "0,0,0", "0,1,0", "2.0", "4.0", "255,255,255", "check", "texture=/tmp/test_texture6.xpm", NULL};
+	assert_int_equal(is_valid_cylinder(arr), 0);
+	unlink("/tmp/test_texture6.xpm");
+}
+
+/* =========================================================
+   CONE - SPEC and REFL property tests
+   ========================================================= */
+
+void	test_cone_spec_valid(void **state)
+{
+	(void)state;
+	char *arr[] = {"co", "0,0,0", "0,1,0", "30.0", "4.0", "255,0,0", "spec=0.5", NULL};
+	assert_int_equal(is_valid_cone(arr), 1);
+}
+
+void	test_cone_spec_invalid_zero(void **state)
+{
+	(void)state;
+	char *arr[] = {"co", "0,0,0", "0,1,0", "30.0", "4.0", "255,0,0", "spec=0.0", NULL};
+	assert_int_equal(is_valid_cone(arr), 0);
+}
+
+void	test_cone_spec_invalid_negative(void **state)
+{
+	(void)state;
+	char *arr[] = {"co", "0,0,0", "0,1,0", "30.0", "4.0", "255,0,0", "spec=-0.5", NULL};
+	assert_int_equal(is_valid_cone(arr), 0);
+}
+
+void	test_cone_spec_invalid_over_one(void **state)
+{
+	(void)state;
+	char *arr[] = {"co", "0,0,0", "0,1,0", "30.0", "4.0", "255,0,0", "spec=1.5", NULL};
+	assert_int_equal(is_valid_cone(arr), 0);
+}
+
+void	test_cone_refl_valid(void **state)
+{
+	(void)state;
+	char *arr[] = {"co", "0,0,0", "0,1,0", "30.0", "4.0", "255,0,0", "refl=0.3", NULL};
+	assert_int_equal(is_valid_cone(arr), 1);
+}
+
+void	test_cone_refl_invalid_zero(void **state)
+{
+	(void)state;
+	char *arr[] = {"co", "0,0,0", "0,1,0", "30.0", "4.0", "255,0,0", "refl=0.0", NULL};
+	assert_int_equal(is_valid_cone(arr), 0);
+}
+
+void	test_cone_refl_invalid_over_one(void **state)
+{
+	(void)state;
+	char *arr[] = {"co", "0,0,0", "0,1,0", "30.0", "4.0", "255,0,0", "refl=1.5", NULL};
+	assert_int_equal(is_valid_cone(arr), 0);
+}
+
+void	test_cone_check_valid_zero(void **state)
+{
+	(void)state;
+	char *arr[] = {"co", "0,0,0", "0,1,0", "30.0", "4.0", "255,0,0", "check", NULL};
+	assert_int_equal(is_valid_cone(arr), 1);
+}
+
+void	test_cone_texture_valid(void **state)
+{
+	(void)state;
+	write_rt("/tmp/test_texture7.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"co", "0,0,0", "0,1,0", "30.0", "4.0", "255,0,0", "texture=/tmp/test_texture7.xpm", NULL};
+	assert_int_equal(is_valid_cone(arr), 1);
+	unlink("/tmp/test_texture7.xpm");
+}
+
+void	test_cone_all_properties(void **state)
+{
+	(void)state;
+	char *arr[] = {"co", "0,0,0", "0,1,0", "30.0", "4.0", "255,0,0", "spec=0.5", "refl=0.3", "check", NULL};
+	assert_int_equal(is_valid_cone(arr), 1);
+}
+
+void	test_cone_check_and_texture_exclusive_both_present(void **state)
+{
+	(void)state;
+	write_rt("/tmp/test_texture8.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"co", "0,0,0", "0,1,0", "30.0", "4.0", "255,0,0", "check", "texture=/tmp/test_texture8.xpm", NULL};
+	assert_int_equal(is_valid_cone(arr), 0);
+	unlink("/tmp/test_texture8.xpm");
+}
+
+/* =========================================================
+   HYPERBOLOID - SPEC and REFL property tests
+   ========================================================= */
+
+void	test_hyperboloid_spec_valid(void **state)
+{
+	(void)state;
+	char *arr[] = {"hy", "0,0,0", "0,1,0", "1.0", "1.0", "1.0", "4.0", "255,255,255", "spec=0.5", NULL};
+	assert_int_equal(is_valid_hyperboloid(arr), 1);
+}
+
+void	test_hyperboloid_spec_invalid_zero(void **state)
+{
+	(void)state;
+	char *arr[] = {"hy", "0,0,0", "0,1,0", "1.0", "1.0", "1.0", "4.0", "255,255,255", "spec=0.0", NULL};
+	assert_int_equal(is_valid_hyperboloid(arr), 0);
+}
+
+void	test_hyperboloid_spec_invalid_over_one(void **state)
+{
+	(void)state;
+	char *arr[] = {"hy", "0,0,0", "0,1,0", "1.0", "1.0", "1.0", "4.0", "255,255,255", "spec=1.5", NULL};
+	assert_int_equal(is_valid_hyperboloid(arr), 0);
+}
+
+void	test_hyperboloid_refl_valid(void **state)
+{
+	(void)state;
+	char *arr[] = {"hy", "0,0,0", "0,1,0", "1.0", "1.0", "1.0", "4.0", "255,255,255", "refl=0.3", NULL};
+	assert_int_equal(is_valid_hyperboloid(arr), 1);
+}
+
+void	test_hyperboloid_refl_invalid_zero(void **state)
+{
+	(void)state;
+	char *arr[] = {"hy", "0,0,0", "0,1,0", "1.0", "1.0", "1.0", "4.0", "255,255,255", "refl=0.0", NULL};
+	assert_int_equal(is_valid_hyperboloid(arr), 0);
+}
+
+void	test_hyperboloid_refl_invalid_over_one(void **state)
+{
+	(void)state;
+	char *arr[] = {"hy", "0,0,0", "0,1,0", "1.0", "1.0", "1.0", "4.0", "255,255,255", "refl=1.5", NULL};
+	assert_int_equal(is_valid_hyperboloid(arr), 0);
+}
+
+void	test_hyperboloid_check_valid_zero(void **state)
+{
+	(void)state;
+	char *arr[] = {"hy", "0,0,0", "0,1,0", "1.0", "1.0", "1.0", "4.0", "255,255,255", "check", NULL};
+	assert_int_equal(is_valid_hyperboloid(arr), 1);
+}
+
+void	test_hyperboloid_texture_valid(void **state)
+{
+	(void)state;
+	write_rt("/tmp/test_texture9.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"hy", "0,0,0", "0,1,0", "1.0", "1.0", "1.0", "4.0", "255,255,255", "texture=/tmp/test_texture9.xpm", NULL};
+	assert_int_equal(is_valid_hyperboloid(arr), 1);
+	unlink("/tmp/test_texture9.xpm");
+}
+
+void	test_hyperboloid_all_properties(void **state)
+{
+	(void)state;
+	char *arr[] = {"hy", "0,0,0", "0,1,0", "1.0", "1.0", "1.0", "4.0", "255,255,255", "spec=0.5", "refl=0.3", "check", NULL};
+	assert_int_equal(is_valid_hyperboloid(arr), 1);
+}
+
+void	test_hyperboloid_check_and_texture_exclusive_both_present(void **state)
+{
+	(void)state;
+	write_rt("/tmp/test_texture10.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"hy", "0,0,0", "0,1,0", "1.0", "1.0", "1.0", "4.0", "255,255,255", "check", "texture=/tmp/test_texture10.xpm", NULL};
+	assert_int_equal(is_valid_hyperboloid(arr), 0);
+	unlink("/tmp/test_texture10.xpm");
+}
+
+/* =========================================================
+   PARABOLOID - SPEC and REFL property tests
+   ========================================================= */
+
+void	test_paraboloid_spec_valid(void **state)
+{
+	(void)state;
+	char *arr[] = {"pa", "0,0,0", "0,1,0", "0.5", "4.0", "255,255,255", "spec=0.5", NULL};
+	assert_int_equal(is_valid_paraboloid(arr), 1);
+}
+
+void	test_paraboloid_spec_invalid_zero(void **state)
+{
+	(void)state;
+	char *arr[] = {"pa", "0,0,0", "0,1,0", "0.5", "4.0", "255,255,255", "spec=0.0", NULL};
+	assert_int_equal(is_valid_paraboloid(arr), 0);
+}
+
+void	test_paraboloid_spec_invalid_negative(void **state)
+{
+	(void)state;
+	char *arr[] = {"pa", "0,0,0", "0,1,0", "0.5", "4.0", "255,255,255", "spec=-0.5", NULL};
+	assert_int_equal(is_valid_paraboloid(arr), 0);
+}
+
+void	test_paraboloid_spec_invalid_over_one(void **state)
+{
+	(void)state;
+	char *arr[] = {"pa", "0,0,0", "0,1,0", "0.5", "4.0", "255,255,255", "spec=1.5", NULL};
+	assert_int_equal(is_valid_paraboloid(arr), 0);
+}
+
+void	test_paraboloid_refl_valid(void **state)
+{
+	(void)state;
+	char *arr[] = {"pa", "0,0,0", "0,1,0", "0.5", "4.0", "255,255,255", "refl=0.3", NULL};
+	assert_int_equal(is_valid_paraboloid(arr), 1);
+}
+
+void	test_paraboloid_refl_invalid_zero(void **state)
+{
+	(void)state;
+	char *arr[] = {"pa", "0,0,0", "0,1,0", "0.5", "4.0", "255,255,255", "refl=0.0", NULL};
+	assert_int_equal(is_valid_paraboloid(arr), 0);
+}
+
+void	test_paraboloid_refl_invalid_over_one(void **state)
+{
+	(void)state;
+	char *arr[] = {"pa", "0,0,0", "0,1,0", "0.5", "4.0", "255,255,255", "refl=1.5", NULL};
+	assert_int_equal(is_valid_paraboloid(arr), 0);
+}
+
+void	test_paraboloid_check_valid_zero(void **state)
+{
+	(void)state;
+	char *arr[] = {"pa", "0,0,0", "0,1,0", "0.5", "4.0", "255,255,255", "check", NULL};
+	assert_int_equal(is_valid_paraboloid(arr), 1);
+}
+
+void	test_paraboloid_texture_valid(void **state)
+{
+	(void)state;
+	write_rt("/tmp/test_texture11.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"pa", "0,0,0", "0,1,0", "0.5", "4.0", "255,255,255", "texture=/tmp/test_texture11.xpm", NULL};
+	assert_int_equal(is_valid_paraboloid(arr), 1);
+	unlink("/tmp/test_texture11.xpm");
+}
+
+void	test_paraboloid_all_properties(void **state)
+{
+	(void)state;
+	char *arr[] = {"pa", "0,0,0", "0,1,0", "0.5", "4.0", "255,255,255", "spec=0.5", "refl=0.3", "check", NULL};
+	assert_int_equal(is_valid_paraboloid(arr), 1);
+}
+
+void	test_paraboloid_check_and_texture_exclusive_both_present(void **state)
+{
+	(void)state;
+	write_rt("/tmp/test_texture12.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"pa", "0,0,0", "0,1,0", "0.5", "4.0", "255,255,255", "check", "texture=/tmp/test_texture12.xpm", NULL};
+	assert_int_equal(is_valid_paraboloid(arr), 0);
+	unlink("/tmp/test_texture12.xpm");
+}
+
+/* =========================================================
+   Edge case tests - optional properties only
+   ========================================================= */
+
+void	test_sphere_only_check_no_other_optional(void **state)
+{
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "check", NULL};
+	assert_int_equal(is_valid_sphere(arr), 1);
+}
+
+void	test_sphere_only_spec_no_other_optional(void **state)
+{
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "spec=0.5", NULL};
+	assert_int_equal(is_valid_sphere(arr), 1);
+}
+
+void	test_plane_only_check_no_spec_refl(void **state)
+{
+	(void)state;
+	char *arr[] = {"pl", "0,0,0", "0,1,0", "255,255,255", "check", NULL};
+	assert_int_equal(is_valid_plane(arr), 1);
+}
+
+void	test_cylinder_only_texture_no_check_spec_refl(void **state)
+{
+	(void)state;
+	write_rt("/tmp/test_texture13.xpm", "P3\n1 1\n255\n255 0 0\n");
+	char *arr[] = {"cy", "0,0,0", "0,1,0", "2.0", "4.0", "255,255,255", "texture=/tmp/test_texture13.xpm", NULL};
+	assert_int_equal(is_valid_cylinder(arr), 1);
+	unlink("/tmp/test_texture13.xpm");
+}
+
+void	test_cone_no_optional_properties(void **state)
+{
+	(void)state;
+	char *arr[] = {"co", "0,0,0", "0,1,0", "30.0", "4.0", "255,0,0", NULL};
+	assert_int_equal(is_valid_cone(arr), 1);
+}
+
+void	test_hyperboloid_only_spec_refl_no_check_texture(void **state)
+{
+	(void)state;
+	char *arr[] = {"hy", "0,0,0", "0,1,0", "1.0", "1.0", "1.0", "4.0", "255,255,255", "spec=0.5", "refl=0.3", "check", NULL};
+	assert_int_equal(is_valid_hyperboloid(arr), 1);
+}
+
+void	test_paraboloid_all_optional_properties_valid(void **state)
+{
+	(void)state;
+	char *arr[] = {"pa", "0,0,0", "0,1,0", "0.5", "4.0", "255,255,255", "spec=0.5", "refl=0.3", "check", NULL};
+	assert_int_equal(is_valid_paraboloid(arr), 1);
+}
+
+/* =========================================================
+   Boundary tests - min/max values for spec and refl
+   ========================================================= */
+
+void	test_sphere_spec_boundary_almost_zero(void **state)
+{
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "spec=0.00001", NULL};
+	assert_int_equal(is_valid_sphere(arr), 1);
+}
+
+void	test_sphere_spec_boundary_almost_one(void **state)
+{
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "spec=0.99999", NULL};
+	assert_int_equal(is_valid_sphere(arr), 1);
+}
+
+void	test_sphere_refl_boundary_almost_zero(void **state)
+{
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "refl=0.00001", NULL};
+	assert_int_equal(is_valid_sphere(arr), 1);
+}
+
+void	test_sphere_refl_boundary_almost_one(void **state)
+{
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "refl=0.99999", NULL};
+	assert_int_equal(is_valid_sphere(arr), 1);
+}
+
+void	test_plane_spec_boundary_one(void **state)
+{
+	(void)state;
+	char *arr[] = {"pl", "0,0,0", "0,1,0", "255,255,255", "spec=1.0", NULL};
+	assert_int_equal(is_valid_plane(arr), 1);
+}
+
+void	test_plane_refl_boundary_one(void **state)
+{
+	(void)state;
+	char *arr[] = {"pl", "0,0,0", "0,1,0", "255,255,255", "refl=1.0", NULL};
+	assert_int_equal(is_valid_plane(arr), 1);
+}
+
+/* =========================================================
+   Negative tests - invalid spec/refl combinations
+   ========================================================= */
+
+void	test_sphere_spec_negative_with_valid_refl(void **state)
+{
+	(void)state;
+	char *arr[] = {"sp", "0,0,0", "2.0", "255,0,0", "spec=-0.5", "refl=0.5", NULL};
+	assert_int_equal(is_valid_sphere(arr), 0);
+}
+
+void	test_plane_valid_spec_with_invalid_refl_negative(void **state)
+{
+	(void)state;
+	char *arr[] = {"pl", "0,0,0", "0,1,0", "255,255,255", "spec=0.5", "refl=-0.5", NULL};
+	assert_int_equal(is_valid_plane(arr), 0);
+}
+
+void	test_cylinder_spec_over_max_with_valid_refl(void **state)
+{
+	(void)state;
+	char *arr[] = {"cy", "0,0,0", "0,1,0", "2.0", "4.0", "255,255,255", "spec=1.5", "refl=0.5", NULL};
+	assert_int_equal(is_valid_cylinder(arr), 0);
+}
+
+void	test_cone_valid_spec_with_refl_over_max(void **state)
+{
+	(void)state;
+	char *arr[] = {"co", "0,0,0", "0,1,0", "30.0", "4.0", "255,0,0", "spec=0.5", "refl=1.5", NULL};
+	assert_int_equal(is_valid_cone(arr), 0);
+}
+
+void	test_hyperboloid_both_spec_refl_invalid(void **state)
+{
+	(void)state;
+	char *arr[] = {"hy", "0,0,0", "0,1,0", "1.0", "1.0", "1.0", "4.0", "255,255,255", "spec=0.0", "refl=2.0", NULL};
+	assert_int_equal(is_valid_hyperboloid(arr), 0);
+}
+
+void	test_paraboloid_spec_zero_refl_valid(void **state)
+{
+	(void)state;
+	char *arr[] = {"pa", "0,0,0", "0,1,0", "0.5", "4.0", "255,255,255", "spec=0.0", "refl=0.5", NULL};
+	assert_int_equal(is_valid_paraboloid(arr), 0);
 }

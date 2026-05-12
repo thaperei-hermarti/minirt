@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/15 16:00:03 by thaperei          #+#    #+#             */
-/*   Updated: 2026/05/05 11:59:49 by hermarti         ###   ########.fr       */
+/*   Updated: 2026/05/08 14:50:59 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ int					close_window(t_env *env);
 
 void				set_window_hooks(t_env *env);
 
-int					mouse_hook(int mousecode, int x, int y, void *param);
 int					key_hook(int keycode, void *param);
 
 void				*init_img_buffer(t_window *window);

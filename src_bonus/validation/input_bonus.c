@@ -6,7 +6,7 @@
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/05 10:11:05 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/26 13:50:24 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/05/11 21:02:01 by thaperei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <string.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <stdio.h>
 #include <unistd.h>
 
 void	show_error(char *msg)
@@ -58,12 +57,12 @@ int	is_allowed_object(char **arr, int idx)
 	{"sp", &is_valid_sphere, "Invalid sphere"},
 	{"pl", &is_valid_plane, "Invalid plane"},
 	{"cy", &is_valid_cylinder, "Invalid cylinder"},
-	{"co", &is_valid_sphere, "Invalid cone"},
-	{"hy", &is_valid_plane, "Invalid hyperboloid"},
-	{"pa", &is_valid_plane, "Invalid paraboloid"},
+	{"co", &is_valid_cone, "Invalid cone"},
+	{"hy", &is_valid_hyperboloid, "Invalid hyperboloid"},
+	{"pa", &is_valid_paraboloid, "Invalid paraboloid"},
 	{NULL, NULL, "Non-existent object"}};
 
-	while (func_objs[++idx].key)
+	while (func_objs[idx].key)
 	{
 		if (ft_strcmp(func_objs[idx].key, arr[0]) == 0)
 		{
@@ -71,6 +70,7 @@ int	is_allowed_object(char **arr, int idx)
 				return (show_error(func_objs[idx].error_msg), 0);
 			break ;
 		}
+		idx++;
 	}
 	if (func_objs[idx].key == NULL)
 		return (show_error(func_objs[idx].error_msg), 0);
@@ -82,10 +82,10 @@ int	is_valid_object(t_list *objs, t_obj_count *obj_count)
 	char	**arr;
 	int		i;
 
-	arr = ft_split_charset(objs->content, " 	\v\f\r");
+	arr = ft_split_charset(objs->content, " 	\v\f\r\n");
 	if (!arr)
 		return (0);
-	i = -1;
+	i = 0;
 	if (!is_allowed_object(arr, i))
 	{
 		free_arr(arr);

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/08 14:40:17 by hermarti          #+#    #+#             */
-/*   Updated: 2026/04/08 15:55:55 by hermarti         ###   ########.fr       */
+/*   Created: 2026/05/08 14:48:00 by hermarti          #+#    #+#             */
+/*   Updated: 2026/05/08 14:48:01 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_vec4	vec4_cross_prod(t_vec4 a, t_vec4 b)
 	res.x = (a.y * b.z) - (a.z * b.y);
 	res.y = (a.z * b.x) - (a.x * b.z);
 	res.z = (a.x * b.y) - (a.y * b.x);
-	res.k = 0.0f;
+	res.w = 0.0f;
 	return (res);
 }
 
@@ -31,7 +31,7 @@ t_vec4	vec4_scale(t_vec4 v, double scalar)
 	res.x = v.x * scalar;
 	res.y = v.y * scalar;
 	res.z = v.z * scalar;
-	res.k = v.k;
+	res.w = v.w;
 	return (res);
 }
 
@@ -42,7 +42,7 @@ t_vec4	vec4_add(t_vec4 a, t_vec4 b)
 	res.x = a.x + b.x;
 	res.y = a.y + b.y;
 	res.z = a.z + b.z;
-	res.k = a.k;
+	res.w = a.w;
 	return (res);
 }
 
@@ -53,7 +53,7 @@ t_vec4	vec4_sub(t_vec4 a, t_vec4 b)
 	res.x = a.x - b.x;
 	res.y = a.y - b.y;
 	res.z = a.z - b.z;
-	res.k = a.k;
+	res.w = a.w;
 	return (res);
 }
 

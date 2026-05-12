@@ -5,28 +5,35 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/26 09:52:36 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/26 14:39:54 by thaperei         ###   ########.fr       */
+/*   Created: 2026/03/15 16:00:03 by thaperei          #+#    #+#             */
+/*   Updated: 2026/05/07 12:17:36 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "validation_bonus.h"
 #include "free_memory_bonus.h"
-#include "parser_bonus.h"
-#include "libft.h"
+#include "minirt_bonus.h"
+#include "validation_bonus.h"
+#include <stdlib.h>
 
 int	main(int argc, char *argv[])
 {
-	t_scene	scene;
+	t_env	env;
 
-	scene = (t_scene){};
-	if (argc != 2)
+	if (!init_env(&env, argc, argv))
+		return (EXIT_FAILURE);
+	if (!init_window(&env.window, WINDOW_WIDTH, WINDOW_HEIGHT, "MINIRT"))
 	{
-		show_error("Usage: ./miniRT_bonus <file>");
-		return (0);
+		free_scene(&env.scene);
+		return (EXIT_FAILURE);
 	}
-	if (is_valid_input(argv[1], &scene))
-		parse_elements(&scene);
-	free_scene(&scene);
-	return (0);
+	if (!load_scene_textures(&env))
+	{
+		show_error("Failed to load scene textures");
+		destroy_env(&env);
+		return (EXIT_FAILURE);
+	}
+	set_window_hooks(&env);
+	render_loop(&env);
+	destroy_env(&env);
+	return (EXIT_SUCCESS);
 }

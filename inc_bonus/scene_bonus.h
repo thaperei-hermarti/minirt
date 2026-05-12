@@ -6,7 +6,7 @@
 /*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 09:18:18 by hermarti          #+#    #+#             */
-/*   Updated: 2026/04/26 13:32:29 by thaperei         ###   ########.fr       */
+/*   Updated: 2026/05/10 17:06:11 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,30 +23,25 @@ typedef struct s_ambient
 
 typedef struct s_camera
 {
-	t_vec4			coordinate;
-	t_vec4			norm_vector;
-	unsigned char	fov;
+	t_vec4			origin;
+	t_vec4			dir;
+	t_vec4			right;
+	t_vec4			up;
+	double			fov_scale;
+	double			aspect;
 }					t_camera;
 
 typedef struct s_light
 {
-	t_vec4			coordinate;
+	t_vec4			origin;
 	double			brightness;
 	t_color			color;
 }					t_light;
-
-typedef struct s_specular
-{
-	t_vec4			reflect_coordinate;
-	double			strenght;
-	t_color			color;
-}				t_specular;
 
 typedef struct s_scene
 {
 	t_camera		camera;
 	t_ambient		ambient;
-	t_specular		specular;
 	t_list			*objs;
 	t_light			*light;
 	t_surface		*surfaces;

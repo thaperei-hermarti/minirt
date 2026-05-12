@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_bonus.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thaperei <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hermarti <hermarti@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/22 20:00:23 by thaperei          #+#    #+#             */
-/*   Updated: 2026/04/26 13:31:54 by thaperei         ###   ########.fr       */
+/*   Created: 2026/05/07 12:15:41 by hermarti          #+#    #+#             */
+/*   Updated: 2026/05/07 12:15:50 by hermarti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ typedef struct s_hash_item_parser
 }	t_hash_item_parser;
 
 void	parse_elements(t_scene *scene);
+void	parse_optional_properties(char **arr, int start_idx,
+			t_surface_parameters *s_params);
 
 // Object parsers
 void	parse_ambient(char **arr, t_scene *scene);
@@ -29,6 +31,9 @@ void	parse_light(char **arr, t_scene *scene);
 void	parse_sphere(char **arr, t_scene *scene);
 void	parse_plane(char **arr, t_scene *scene);
 void	parse_cylinder(char **arr, t_scene *scene);
+void	parse_cone(char **arr, t_scene *scene);
+void	parse_hyperboloid(char **arr, t_scene *scene);
+void	parse_paraboloid(char **arr, t_scene *scene);
 
 // Low-level savers
 void	save_double(const char *token, double *dst);
